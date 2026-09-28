@@ -1493,6 +1493,38 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   html[data-theme="dark"] .he-prev { background: rgba(255, 150, 80, .05); border-color: rgba(255, 182, 124, .18); }
   html[data-theme="dark"] .he-prev span { color: #9C8071; }
 @media (max-width: 560px) { .hero-slot { flex-direction: column; } .xw-line .he-prev { flex: 0 0 auto; width: 100%; height: 120px; } }
+
+  /* ---- the corner button, and the full-screen picture behind it ---- */
+  .xw-gmain { cursor: zoom-in; }
+  .xw-zoom, .xw-lb-nav, .xw-lb-x { position: absolute; z-index: 3; width: 38px; height: 38px;
+    border-radius: 50%; border: 1px solid var(--line-2); background: var(--fill); color: var(--muted);
+    font-size: 20px; line-height: 1; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: .9; transition: transform .18s, opacity .18s; }
+  .xw-zoom { top: 10px; right: 10px; font-size: 18px; }
+  .xw-zoom:hover { transform: scale(1.08); opacity: 1; }
+  .xw-zoom:hover, .xw-lb-nav:hover, .xw-lb-x:hover { color: #FF4B1F; }
+  .xw-lb { align-items: center; padding: 0; z-index: 260; }
+  .xw-lb-box { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .xw-lb-box img { max-width: 96vw; max-height: 94vh; object-fit: contain; border-radius: 14px; background: var(--bg-3); }
+  .xw-lb-nav { top: 50%; transform: translateY(-50%); width: 46px; height: 46px; font-size: 28px; }
+  .xw-lb-nav.prev { left: 16px; }
+  .xw-lb-nav.next { right: 16px; }
+  .xw-lb-x { top: 16px; left: 16px; width: 42px; height: 42px; font-size: 26px; }
+  .xw-lb-count { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+    font-size: 13px; font-weight: 600; color: var(--muted); z-index: 3; }
+  html[data-theme="dark"] .xw-zoom, html[data-theme="dark"] .xw-lb-nav, html[data-theme="dark"] .xw-lb-x {
+    background: rgba(15, 10, 8, .88); border-color: rgba(255, 182, 124, .28); color: #E8D2C2; }
+  html[data-theme="dark"] .xw-lb-box img { background: #0B0705; }
+  /* on a small phone the arrows would sit on top of the picture, so they
+     step back and hug the edge */
+  @media (max-width: 520px) {
+    .xw-lb-box img { max-width: 100vw; max-height: 88vh; }
+    .xw-lb-nav { width: 38px; height: 38px; font-size: 22px; }
+    .xw-lb-nav.prev { left: 7px; }
+    .xw-lb-nav.next { right: 7px; }
+    .xw-lb-x { width: 36px; height: 36px; font-size: 22px; top: 10px; left: 10px; }
+    .xw-lb-count { bottom: 10px; }
+  }
 </style>
 
   <!-- the card Google shows when someone shares a link to the shop -->
@@ -1891,6 +1923,9 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 
   <!-- Product details / Checkout -->
   <div class="xw-modal" id="xwProduct"><div class="xw-box wide" id="xwProductBox"></div></div>
+<!-- the full-screen picture. A plain modal, so the escape key, the tap on the
+     background and the cross all close it without a line of new code. -->
+<div class="xw-modal xw-lb" id="xwLight"><div class="xw-lb-box" id="xwLightBox"></div></div>
   <div class="xw-modal" id="xwCheckout"><div class="xw-box chk" id="xwCheckoutBox"></div></div>
   <div class="xw-modal" id="xwPolicy"><div class="xw-box wide" id="xwPolicyBox"></div></div>
   <div class="xw-modal" id="xwAnnounce"><div class="xw-box wide xw-ann-box" id="xwAnnounceBox"></div></div>
@@ -2794,7 +2829,10 @@ window.REVIEWS = [
   };
   $$(".xw-modal").forEach((m) => m.addEventListener("mousedown", (e) => { if (e.target === m) closeModal(m); }));
   document.addEventListener("click", (e) => { const x = e.target.closest("[data-xclose]"); if (x) closeModal(x.closest(".xw-modal")); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") $$(".xw-modal.open").forEach(closeModal); });
+  /* Escape normally shuts every overlay at once. The full-screen picture is the one
+   exception: it sits on top of the product, and one press must put the visitor
+   back on the product, not out of the shop. It closes itself just below. */
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwLight").classList.contains("open")) $$(".xw-modal.open").forEach(closeModal); });
 
   /* ---------- Product details ---------- */
   /* every product owns a shareable URL (#p/<id>) so ad links can point straight at it */
@@ -2821,6 +2859,7 @@ window.REVIEWS = [
     $("#xwProductBox").innerHTML =
       '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><div class="xw-pgrid">' +
       '<div><div class="xw-gal" id="xwGal"><img class="xw-gmain" id="xwGMain" src="' + esc(cld(imgs[0], 1100, 1100)) + '" alt="' + esc(p.name) + '"' + IMG_ATTR + " decoding=\"async\">" +
+      '<button class="xw-zoom" type="button" data-zoom aria-label="\u062a\u0643\u0628\u064a\u0631 \u0627\u0644\u0635\u0648\u0631\u0629" title="\u062a\u0643\u0628\u064a\u0631 \u0627\u0644\u0635\u0648\u0631\u0629">\u2922</button>' +
       (imgs.length > 1 ? '<button class="xw-gal-nav prev" id="xwGalPrev" aria-label="السابق">‹</button><button class="xw-gal-nav next" id="xwGalNext" aria-label="التالي">›</button>' : "") +
       (imgs.length > 1 ? '<span class="xw-gal-dots" id="xwGalDots">' + imgs.map((_, i) => '<i class="' + (i ? "" : "on") + '"></i>').join("") + "</span>" : "") + "</div>" +
       (imgs.length > 1 ? '<div class="xw-thumbs">' + imgs.map((u, i) => '<img data-gi="' + i + '" class="' + (i ? "" : "on") + '" src="' + esc(cld(u, 180, 180)) + '" alt=""' + IMG_ATTR + ' width="180" height="180" loading="lazy">').join("") + "</div>" : "") + "</div>" +
@@ -2848,10 +2887,64 @@ window.REVIEWS = [
       if (t) { stop(); cur = show(+t.dataset.gi); start(); return; }
       if (e.target.closest("#xwGalPrev")) { stop(); cur = show(cur - 1); start(); return; }
       if (e.target.closest("#xwGalNext")) { stop(); cur = show(cur + 1); start(); return; }
+      /* the button in the corner, and the picture itself - both mean the same thing */
+      if (e.target.closest("[data-zoom]") || e.target.id === "xwGMain") { lbOpen(cur); return; }
     };
     start();
+    /* the lightbox borrows this product's pictures, and hands the gallery back
+       the picture you were looking at when you close it */
+    lbList = imgs; lbName = p.name;
+    lbBack = () => { cur = show(lbi); start(); };
     openModal($("#xwProduct"));
   };
+
+  /* ---------- the big picture ---------- */
+
+  /* Wired once, here, rather than inside openProduct: that function runs on
+     every product the visitor opens, and a document-level keydown added in
+     there would be left behind each time. */
+  const lb = $("#xwLight"), lbBox = $("#xwLightBox");
+  let lbList = [], lbi = 0, lbName = "", lbBack = null;
+  const lbShow = (i) => {
+    if (!lbList.length) return 0;
+    lbi = (i + lbList.length) % lbList.length;
+    const many = lbList.length > 1;
+    lbBox.innerHTML =
+      (many ? '<button class="xw-lb-nav prev" type="button" data-lb="-1" aria-label="\u0627\u0644\u0633\u0627\u0628\u0642">\u2039</button>' +
+              '<button class="xw-lb-nav next" type="button" data-lb="1" aria-label="\u0627\u0644\u062a\u0627\u0644\u064a">\u203a</button>' : "") +
+      '<img src="' + esc(cld(lbList[lbi], 1600)) + '" alt="' + esc(lbName) + '" decoding="async">' +
+      '<button class="xw-lb-x" type="button" data-xclose aria-label="\u0625\u063a\u0644\u0627\u0642">\u00d7</button>' +
+      (many ? '<span class="xw-lb-count">' + (lbi + 1) + " / " + lbList.length + "</span>" : "");
+    return lbi;
+  };
+  const lbOpen = (i) => { if (!lbList.length) return; if (galTimer) { clearInterval(galTimer); galTimer = null; } lbShow(i == null ? 0 : i); openModal(lb); };
+  lbBox.addEventListener("click", (e) => {
+    const n = e.target.closest("[data-lb]");
+    if (n) { e.stopPropagation(); lbShow(lbi + Number(n.dataset.lb)); }
+  });
+  /* a finger dragged across the picture, the same job as the arrows */
+  let lbX = 0, lbY = 0;
+  lbBox.addEventListener("touchstart", (e) => { lbX = e.changedTouches[0].clientX; lbY = e.changedTouches[0].clientY; }, { passive: true });
+  lbBox.addEventListener("touchend", (e) => {
+    const dx = e.changedTouches[0].clientX - lbX, dy = e.changedTouches[0].clientY - lbY;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.6 && lbList.length > 1) lbShow(lbi + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  /* the gallery is still open behind this, so anything that closes the
+     lightbox has to hand the picture back - the rotation included */
+  const lbShut = () => { closeModal(lb); if (lbBack) lbBack(); };
+  /* The cross and the dark background both close this by themselves, through
+     listeners that were written before the lightbox existed, and a click
+     reaches this element before it reaches the document. So the question is
+     not asked here - it is asked on the next tick, once they have done it. */
+  const lbAfterClose = () => { setTimeout(() => { if (!lb.classList.contains("open")) lbShut(); }, 0); };
+  lb.addEventListener("mousedown", lbAfterClose);
+  lb.addEventListener("click", lbAfterClose);
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "ArrowLeft" && lbList.length > 1) { e.preventDefault(); lbShow(lbi - 1); return; }
+    if (e.key === "ArrowRight" && lbList.length > 1) { e.preventDefault(); lbShow(lbi + 1); return; }
+    if (e.key === "Escape") { e.stopImmediatePropagation(); lbShut(); }
+  });
 
   /* ---------- Checkout ---------- */
   const wById = (id) => XW_WILAYAS.find((w) => w[0] === id);
