@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="ltr">
 <head>
   <meta charset="utf-8" />
@@ -890,6 +890,10 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     html, body { overflow-x: hidden; }
   </style>
   <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <!-- without this one, firebase.firestore() does not exist and the whole shop runs
+       on this phone only. It is the second half of the same SDK, and it must load
+       after the first - both are deferred, so the order here is the order they run. -->
+  <script defer src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <!-- ===================================================================
        X STORE · THEME BOOTSTRAP
        Runs before the first paint, so a returning dark-mode visitor never
@@ -1902,7 +1906,65 @@ window.LOGO_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAAB
 document.querySelectorAll("img[data-logo]").forEach(function (i) { i.src = window.LOGO_SRC; });
 </script>
 <script>
-window.PRODUCTS = [];
+/* The products, written into the code itself.
+
+   This list is the second way to read the shop, not the first: if the cloud
+   answers, its products win, exactly as before. This list is what shows when
+   the cloud is empty, and what shows when it cannot be reached at all - so a
+   re-upload of this file can never leave the shop bare. It is also the seed:
+   pushed into an empty collection on the first save, and never over a live one.
+
+   To change it, change the products in the admin, press "نزّل المنتجات في الكود"
+   in the products tab, and paste the downloaded file over this block. */
+window.PRODUCTS = [
+  {
+    "id": "p-muh14jxc",
+    "name": "PIVA S6",
+    "desc": "سماعة رأس سلكية داخل الأذن للألعاب الإلكترونية PIVA S6 مع كابل بواجهة - Type بطول 1.2 متر، وتأثير إضاءة RGB، وبطاقة صوت مدمجة وميكروفون",
+    "price": 2500,
+    "stock": 195,
+    "cat": "عروض ساخنة",
+    "img": "https://res.cloudinary.com/yc68mbzo/image/upload/v1790344803/mru2dbunqm6ccmk6osua.jpg",
+    "images": [
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790344803/mru2dbunqm6ccmk6osua.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790344804/yusjephkadlqaxz92fif.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790344805/wd8kffpwm5pp97r1vd1x.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790344995/erb4zfjmeppmispdebpu.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790345019/kequzys16mh09heivw6d.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790345020/pnzfu3lyb4lbfwai4ysn.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790416300/du3039zbp1jg4hgt68ls.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790416301/ufcixtfwgyzu1pfyho9g.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790416302/ldhtyqlvdobgbcrqdbyx.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790416302/sz4aeekdrtxfu8rt1h7o.jpg"
+    ],
+    "tag": "جديد، عرض مميز",
+    "tagIds": [
+      "new",
+      "top"
+    ],
+    "order": -4
+  },
+  {
+    "id": "p-mugzbr5h",
+    "name": "Memo cx 07",
+    "desc": "❄️🎮 مبرد الهاتف MEMO CX07 — أداء قوي وحجم عملي!\n\n⚡ تبريد سريع بتقنية أشباه الموصلات للمساعدة على خفض حرارة الهاتف أثناء اللعب.\n🎮 مناسب لـ PUBG Mobile وFree Fire وCOD Mobile وغيرها.\n🌈 تصميم Gaming بإضاءة مميزة، مع تثبيت عملي على الهاتف.\n🎁 هدية: أغطية أصابع Gaming مضادة للعرق.\n\n🔥 حافظ على برودة هاتفك واستمتع بجلسات لعب أكثر راحة!",
+    "price": 3000,
+    "stock": 13,
+    "cat": "مبردات هواتف 🥶",
+    "img": "https://res.cloudinary.com/yc68mbzo/image/upload/v1790341868/u4qyk5yblxho80xledar.jpg",
+    "images": [
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790341868/u4qyk5yblxho80xledar.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790341869/hjfeonl2ceomzcdq2xd3.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790341870/a5inni58xzyfjcx7pwno.jpg",
+      "https://res.cloudinary.com/yc68mbzo/image/upload/v1790341871/hdmnjkznaaalbctoxwfh.jpg"
+    ],
+    "tag": "جديد",
+    "tagIds": [
+      "new"
+    ],
+    "order": -3
+  }
+];
 
 window.CATEGORIES = [
   { id: "fans", name: "مراوح تبريد", desc: "مراوح مغناطيسية ومشبكية مع إضاءة RGB للهاتف والآيباد.", icon: "💨" },
@@ -2303,7 +2365,7 @@ window.REVIEWS = [
   window.XW_VISITOR = { uid: XW_UID, dev: XW_DEVICE };
 
 
-  let db = null, online = false, seeded = false;
+  let db = null, online = false, seeded = false, cloudEmpty = false;
   /* publish counter: bumped every time the admin saves, so customers know to re-read */
   let XW_REV = 0;
   const INFO = Object.assign({}, XW_INFO_DEFAULTS);
@@ -2420,7 +2482,13 @@ window.REVIEWS = [
     if (c && c.t) lsSet(XW_CACHE_KEY, Object.assign({}, c, { t: Date.now() }));
   };
   /* the owner needs to hear it when a change cannot reach the other phones */
-  const cacheWarn = () => toast("حُفظ عندك، أما العدّاد ما تبعثش — الزوار ما يشوفوش التعديل حتى يحدّثوا الصفحة");
+  /* the one warning that must never be mistaken for a green tick. A save that
+     did not reach the cloud is a catalogue that dies with the browser, so it is
+     said in plain words, not in the language of counters. */
+  const cacheWarn = () => toast(!db
+    ? "حُفظ على هذا الهاتف فقط — ما وصلش لقاعدة البيانات، " +
+      "وأي زبون آخر ما غاديش يشوفوها"
+    : "حُفظ، أما الزوار ما يشوفوش التعديل حتى يحدّثوا الصفحة");
   /* returns true when the cached copy is fresh enough that the cloud can be skipped */
   const loadCached = () => {
     /* a copy from before this morning has no new fields in it: let it go */
@@ -2487,7 +2555,11 @@ window.REVIEWS = [
       } catch (e) { console.warn("[XW] cloud read failed:", e && (e.code || e.message)); }
     }
     if (!online) { prods = lsGet("xw-products", null); info = lsGet("xw-info", null); readCred(lsGet("xw-admincred", null)); }
-    if (prods && prods.length) { window.PRODUCTS = prods.sort(byOrder); seeded = true; } else seeded = false;
+    /* cloudEmpty is the only licence to push the products carried in the code into the
+       cloud: the cloud answered, and it had nothing. If the read failed we do not know
+       what is in there, and guessing would overwrite a live catalogue. */
+    if (prods && prods.length) { window.PRODUCTS = prods.sort(byOrder); seeded = true; cloudEmpty = false; }
+    else { seeded = false; cloudEmpty = online; }
     if (info) Object.assign(INFO, XW_INFO_DEFAULTS, info);
     let cats = null;
     if (db) {
@@ -2507,7 +2579,7 @@ window.REVIEWS = [
     cachePut();
   };
   const ensureSeeded = async () => {
-    if (seeded || !online) return;
+    if (seeded || !online || !cloudEmpty) return;
     window.PRODUCTS.forEach((p, i) => { if (p.order == null) p.order = i; });
     const batch = db.batch();
     window.PRODUCTS.forEach((p) => batch.set(db.collection(XW_COL.products).doc(p.id), clean(p)));
@@ -3075,7 +3147,12 @@ window.REVIEWS = [
       '<span class="xw-badge ' + (online || !db ? "" : "off") + '" id="xwConn"></span>' +
       '<span class="xw-badge" id="xwCache"></span>' +
       '<button class="xw-btn ghost sm" id="xwRefresh">↻ تحديث</button><button class="xw-btn danger sm" id="xwExit">خروج</button></div></div>' +
-      '<div class="xw-tabs">' +
+      (!db ? '<div style="margin:0 0 12px;padding:12px 14px;border-radius:12px;border:1px solid rgba(245,158,11,.55);background:rgba(245,158,11,.12);font-size:13px;line-height:1.75">' +
+        "⚠ <b>ما كاينش قاعدة بيانات.</b> " +
+        "كل ما تحفظ هنا يروح على هذا الهاتف وحدو، وينحيد كي تمسح بيانات المتصفح. " +
+        "صلّحها قبل ما تثق في علامة الحفظ." +
+        "</div>" : "") +
+'<div class="xw-tabs">' +
       [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
@@ -3191,7 +3268,11 @@ window.REVIEWS = [
   /* ----- Products list ----- */
   const tabProducts = () => {
     const body = $("#xwBody");
-    body.innerHTML = '<div class="xw-card"><div class="xw-field"><input id="xwPSearch" placeholder="🔍 ابحث عن منتج..."></div><div id="xwPList"></div></div>';
+    body.innerHTML = '<div class="xw-card"><div class="xw-field"><input id="xwPSearch" placeholder="🔍 ابحث عن منتج..."></div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 2px">' +
+      '<button class="xw-btn ghost sm" id="xwProdsOut">نزّل المنتجات في الكود</button>' +
+      '<span style="font-size:12px;opacity:.7">لتلصق النتيجة داخل الكود، باش المنتجات ما تضيعش إذا رفعت الموقع من جديد</span>' +
+      '</div><div id="xwPList"></div></div>';
     const draw = () => {
       const q = $("#xwPSearch").value.trim().toLowerCase();
       const list = window.PRODUCTS.filter((p) => !q || (p.name + " " + p.cat).toLowerCase().indexOf(q) >= 0);
@@ -3202,6 +3283,12 @@ window.REVIEWS = [
         '<button class="xw-btn ghost sm" data-pe="' + esc(p.id) + '">تعديل</button><button class="xw-btn danger sm" data-pd="' + esc(p.id) + '">حذف</button></div>').join("") : '<div class="xw-empty">لا توجد منتجات.</div>';
     };
     draw(); $("#xwPSearch").addEventListener("input", draw);
+    $("#xwProdsOut").addEventListener("click", () => {
+      const list = clean(window.PRODUCTS);
+      if (!list.length) return toast("ما كاينش حتى منتج");
+      saveFile("products-paste.js", "window.PRODUCTS = " + JSON.stringify(list, null, 2) + ";");
+      toast("تنزيل تم. افتح الملف المنزّل والصق محتواه مكان المنتجات في الكود", true);
+    });
   };
   adminEl.addEventListener("click", async (e) => {
     const pe = e.target.closest("[data-pe]");
