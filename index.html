@@ -33,7 +33,6 @@
   --success: #10B981;
   --wa: #25D366;
   --ig: #E1306C;
-  --fb: #1877F2;
   --tt: #010101;
 --what-font: 'Almarai', sans-serif;
   --body-font: 'Tajawal', sans-serif;
@@ -424,7 +423,6 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .pill:hover { transform: translateY(-3px); }
 .pill.ig:hover { border-color: var(--ig); color: var(--ig); box-shadow: 0 10px 30px -10px rgba(225,48,108,.5); }
 .pill.tt:hover { border-color: var(--tt); color: var(--tt); box-shadow: 0 10px 30px -10px rgba(1,1,1,.4); }
-.pill.fb:hover { border-color: var(--fb); color: var(--fb); box-shadow: 0 10px 30px -10px rgba(24,119,242,.5); }
 
 .gdot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); }
 
@@ -437,11 +435,9 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .foot-logo img { width: 72px; height: 72px; }
 .foot-social { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
 .fs:hover { color: #fff; transform: translateY(-3px); }
-.fs-fb:hover { background: var(--fb); border-color: var(--fb); }
 .fs-tt:hover { background: var(--tt); border-color: var(--tt); }
 .fs-ig:hover { background: var(--ig); border-color: var(--ig); }
 .fs-wa:hover { background: var(--wa); border-color: var(--wa); }
-.fs-map:hover { background: #EA4335; border-color: #EA4335; }
 .fs { width: 40px; height: 40px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all .3s ease; }
 .fs svg { width: 18px; height: 18px; }
 .foot-col h4 { font-family: var(--what-font); font-weight: 800; font-size: 15px; letter-spacing: .06em; margin-bottom: 20px; }
@@ -1525,6 +1521,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     .xw-lb-x { width: 36px; height: 36px; font-size: 22px; top: 10px; left: 10px; }
     .xw-lb-count { bottom: 10px; }
   }
+
 </style>
 
   <!-- the card Google shows when someone shares a link to the shop -->
@@ -1761,10 +1758,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.8 3.7 4 3.9v3c-1.5 0-2.9-.5-4-1.3v6.6c0 3.4-2.7 5.7-5.9 5.5A5.3 5.3 0 0 1 5.7 13c.6-2.7 3.2-4.6 6.2-4.3v3a2.5 2.5 0 0 0-2.9 2.2c-.2 1.4.8 2.6 2.3 2.7 1.4 0 2.6-1 2.6-2.7V3h2.6Z"/></svg>
           @xstore_dz
         </a>
-        <a href="https://www.facebook.com/xstorealgeria" class="pill fb" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.3-1.5 1.6-1.5h1.4V4.2C15.8 4.2 14.9 4 14 4a3.7 3.7 0 0 0-3.9 4v2.5H7.5v3h2.6V21h3.4Z"/></svg>
-          Facebook
-        </a>
       </div>
     </section>
 
@@ -1826,11 +1819,9 @@ body.cart-open .cart-drawer { transform: translateX(0); }
         <div class="foot-logo"><img data-logo src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="X Store" /><span class="nav-word">X<b> STORE</b></span></div>
         <p data-i18n="footDesc">معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.</p>
         <div class="foot-social">
-          <a href="https://www.facebook.com/xstorealgeria" class="fs fs-fb" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.3-1.5 1.6-1.5h1.4V4.2C15.8 4.2 14.9 4 14 4a3.7 3.7 0 0 0-3.9 4v2.5H7.5v3h2.6V21h3.4Z"/></svg></a>
           <a href="https://www.tiktok.com/@xstore_dz" class="fs fs-tt" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.8 3.7 4 3.9v3c-1.5 0-2.9-.5-4-1.3v6.6c0 3.4-2.7 5.7-5.9 5.5A5.3 5.3 0 0 1 5.7 13c.6-2.7 3.2-4.6 6.2-4.3v3a2.5 2.5 0 0 0-2.9 2.2c-.2 1.4.8 2.6 2.3 2.7 1.4 0 2.6-1 2.6-2.7V3h2.6Z"/></svg></a>
           <a href="https://www.instagram.com/xstore_algeria" class="fs fs-ig" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
           <a href="https://wa.me/213600000000" class="fs fs-wa" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.4 0-.5s-.6-1.5-.8-2c-.2-.6-.4-.5-.6-.5h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8 14.7 14.7 0 0 0 1.4.5 3.4 3.4 0 0 0 1.6.1 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .2-1.2c-.1-.1-.3-.2-.6-.3Z"/></svg></a>
-          <a href="https://www.google.com/maps/search/?api=1&query=Setif+Algeria" class="fs fs-map" aria-label="Google Maps"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 1 7 7c0 5.2-7 13-7 13S5 14.2 5 9a7 7 0 0 1 7-7Zm0 9.5A2.5 2.5 0 1 0 12 6.5a2.5 2.5 0 0 0 0 5Z"/></svg></a>
         </div>
       </div>
       <div class="foot-col">
@@ -1904,10 +1895,14 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     </div>
   </div>
 
-  <!-- Admin gear -->
-  <button class="xw-gear" id="xwGear" aria-label="غرفة الإدارة" title="غرفة الإدارة">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-  </button>
+  <!-- The gear used to sit in the bottom-left corner of every page, and a
+       button in front of every visitor that opens the admin is not a secret
+       door - it is a sign on one. It is off the shop now. The only way in is
+       the address, and the admin can hand that address back to you. The icon
+       is kept here, unrendered, because the admin title still wears it; the
+       .xw-gear rules are left in the stylesheet so putting the button back is
+       a one-line change. -->
+  <template id="xwGearIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></template>
 
   <!-- Admin login -->
   <div class="xw-modal" id="xwLogin">
@@ -2295,14 +2290,33 @@ window.REVIEWS = [
      per try, and three wrong tries lock this device out for a quarter of an hour. */
   const XW_PASS_ROUND = 12000;
   let adminCred = null;
+  /* the plain password a document from an older version of this file still
+     carries, read once and then gone - see readCred and repairAdminPass */
+  let adminLegacy = null;
   const xwSalt = () => {
     const a = new Uint8Array(10);
     try { crypto.getRandomValues(a); } catch (e) { for (let i = 0; i < a.length; i++) a[i] = Math.floor(Math.random() * 256); }
     let s = ""; for (let i = 0; i < a.length; i++) s += ("0" + a[i].toString(16)).slice(-2); return s;
   };
   const xwHashPass = (pass, salt, round) => { let a = salt + "\u0001" + pass; const n = round || XW_PASS_ROUND; for (let i = 0; i < n; i++) a = xwSha256(a); return a; };
-  const readCred = (c) => { if (c && c.hash && c.salt) adminCred = { hash: String(c.hash), salt: String(c.salt), round: Number(c.round) || XW_PASS_ROUND }; };
-  const adminPassOk = (typed) => !!adminCred && xwHashPass(typed, adminCred.salt, adminCred.round) === adminCred.hash;
+  /* The document in the cloud is {"pass":"123456"} - the password written in plain
+     text, the shape an earlier version of this file produced. readCred understood
+     only {hash, salt, round}, so the credential stayed null and the room told the
+     owner his own password had never been set.
+     A plain field is read as what it is now: his own password, held aside so the
+     login can be compared against it the ordinary way. Nothing is loosened - a
+     person still has to type all of it. And the moment one does, repairAdminPass
+     rewrites the document in the hashed shape and deletes the plain field, so the
+     readable copy stops existing on its own. */
+  const readCred = (c) => {
+    if (!c) return;
+    if (c.hash && c.salt) adminCred = { hash: String(c.hash), salt: String(c.salt), round: Number(c.round) || XW_PASS_ROUND };
+    const plain = c.pass == null ? "" : String(c.pass);
+    adminLegacy = plain ? plain : null;
+  };
+  const adminPassOk = (typed) => (adminCred
+    ? xwHashPass(typed, adminCred.salt, adminCred.round) === adminCred.hash
+    : !!adminLegacy && typed === adminLegacy);
 
   /* three wrong tries and the form itself is taken off the page — see sealLogin().
      There is no clock anywhere near this: the seal does not expire, and there is no
@@ -2326,8 +2340,8 @@ window.REVIEWS = [
   const XW_STATUS = { new: "جديد", confirmed: "مؤكد", shipped: "قيد التوصيل", delivered: "مسلّم", cancelled: "ملغي" };
   const XW_INFO_DEFAULTS = {
     brand: "X", phone: "0600000000",
-    instagram: "xstore_algeria", tiktok: "", facebook: "", whatsapp: "",
-    followers: "24.5 ألف متابع", address: "",
+    instagram: "xstore_algeria", tiktok: "", whatsapp: "",
+    followers: "24.5 ألف متابع",
     heroBadge: "متخصصون في قيمنغ الموبايل · الجزائر",
     heroDesc: "مراوح تبريد، سماعات قيمنغ، قفازات أصابع وشواحن مصممة للاعبي الموبايل. توصيل سريع لكل الجزائر.",
     footDesc: "معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.",
@@ -2338,14 +2352,12 @@ window.REVIEWS = [
     hero: null
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
-  const XW_SOCIAL_OPTIONAL = ["tiktok", "facebook", "whatsapp", "address"];
+  const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp"];
 
   const XW_INFO_FIELDS = [
     ["instagram", "حساب إنستغرام (يظهر دائماً)"],
     ["tiktok", "حساب تيك توك — اتركه فارغاً لإخفاء الرابط"],
-    ["facebook", "صفحة فيسبوك — اتركها فارغة لإخفاء الرابط"],
     ["whatsapp", "واتساب (رقم أو رابط) — اتركه فارغاً لإخفاء الأيقونة"],
-    ["address", "الموقع على الخريطة — اتركه فارغاً لإخفاء أيقونة الخريطة"],
     ["heroBadge", "الشارة أعلى الصفحة الرئيسية"], ["heroDesc", "وصف الصفحة الرئيسية", "area"],
     ["phone", "رقم الهاتف — يتبان في الفوتر ول Requests"],
     ["shopSub", "النص تحت عنوان المنتجات"], ["footDesc", "وصف المتجر في أسفل الموقع", "area"]
@@ -2404,6 +2416,15 @@ window.REVIEWS = [
   /* publish counter: bumped every time the admin saves, so customers know to re-read */
   let XW_REV = 0;
   const INFO = Object.assign({}, XW_INFO_DEFAULTS);
+  /* The address of the shop is the one value in INFO that other people depend on:
+     the shareable links, the sitemap, the canonical tag. A settings document is
+     allowed to set it - the admin has a field for that - but not to blank it, and
+     the document in the cloud does exactly that (site: ""). Every merge runs the
+     value back through here, so a blank or a nonsense value puts the real address
+     back and leaves exactly one copy of the string in the file. */
+  const keepSite = () => {
+    if (!/^https?:\/\/[^\s/]+/i.test(String(INFO.site || "").trim())) INFO.site = XW_INFO_DEFAULTS.site;
+  };
   const initCloud = () => {
     try {
       if (!window.firebase) return;
@@ -2425,20 +2446,19 @@ window.REVIEWS = [
     const n = Array.from(el.childNodes).reverse().find((x) => x.nodeType === 3 && x.textContent.trim());
     if (n) n.textContent = "\n          " + text + "\n        ";
   };
-  /* ---------- Social links: only what the admin filled in is shown ----------
-     Instagram is on by default. Facebook / TikTok / the WhatsApp icon / the map
-     stay hidden until the shop owner types them into the admin, and vanish again
-     the moment the field is emptied. Every row is rebuilt from the template it
-     was born with, so a hidden link can come back without a page reload. */
+  /* ---------- Social links: only what the owner filled in is shown ----------
+     Instagram is on by default. TikTok and the WhatsApp circle stay hidden
+     until the shop owner types them into the admin, and vanish again the
+     moment the field is emptied. The two links the owner asked to lose are not
+     here at all - they were taken out, and no field is left to bring them back.
+     Every row is rebuilt from the template it was born from, so a hidden link
+     can come back without a page reload. */
   const XW_SOCIAL = [
     { v: "instagram", base: "https://www.instagram.com/", links: ".pill.ig, .fs-ig, .li-ig, .slogan-ig", pill: ".pill.ig", text: ".li-ig a", name: "Instagram" },
     { v: "tiktok", base: "https://www.tiktok.com/@", links: ".pill.tt, .fs-tt, .li-tt", pill: ".pill.tt", text: ".li-tt a", name: "TikTok" },
-    { v: "facebook", base: "https://www.facebook.com/", links: ".pill.fb, .fs-fb", pill: ".pill.fb", name: "Facebook" },
     { v: "whatsapp", base: "https://wa.me/", links: ".fs-wa", name: "WhatsApp" },
-    { v: "address", base: "", links: ".fs-map", name: "الموقع" }
   ];
   const socialLink = (val, base) => {
-    if (!base) return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(val);
     if (/^https?:\/\//i.test(val)) return val;
     if (base === "https://wa.me/") return "https://wa.me/213" + String(val).replace(/\D/g, "").replace(/^0/, "");
     return base + val.replace(/^@/, "");
@@ -2533,7 +2553,7 @@ window.REVIEWS = [
     let touched = false;
     if (c.products && c.products.length) { window.PRODUCTS = c.products.slice().sort(byOrder); seeded = true; touched = true; }
     if (c.cats && c.cats.length) { window.CATEGORIES = c.cats; touched = true; }
-    if (c.info) { Object.assign(INFO, XW_INFO_DEFAULTS, c.info); touched = true; }
+    if (c.info) { Object.assign(INFO, XW_INFO_DEFAULTS, c.info); keepSite(); touched = true; }
     if (c.cred) readCred(c.cred);
     if (c.rev != null) XW_REV = Number(c.rev) || 0;
     if (touched) { applyInfo(); renderStore(); renderCart(); renderCartBadge(); }
@@ -2595,7 +2615,7 @@ window.REVIEWS = [
        what is in there, and guessing would overwrite a live catalogue. */
     if (prods && prods.length) { window.PRODUCTS = prods.sort(byOrder); seeded = true; cloudEmpty = false; }
     else { seeded = false; cloudEmpty = online; }
-    if (info) Object.assign(INFO, XW_INFO_DEFAULTS, info);
+    if (info) { Object.assign(INFO, XW_INFO_DEFAULTS, info); keepSite(); }
     let cats = null;
     if (db) {
       try { const d = await tmo(db.collection(XW_COL.settings).doc("categories").get()); if (d.exists && d.data().items) cats = d.data().items; }
@@ -2654,6 +2674,30 @@ window.REVIEWS = [
     if (!await bumpRev()) cacheWarn();
     cachePut();
   };
+  /* One job: turn a document anybody can read into one nobody can. It runs after
+     the room has already opened, so a slow write never keeps the owner waiting,
+     and it is the same write the password tab makes - the plain field goes with it. */
+  const repairAdminPass = async (pass) => {
+    const reachedCloud = !!db;
+    try {
+      await saveAdminPass(pass);
+      adminLegacy = null;
+      /* what it says has to be where it went. Telling a man his server
+         was fixed when it was only his phone is the same kind of lie
+         this whole patch exists to stop. */
+      toast(reachedCloud
+        ? "تم تحديث كلمة السر في السيرفر — بدّلها دابا من تبويب كلمة السر"
+        : "دخلت، أما كلمة السر ما ترقعش — ملي توصل لـقاعدة البيانات يرقعوها وحدو",
+        true);
+    } catch (e) {
+      console.warn("[XW] the password document could not be rewritten:", e && (e.code || e.message));
+      toast(reachedCloud
+        ? "دخلت، أما كلمة السر ما ترقعيش في السيرفر — عاود من «تحديث»"
+        : "دخلت، أما كلمة السر ما ترقعيش — عاود ملي توصل لـقاعدة البيانات",
+        false);
+    }
+  };
+
   const saveOrder = async (o) => {
     if (db) { await tmo(db.collection(XW_COL.orders).doc(o.id).set(clean(o))); online = true; return; }
     const l = lsGet("xw-orders", []); l.unshift(o); lsSet("xw-orders", l);
@@ -3184,6 +3228,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (!/\/admin\/?$/.test(location.pathname)) return;
     try { history.pushState({ admin: 0 }, "", (adminBase() || "") + "/" + location.search + location.hash); } catch (e) {}
   };
+
   const askAdminPass = () => {
     /* the admin always writes to the cloud, so make sure the connection is live before opening */
     if (db && !online) loadRemote();
@@ -3194,7 +3239,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     setTimeout(() => { const pf = $("#xwPass"); if (pf) { pf.value = ""; pf.focus(); } }, 80);
   };
 
-  $("#xwGear").addEventListener("click", askAdminPass);
   loginBox.addEventListener("submit", (e) => {
     e.preventDefault();
     const pass = $("#xwPass"), errEl = $("#xwLoginErr");
@@ -3202,12 +3246,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (isSealed() || !pass || !errEl) { paintLoginLock(); return; }
     const typed = normDigits(pass.value);
     if (!typed) { errEl.textContent = "اكتب كلمة السر"; pass.focus(); return; }
-    if (!adminCred) { errEl.textContent = "لم تُعيَّن كلمة السر بعد."; pass.value = ""; return; }
+    if (!adminCred && !adminLegacy) { errEl.textContent = "لم تُعيَّن كلمة السر بعد."; pass.value = ""; return; }
     if (adminPassOk(typed)) {
       xwMissClear();
       adminUnlocked = true;
       closeModal(loginModal);
       openAdmin();
+      /* the one time the plain field is answered for, the cloud is told to forget
+         it - and only after the room is already open, never before */
+      if (adminLegacy) repairAdminPass(typed);
       return;
     }
     const miss = xwMiss();
@@ -3227,7 +3274,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   /* ---------- Admin room ---------- */
   const adminEl = $("#xwAdmin");
   let adminTab = "orders", editing = null, formImgs = [], ordersCache = [];
-  const GEAR_SVG = $("#xwGear").innerHTML;
+  /* out of the <template> the gear now lives in: not rendered, but still here */
+  const GEAR_SVG = (($("#xwGearIcon").content.firstElementChild) || {}).outerHTML || "";
   const fmtDate = (iso) => { try { return new Date(iso).toLocaleString("ar-DZ-u-nu-latn", { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return iso; } };
 
   const openAdmin = () => { adminEl.hidden = false; document.body.style.overflow = "hidden"; renderAdmin(); };
@@ -3327,10 +3375,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<button class="xw-btn ghost" data-golog>فتح سجل الطلبات (' + (ordersCache.length) + ")</button></div>";
       return;
     }
-    body.innerHTML =
-      '<div class="xw-stats"><div class="xw-stat"><b>' + ordersCache.length + '</b>إجمالي الطلبات</div><div class="xw-stat"><b>' + list.length + '</b>طلبات جديدة</div>' +
-      '<div class="xw-stat"><b>' + fmt(list.reduce((s, o) => s + (Number(o.total) || 0), 0)) + '</b>دج قيد الانتظار</div>' +
-      '<div class="xw-stat"><b>' + list.filter(xwDayFull).length + '</b>عند الحد اليومي</div></div>' +
+    body.innerHTML = list.map((o) => orderCard(o, false)).join("");
       list.map((o) => orderCard(o, false)).join("");
   };
   const tabLog = async () => {
