@@ -3218,11 +3218,35 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   /* the admin room lives at a secret /admin URL (works on Netlify + Firebase with a catch-all rewrite) */
   const adminBase = () => (location.pathname.replace(/\/admin\/?$/, "").replace(/\/+$/, "") || "");
   const atAdminURL = () => /\/admin\/?$/.test(location.pathname) || /(?:^|[?&])admin(?:[=&]|$)/.test(location.search) || /^#admin$/.test(location.hash);
+  /* Did the folder reach the server? sw.js is the witness: it only ever arrives
+     with the rest of the folder, and _redirects is what makes /admin exist at
+     all. Asked once, quietly, and remembered - the answer cannot change while
+     the page is open, and the owner is not waiting on a spinner to see a
+     password box. null means "not asked yet". */
+  let adminRouteOk = null;
+  const askAdminRoute = () => {
+    if (adminRouteOk !== null) return Promise.resolve(adminRouteOk);
+    const base = adminBase();
+    const head = (u) => fetch(u, { method: "HEAD", cache: "no-store" })
+      .then((r) => !!(r && r.ok)).catch(() => false);
+    adminRouteOk = false;
+    return Promise.all([head("sw.js"), head(base + "/sw.js")]).then((g) => {
+      adminRouteOk = g[0] || g[1];
+      return adminRouteOk;
+    });
+  };
   const toAdminURL = () => {
     if (/\/admin\/?$/.test(location.pathname)) return;
     const base = adminBase();
-    try { history.pushState({ admin: 1 }, "", base + "/admin" + location.search + location.hash); return; } catch (e) {}
-    try { history.replaceState({ admin: 1 }, "", (base || "") + "/?admin" + location.hash); } catch (e) {}
+    const write = (path) => {
+      try { history.pushState({ admin: 1 }, "", path); }
+      catch (e) { try { history.replaceState({ admin: 1 }, "", path); } catch (e2) {} }
+    };
+    if (adminRouteOk === true) { write(base + "/admin" + location.search + location.hash); return; }
+    if (adminRouteOk === false) { write((base || "") + "/?admin" + location.hash); return; }
+    /* not asked yet: ask, and use the answer. A slow or failing probe leaves
+       the address exactly where it was, which is a working address. */
+    askAdminRoute().then((ok) => { if (ok) write(base + "/admin" + location.search + location.hash); });
   };
   const offAdminURL = () => {
     if (!/\/admin\/?$/.test(location.pathname)) return;
