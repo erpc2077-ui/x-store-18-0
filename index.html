@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="ar" dir="ltr">
 <head>
   <meta charset="utf-8" />
@@ -898,26 +898,38 @@ body.cart-open .cart-drawer { transform: translateX(0); }
        =================================================================== -->
   <script>
     (function () {
-      var KEY = 'xw-theme';
+      var KEY = 'xw-theme';        /* the visitor's own choice, written only after a tap */
+      var CHOSEN = 'xw-theme-chosen';
       var root = document.documentElement;
       var META_DARK = '#0F0A08', META_LIGHT = '#F8FAFC';
 
+      /* Until the button is tapped, nothing is written down. The store opens in
+         the normal theme; the button is there for whoever wants the dark one, and
+         only that choice is remembered. */
       function read() {
         try {
           var v = localStorage.getItem(KEY);
           if (v === 'dark' || v === 'light') return v;
         } catch (e) { /* private mode: fall through to the default */ }
-        return 'dark';               /* the store ships dark */
+        return 'light';             /* the store opens in the normal theme */
       }
 
-      function apply(t) {
+      function apply(t, remember) {
         root.setAttribute('data-theme', t);
-        try { localStorage.setItem(KEY, t); } catch (e) {}
+        if (remember) {
+          try { localStorage.setItem(KEY, t); localStorage.setItem(CHOSEN, "1"); } catch (e) {}
+        }
         var m = document.querySelector('meta[name="theme-color"]');
         if (m) m.setAttribute('content', t === 'dark' ? META_DARK : META_LIGHT);
       }
 
-      apply(read());
+      /* For the phones that were handed the dark theme before this line existed:
+         nobody had chosen it, the page had simply written it down for them on
+         their first visit. That note is taken back once, and their own tap - if
+         they ever make one - is the only thing that counts from here on. */
+      try { if (!localStorage.getItem(CHOSEN)) localStorage.removeItem(KEY); } catch (e) {}
+
+      apply(read(), false);
 
       /* one delegated listener covers the header button and the mobile menu */
       document.addEventListener('click', function (e) {
@@ -926,15 +938,8 @@ body.cart-open .cart-drawer { transform: translateX(0); }
         var b = t.closest('[data-theme-toggle]');
         if (!b) return;
         e.preventDefault();
-        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
       });
-
-      /* follow the OS only while the visitor has not made a choice */
-      try {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (ev) {
-          if (!localStorage.getItem(KEY)) apply(ev.matches ? 'dark' : 'light');
-        });
-      } catch (e) {}
     })();
   </script>
 
