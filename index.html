@@ -3339,6 +3339,27 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (at) { if (at.dataset.at === "form" && adminTab !== "form") { editing = null; formImgs = []; } if (at.dataset.at !== "form") editing = null; adminTab = at.dataset.at; renderAdmin(); return; }
     if (e.target.closest("#xwExit")) { closeAdmin(); return; }
     if (e.target.closest("#xwRefresh")) { toast("جاري التحديث..."); await loadRemote(); renderAdmin(); return; }
+    const ob = e.target.closest("[data-ob]");
+    if (ob) { await setOrderStatus(ob.dataset.ob, "new"); return; }
+    const od = e.target.closest("[data-od]");
+    if (od) {
+      const o = orderById(od.dataset.od);
+      if (!o) return;
+      /* deleting is not cancelling. It removes the row and nothing else, so
+         the quantity is only handed back if the order was cancelled first,
+         where the cancelling did the handing. That is the rule, and it is
+         said out loud in the question so it is not rediscovered the hard
+         way by a customer who wanted the units back. */
+      if (!confirm("حذف الطلب " + o.id + " نهائياً؟" + (o.status === "cancelled"
+        ? "\nالكمية ديالو رجعات ملي ملغي."
+        : "\n⚠ الطلب ماشي ملغي — الكمية ما ترجعش. بدّلو لـ«ملغي» قبل ما تحذفو."))) return;
+      try {
+        await deleteOrder(o.id);
+        ordersCache = ordersCache.filter((x) => x.id !== o.id);
+        toast("تم حذف الطلب");
+        redrawOrders();
+      } catch (err) { toast("تعذّر الحذف: " + (err.code || err.message)); }
+    }
   });
 
   /* ----- الطلبات: the ones still waiting for you  +  سجل الطلبات: everything you handled ----- */
@@ -3427,6 +3448,112 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     $("#xwLogQ").addEventListener("input", draw);
   };
   const redrawOrders = () => (adminTab === "log" ? tabLog() : tabOrders());
+
+  /* ----- حالة الطلب، والكمية لي ترجع مع الإلغاء -----
+     The card has drawn a status select, a back button and a delete button
+     since long before anything listened to them. An order could not be
+     confirmed, cancelled, shipped or delivered from here. This wires the
+     card, and hands the quantity back when an order is cancelled.
+
+     once, ever, and in the cloud
+     ---------------------------
+     The mark that says "this one already gave it back" sits on the order,
+     not on this phone. Cancel, change your mind, cancel again: the second
+     cancel must not hand back a second time, or three cancels on one order
+     would triple the stock. A second phone, or a cleared localStorage,
+     would otherwise be a free way to do it twice.
+
+     an increment, not a number
+     ------------------------
+     Reading the stock, adding, and writing the result back loses units: two
+     orders cancelled in the same second both read 100, both write 101, and
+     one order quantity disappears. Firestore adds on the server, where the
+     two can be serialised, so both survive.
+
+     one batch, not a loop
+     -------------------
+     A batch commits as one thing or not at all. A loop that hands back two
+     products then fails on the third has already given half of it away with
+     no note that it had. So the batch lands first, and the mark is written
+     after it - if the batch fails, nothing moved.
+
+     no stock field, no restore
+     ------------------------
+     The decrement only touched products carrying a numeric stock; no field
+     means unlimited, and there is nothing to give back to. The restore asks
+     the same question of the same products, so the two agree.
+     It cannot repair the past: an order already marked cancelled had its
+     stock taken and nothing recorded by how much, so cancelling it again
+     restores nothing - and says so rather than pretending. */
+  const orderById = (id) => ordersCache.find((o) => o.id === id);
+  const giveStockBack = async (o) => {
+    if (o.stockBack) return { n: 0, again: true };
+    const add = [];
+    for (const it of (o.items || [])) {
+      const n = Math.floor(Number(it.quantity) || 0);
+      if (!it.productId || !(n > 0)) continue;
+      const p = (window.PRODUCTS || []).find((x) => x.id === it.productId);
+      if (!p || typeof p.stock !== "number") continue;
+      add.push({ p: p, n: n });
+    }
+    if (add.length && db && online && seeded) {
+      const b = db.batch();
+      add.forEach((a) => b.update(db.collection(XW_COL.products).doc(a.p.id), { stock: firebase.firestore.FieldValue.increment(a.n) }));
+      await tmo(b.commit());
+    }
+    add.forEach((a) => { a.p.stock += a.n; });
+    const moved = add.reduce((s, a) => s + a.n, 0);
+    /* the mark goes on the order in memory too, not only in the cloud. Without
+       it, cancelling and changing your mind within one sitting hands the
+       quantity back a second time, because the guard at the top of this
+       function reads this very object. A reload would have covered for it;
+       the case with no reload in it is the case a shopkeeper actually does. */
+    o.stockBack = true;
+    if (!(db && online)) return { n: moved, again: false, unmarked: true };
+    /* the mark write is a second write, and it can fail on its own. If it
+       does, the quantity is back and the cloud does not know - so it is
+       caught here and reported as that, rather than falling into the catch
+       above, which would have said the quantity never came back. */
+    try { await updateOrder(o.id, { stockBack: true }); }
+    catch (e) { return { n: moved, again: false, unmarked: true }; }
+    return { n: moved, again: false, unmarked: false };
+  };
+  const setOrderStatus = async (id, next) => {
+    const o = orderById(id);
+    if (!o) { toast("ما لقيتش هذا الطلب."); return; }
+    const was = o.status || "new";
+    if (was === next) return;
+    /* saying it saved when it did not is the one thing worth spending lines
+       on here: updateOrder keeps its patch in localStorage when the cloud is
+       gone, and silently does nothing if the order is not in that list. A
+       change the owner cannot keep is worse than a refusal. */
+    if (!(db && online)) { toast("ما كاينش اتصال بالقاعدة — ما تحفظتش. عاود التحديث ملي يربط."); redrawOrders(); return; }
+    o.status = next;
+    try { await updateOrder(id, { status: next }); }
+    catch (e) { o.status = was; toast("ما نجّمتش نحفظ الحالة: " + (e && (e.message || e.code) || e)); redrawOrders(); return; }
+    let note = "";
+    if (next === "cancelled" && was !== "cancelled") {
+      try {
+        const g = await giveStockBack(o);
+        note = g.again ? " · الكمية رجعات من قبل" : g.n ? " · رجعت " + g.n + " قطعة للمخزون" : "";
+        /* the one state that is neither of the two clean ones: the units are
+           back, and the cloud was not told. Said plainly, because acting on
+           it wrongly is how stock inflates by one and nobody knows why. */
+        if (g.unmarked && g.n) note += " · ⚠ ما تسجلش الرجوع — ما تعاودش تلغي الطلب";
+      } catch (e) {
+        toast("الحالة ولات ملغي، بصح الكمية ما رجعاتش: " + (e && (e.message || e.code) || e));
+        redrawOrders(); return;
+      }
+    }
+    toast((XW_STATUS[next] || next) + note, next === "cancelled");
+    redrawOrders();
+  };
+  /* the select the card already drew, now with somebody listening */
+  adminEl.addEventListener("change", async (e) => {
+    const s = e.target.closest("select[data-os]");
+    if (!s) return;
+    await setOrderStatus(s.dataset.os, s.value);
+  });
   /* ----- Products list ----- */
   const tabProducts = () => {
     const body = $("#xwBody");
