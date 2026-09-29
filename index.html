@@ -1909,7 +1909,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     <form class="xw-box" id="xwLoginBox" autocomplete="off">
       <button type="button" class="xw-x" data-xclose aria-label="إغلاق">×</button>
       <h3>🔐 غرفة الإدارة</h3>
-      <div class="xw-field"><label for="xwPass">كلمة السر</label><div class="pw-wrap solo"><input type="password" id="xwPass" autocomplete="current-password" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="••••••" /></div><div class="xw-note" style="margin:2px 0 0">ما تكتبه هنا ما يبانش أبداً — نقاط وحدها، بلا زر إظهار.</div></div>
+      <div class="xw-field"><label for="xwPass">كلمة السر</label><div class="pw-wrap solo"><input type="password" id="xwPass" autocomplete="current-password" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="••••••" /></div></div>
       <button type="submit" class="xw-btn wide">دخول</button>
       <div class="xw-lock" id="xwLoginLock" hidden></div>
       <div class="xw-err" id="xwLoginErr"></div>
@@ -3306,7 +3306,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const closeAdmin = () => { adminEl.hidden = true; document.body.style.overflow = ""; adminUnlocked = false; offAdminURL(); };
 
   const renderAdmin = () => {
-    const newCount = ordersCache.filter((o) => o.status === "new").length;
+    const newCount = ordersCache.filter((o) => o.status === "new" && !o.binned).length;
+    const binCount = ordersCache.filter((o) => o.binned).length;
     adminEl.innerHTML =
       '<div class="xw-ah"><div class="xw-ah-in"><h2>' + GEAR_SVG + " غرفة الإدارة</h2><div style=\"display:flex;gap:10px;align-items:center;flex-wrap:wrap\">" +
       '<span class="xw-badge ' + (online || !db ? "" : "off") + '" id="xwConn"></span>' +
@@ -3318,8 +3319,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
-        .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + "</button>").join("") +
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["bin", "🗑️ سلة المهملات"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+        .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
     conn.textContent = online ? "● متصل بقاعدة البيانات" : (db ? "⚠ غير متصل — حفظ محلي فقط" : "⚠ وضع محلي (بدون قاعدة بيانات)");
@@ -3332,31 +3333,56 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, bin: tabBin, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
     if (at) { if (at.dataset.at === "form" && adminTab !== "form") { editing = null; formImgs = []; } if (at.dataset.at !== "form") editing = null; adminTab = at.dataset.at; renderAdmin(); return; }
     if (e.target.closest("#xwExit")) { closeAdmin(); return; }
     if (e.target.closest("#xwRefresh")) { toast("جاري التحديث..."); await loadRemote(); renderAdmin(); return; }
+    const gol = e.target.closest("[data-golog]");
+    if (gol) { adminTab = "log"; renderAdmin(); return; }
     const ob = e.target.closest("[data-ob]");
     if (ob) { await setOrderStatus(ob.dataset.ob, "new"); return; }
+    const or = e.target.closest("[data-or]");
+    if (or) {
+      const o = orderById(or.dataset.or);
+      if (!o) return;
+      try {
+        await updateOrder(o.id, { binned: false });
+        o.binned = false;
+        toast("رجع الطلب لسجل الطلبات", true);
+        redrawOrders();
+      } catch (err) { toast("تعذّر الاسترجاع: " + (err.code || err.message)); }
+      return;
+    }
     const od = e.target.closest("[data-od]");
     if (od) {
       const o = orderById(od.dataset.od);
       if (!o) return;
-      /* deleting is not cancelling. It removes the row and nothing else, so
-         the quantity is only handed back if the order was cancelled first,
-         where the cancelling did the handing. That is the rule, and it is
-         said out loud in the question so it is not rediscovered the hard
-         way by a customer who wanted the units back. */
-      if (!confirm("حذف الطلب " + o.id + " نهائياً؟" + (o.status === "cancelled"
-        ? "\nالكمية ديالو رجعات ملي ملغي."
-        : "\n⚠ الطلب ماشي ملغي — الكمية ما ترجعش. بدّلو لـ«ملغي» قبل ما تحذفو."))) return;
+      /* From the bin there is nothing left but the permanent goodbye.
+         Everywhere else the rule stays: an order only reaches the bin after
+         it was cancelled — the cancellation is what returned the stock, and
+         the bin itself never touches stock. */
+      if (adminTab === "bin") {
+        if (!confirm("حذف الطلب " + o.id + " نهائياً من سلة المهملات؟ ما يرجعلش أبداً.")) return;
+        try {
+          await deleteOrder(o.id);
+          ordersCache = ordersCache.filter((x) => x.id !== o.id);
+          toast("حُذف نهائياً", true);
+          redrawOrders();
+        } catch (err) { toast("تعذّر الحذف: " + (err.code || err.message)); }
+        return;
+      }
+      if (o.status !== "cancelled") {
+        toast("الحذف يكون بعد ما يلغى الطلب — الكمية ترجع للمخزون قبل الحذف.");
+        return;
+      }
+      if (!confirm("ينقل الطلب " + o.id + " إلى سلة المهملات؟ نقدر نحذفو نهائياً من هناك.")) return;
       try {
-        await deleteOrder(o.id);
-        ordersCache = ordersCache.filter((x) => x.id !== o.id);
-        toast("تم حذف الطلب");
+        await updateOrder(o.id, { binned: true });
+        o.binned = true;
+        toast("انتقل إلى سلة المهملات", true);
         redrawOrders();
       } catch (err) { toast("تعذّر الحذف: " + (err.code || err.message)); }
     }
@@ -3372,6 +3398,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const xwDayFull = (o) => xwDayCount(o) >= XW_DAILY_MAX;
   const orderCard = (o, logged) => {
     const c = o.customer || {};
+    const cancelled = o.status === "cancelled";
     const prior = sameDevice(o);
     const chip = prior.length
       ? '<i class="xwr">🔁 نفس الجهاز · ' + (prior.length + 1) + " طلب</i>" + (xwDayFull(o) ? '<i class="xwl">🚫 وصل للحد اليومي</i>' : "")
@@ -3395,25 +3422,29 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-oa"><select data-os="' + esc(o.id) + '">' + Object.keys(XW_STATUS).map((k) => '<option value="' + k + '"' + (o.status === k ? " selected" : "") + ">" + XW_STATUS[k] + "</option>").join("") + "</select>" +
       '<a class="xw-btn ghost sm" href="tel:' + esc(c.phone) + '">📞 اتصال</a>' +
       '<a class="xw-btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/213' + esc(String(c.phone).replace(/^0/, "")) + '">واتساب</a>' +
-      (logged ? '<button class="xw-btn ghost sm" data-ob="' + esc(o.id) + '">↩ رجوع للطلبات</button>' : "") +
-      '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف</button></div></div>';
+      (logged && !cancelled ? '<button class="xw-btn ghost sm" data-ob="' + esc(o.id) + '">↩ رجوع للطلبات</button>' : "") +
+      (cancelled ? '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف</button>' : "") + "</div></div>";
   };
   /* pulls the orders once and refreshes both tab labels */
   const loadOrders = async (body) => {
     try { ordersCache = await getOrders(); }
     catch (e) { body.innerHTML = '<div class="xw-empty">تعذّر تحميل الطلبات: ' + esc(e.code || e.message) + "</div>"; return false; }
-    const news = ordersCache.filter(isNewOrder).length;
+    const news = ordersCache.filter((o) => isNewOrder(o) && !o.binned).length;
+    const handled = ordersCache.filter((o) => !isNewOrder(o) && !o.binned).length;
+    const binned = ordersCache.filter((o) => o.binned).length;
     const tb = $('[data-at="orders"]', adminEl);
     if (tb) tb.innerHTML = "📦 الطلبات" + (news ? "<em>" + news + "</em>" : "");
     const lb = $('[data-at="log"]', adminEl);
-    if (lb) lb.innerHTML = "🗂️ سجل الطلبات" + (ordersCache.length - news ? '<em class="grey">' + (ordersCache.length - news) + "</em>" : "");
+    if (lb) lb.innerHTML = "🗂️ سجل الطلبات" + (handled ? '<em class="grey">' + handled + "</em>" : "");
+    const bb = $('[data-at="bin"]', adminEl);
+    if (bb) bb.innerHTML = "🗑️ سلة المهملات" + (binned ? '<em class="grey">' + binned + "</em>" : "");
     return true;
   };
   const tabOrders = async () => {
     const body = $("#xwBody");
     body.innerHTML = '<div class="xw-empty">جاري تحميل الطلبات...</div>';
     if (!await loadOrders(body)) return;
-    const list = ordersCache.filter(isNewOrder);
+    const list = ordersCache.filter((o) => isNewOrder(o) && !o.binned);
     if (!list.length) {
       body.innerHTML = '<div class="xw-card" style="max-width:560px;margin:0 auto;text-align:center"><div class="xw-empty" style="padding:34px 10px">لا توجد طلبات جديدة.</div>' +
         '<p class="xw-note" style="margin:0 0 18px">بمجرد تغيير حالة أي طلب من «جديد» إلى «مؤكد» (أو أي حالة أخرى) يختفي من هنا وينتقل مباشرة إلى 🗂️ سجل الطلبات.</p>' +
@@ -3427,7 +3458,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const body = $("#xwBody");
     body.innerHTML = '<div class="xw-empty">جاري تحميل السجل...</div>';
     if (!await loadOrders(body)) return;
-    const all = ordersCache.filter((o) => !isNewOrder(o));
+    const all = ordersCache.filter((o) => !isNewOrder(o) && !o.binned);
     if (!all.length) { body.innerHTML = '<div class="xw-empty">السجل فارغ — كل طلب تؤكّده ينتقل تلقائياً إلى هنا.</div>'; return; }
     const cnt = (k) => all.filter((o) => o.status === k).length;
     const rev = all.filter((o) => o.status === "delivered").reduce((s, o) => s + (Number(o.total) || 0), 0);
@@ -3447,7 +3478,41 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     draw();
     $("#xwLogQ").addEventListener("input", draw);
   };
-  const redrawOrders = () => (adminTab === "log" ? tabLog() : tabOrders());
+  const binCard = (o) => {
+    const c = o.customer || {};
+    return '<div class="xw-order done" data-oid="' + esc(o.id) + '">' +
+      '<div class="xw-oh"><b>' + esc(o.id) + "</b><span>" + esc(fmtDate(o.createdAt)) + "</span>" +
+      '<span class="xwc"><i class="xws cancelled">ملغي · في السلة</i></span></div>' +
+      '<div class="xw-og">' +
+      "<div><small>الاسم الكامل</small>" + esc(c.name) + "</div>" +
+      '<div><small>الهاتف</small><span dir="ltr">' + esc(c.phone) + "</span></div>" +
+      "<div><small>الولاية</small>" + esc(c.wilaya) + "</div>" +
+      "<div><small>البلدية / النقطة</small>" + esc(c.commune) + "</div></div>" +
+      '<div class="xw-oi"><div><span>عدد القطع</span><span>' + (o.items || []).reduce((s, i) => s + (Number(i.quantity) || 0), 0) + "</span></div>" +
+      '<div style="font-weight:800;border-top:1px dashed var(--line-2);margin-top:4px;padding-top:6px"><span>المجموع</span><span style="color:#FF6B00">' + fmt(o.total) + " دج</span></div></div>" +
+      '<div class="xw-oa"><button class="xw-btn ghost sm" data-or="' + esc(o.id) + '">↩ استرجاع</button>' +
+      '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف نهائي</button></div></div>';
+  };
+  const tabBin = async () => {
+    const body = $("#xwBody");
+    body.innerHTML = '<div class="xw-empty">جاري تحميل سلة المهملات...</div>';
+    if (!await loadOrders(body)) return;
+    const all = ordersCache.filter((o) => o.binned);
+    if (!all.length) { body.innerHTML = '<div class="xw-empty">سلة المهملات فارغة — الطلبات الملغاة اللي تحذفهم يهبطو هنا.</div>'; return; }
+    body.innerHTML =
+      '<div class="xw-stats"><div class="xw-stat"><b>' + all.length + "</b>طلب في السلة</div>" +
+      '<div class="xw-stat"><b>' + fmt(all.reduce((s, o) => s + (Number(o.total) || 0), 0)) + "</b>دج مجموعها</div></div>" +
+      '<div class="xw-card"><div class="xw-field"><input id="xwBinQ" placeholder="🔍 ابحث في سلة المهملات..."></div><div id="xwBinList"></div></div>';
+    const list = $("#xwBinList");
+    const draw = () => {
+      const q = ($("#xwBinQ").value || "").trim().toLowerCase();
+      const rows = all.filter((o) => { const c = o.customer || {}; return !q || (o.id + " " + c.name + " " + c.phone + " " + c.wilaya + " " + c.commune).toLowerCase().indexOf(q) >= 0; });
+      list.innerHTML = rows.length ? rows.map((o) => binCard(o)).join("") : '<div class="xw-empty">لا نتيجة.</div>';
+    };
+    draw();
+    $("#xwBinQ").addEventListener("input", draw);
+  };
+  const redrawOrders = () => ({ log: tabLog, bin: tabBin }[adminTab] || tabOrders)();
 
   /* ----- حالة الطلب، والكمية لي ترجع مع الإلغاء -----
      The card has drawn a status select, a back button and a delete button
@@ -3545,7 +3610,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         redrawOrders(); return;
       }
     }
-    toast((XW_STATUS[next] || next) + note, next === "cancelled");
+    toast((XW_STATUS[next] || next) + note + (next !== "new" ? " — انتقل إلى سجل الطلبات" : ""), next === "cancelled");
     redrawOrders();
   };
   /* the select the card already drew, now with somebody listening */
