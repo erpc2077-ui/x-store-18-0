@@ -1,7 +1,7 @@
 /* ============================================================
    X STORE — caching service worker
    ------------------------------------------------------------
-   Goal: the 300 KB page is downloaded once, not on every visit,
+   Goal: the page is downloaded once, not on every visit,
    while any update you publish still reaches the customer.
    Rules:
      • HTML  -> network first, cache as backup.
@@ -12,7 +12,7 @@
      • Firebase / Cloudinary -> untouched: they already have their own CDN caching,
      and caching them here would only waste the customer's data.
    ============================================================ */
-const CACHE = "xstore-v4";
+const CACHE = "xstore-v5";
 const SHELL = ["./", "./index.html"];
 self.addEventListener("install", (e) => {
   e.waitUntil(
