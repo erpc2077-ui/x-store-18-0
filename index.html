@@ -205,6 +205,16 @@ b { font-weight: inherit; }
 .mm-logo img { width: 48px; height: 48px; }
 .mm-link { font-family: var(--what-font); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; padding: 14px 8px; color: var(--muted); border-bottom: 1px solid var(--line); transition: color .25s ease, padding-left .25s ease; }
 .mm-link:hover { color: var(--accent); padding-left: 14px; }
+/* p52 - the categories fold away behind a small arrow inside the phone menu, and
+   one tap on it lists every category the shop really has. */
+.mm-cat-row { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+.mm-cat-row .mm-link { flex: 1; border-bottom: 0; }
+.mm-caret { background: none; border: 0; color: var(--muted); font-size: 15px; line-height: 1; padding: 12px 16px; cursor: pointer; }
+.mm-caret:hover { color: var(--accent); }
+.mm-cats { list-style: none; margin: 0; padding: 0; background: var(--fill); border-bottom: 1px solid var(--line); }
+.mm-cats a { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; font-size: 13px; color: var(--muted); }
+.mm-cats a:hover { color: var(--accent); }
+.mm-cats a span { font-family: var(--what-font); font-size: 11px; color: var(--faint); }
 .mm-cta { margin-top: 20px; justify-content: center; }
 .mm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(3px); z-index: 145; opacity: 0; visibility: hidden; transition: all .3s ease; }
 body.menu-open .mobile-menu { transform: translateX(0); }
@@ -317,6 +327,8 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .cat-body h3 { font-family: var(--what-font); font-weight: 800; font-size: 17px; margin-bottom: 8px; }
 .cat-body p { color: var(--muted); font-size: 14px; line-height: 1.7; }
 .cat-count { display: inline-block; margin-top: 12px; font-family: var(--what-font); font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
+/* p56 - the one honest hole in the page: a category with nothing in it yet */
+.no-prod { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px; padding: 40px 20px; border: 1px dashed var(--line-2); border-radius: 20px; background: var(--card); color: var(--muted); font-size: 14px; text-align: center; }
 
 /* ============ Products ============ */
 .products { background: var(--card); }
@@ -411,6 +423,35 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .rev-who span { font-size: 12px; color: var(--faint); }
 .review-cta { text-align: center; margin-top: 44px; }
 
+/* ============ Rating after the purchase (p54) ============ */
+.rate { background: var(--bg); }
+.rate-box { max-width: 900px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 26px; }
+.rate-lead { color: var(--muted); font-size: 15px; line-height: 1.8; margin: 0 0 4px; }
+.rate-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.rate-row .xw-field { flex: 1 1 220px; margin-bottom: 0; }
+.rate-stars { display: inline-flex; gap: 2px; align-items: center; height: 45px; }
+.rate-stars button { background: none; border: 0; padding: 2px; cursor: pointer; font-size: 26px; line-height: 1; color: var(--line-2); transition: color .2s ease, transform .2s ease; }
+.rate-stars button.on { color: #F59E0B; transform: scale(1.08); }
+.rate-err { margin: 12px 0 0; min-height: 22px; font-size: 14px; color: #dc2626; }
+.rate-err:empty { margin: 0; min-height: 0; }
+#rateCount, #rateAvg { color: #FF6B00; }
+
+/* ============ The policies, said out loud (p54) ============ */
+.policies { background: var(--bg-2); }
+.pol-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.pol-card { display: block; text-align: right; cursor: pointer; font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
+.pol-card:hover { transform: translateY(-5px); border-color: #FF6B00; box-shadow: var(--shadow); }
+.pol-card b { display: block; font-size: 15px; margin-bottom: 8px; color: #FF6B00; }
+.pol-card span { font-size: 13px; color: var(--muted); line-height: 1.75; }
+.pol-note { text-align: center; margin-top: 28px; }
+@media (max-width: 900px) { .pol-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 620px) {
+  .pol-grid { grid-template-columns: 1fr; }
+  .rate-box { padding: 20px 16px; }
+  .rate-row { flex-direction: column; align-items: stretch; }
+  .rate-stars { height: auto; justify-content: center; }
+}
+
 /* ============ Social ============ */
 .social { background: var(--bg); }
 .slogan-hl { color: var(--accent); text-shadow: 0 0 18px var(--glow); }
@@ -423,6 +464,9 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .pill:hover { transform: translateY(-3px); }
 .pill.ig:hover { border-color: var(--ig); color: var(--ig); box-shadow: 0 10px 30px -10px rgba(225,48,108,.5); }
 .pill.tt:hover { border-color: var(--tt); color: var(--tt); box-shadow: 0 10px 30px -10px rgba(1,1,1,.4); }
+/* p52 - Facebook came back at the owner's request, so it gets its own pill colour
+   in the light theme here, and its own dark twin in the theme layer below. */
+.pill.fb:hover { border-color: #1877F2; color: #1877F2; box-shadow: 0 10px 30px -10px rgba(24,119,242,.5); }
 
 .gdot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px var(--success); }
 
@@ -614,6 +658,18 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .pimg, .pname { cursor: pointer; }
 .pstock { font-size: 12px; color: var(--success); font-weight: 700; }
 .pstock.low { color: #F59E0B; } .pstock.out { color: #ef4444; }
+/* p50 — نفد المخزون: غلاف رمادي فوق الصورة، والكلمات بالأحمر، والبطاقة ما تفتحش.
+   ما بقى والو باش تشريه، فالبطاقة الميتة ما تدوس عليها والو: لا صورة ولا اسم
+   ولا زر. الأزرار مقفولة أصلاً (dis) — هذا يمنع الكليكي على كلشي. */
+.pcard.out { cursor: default; }
+.pcard.out:hover { transform: none; box-shadow: none; }
+.pcard.out:hover .pimg img { transform: none; }
+.pcard.out .pimg img { filter: grayscale(1); }
+.pcard.out .pimg::after { content: "نفد المخزون"; position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; text-align: center; padding: 0 12px; background: rgba(104,104,116,.70); color: #ef4444; font-family: var(--what-font); font-size: 15px; font-weight: 800; letter-spacing: .01em; text-shadow: 0 1px 0 rgba(255,255,255,.26); }
+.pcard.out .pname { cursor: default; }
+/* نفس المعنى في نتائج البحث: صورة رمادية ورقم أحمر */
+.sr-item .sout { font-family: var(--what-font); font-size: 11px; font-weight: 800; color: #ef4444; font-style: normal; }
+.sr-item.out img { filter: grayscale(1); opacity: .7; }
 .more-wrap { text-align: center; margin: 28px 0 8px; }
 @media (max-width: 440px) { .pcard .pacts .add-btn svg { display: none; } .pcard .pacts { gap: 6px; } }
 .toasts { bottom: 84px; }
@@ -736,6 +792,10 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-oh .xwl { font-style: normal; font-size: 12px; font-weight: 800; padding: 3px 12px; border-radius: 999px; border: 1px solid #ef4444; background: #ef4444; color: #fff; }
 .xw-sum { background: var(--bg-3); border: 1px solid var(--line); border-radius: 16px; padding: 18px; position: sticky; top: 8px; }
 .xw-sum h4 { font-family: var(--what-font); font-size: 16px; margin-bottom: 12px; }
+/* p57 - the bundle strip: appears above the products when a line has a quantity of 2+ */
+.xw-save { display: flex; align-items: flex-start; gap: 8px; margin: -6px 0 12px; padding: 11px 12px; border-radius: 12px; background: linear-gradient(135deg, #FFF3DC, #FFD9A0); color: #452A00; border: 1px solid #FFB454; font-family: var(--what-font); font-weight: 800; font-size: 13.5px; line-height: 1.55; box-shadow: 0 8px 20px -10px rgba(255, 110, 30, .55); }
+.xw-save::before { content: "🎁"; flex: none; font-size: 15px; }
+.xw-tot.off span:last-child { color: #E25822; font-weight: 800; }
 .xw-line { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); align-items: center; }
 .xw-line img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; border: 1px solid var(--line); }
 .xw-line > div { flex: 1; min-width: 0; font-size: 13px; font-weight: 700; }
@@ -836,6 +896,45 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .xw-stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 20px; font-size: 13px; color: var(--muted); }
 .xw-stat b { display: block; font-family: var(--what-font); font-size: 22px; color: var(--ink); }
+/* p51 — الإحصائيات: بطاقات الأرقام، رسم بالأعمدة، والجدول. كل الألوان جاية من
+   متغيرات اللوحة نفسها، فالباقي ديال الموقع ما يتبدلش. */
+.xw-vcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.xw-vcard { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.xw-vcard b { display: block; font-family: var(--what-font); font-size: 26px; line-height: 1.2; color: var(--ink); }
+.xw-vcard > span { font-size: 12px; color: var(--muted); }
+.xw-vchg { display: inline-block; margin-top: 7px; font-family: var(--what-font); font-size: 11px; font-weight: 800; border-radius: 999px; padding: 2px 9px; }
+.xw-vchg.up { background: rgba(34,197,94,.15); color: #15803d; }
+.xw-vchg.down { background: rgba(239,68,68,.15); color: #dc2626; }
+.xw-vchg.flat { background: rgba(100,116,139,.15); color: var(--muted); }
+.xw-vbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+.xw-vnote { font-size: 12px; color: var(--muted); }
+
+    /* p53 - the rows of the block tab: a number on the right, a flag, and the
+       two buttons. The colours are painted here for the light theme and in the
+       theme layer below for the dark one, like every other painted thing. */
+    .xw-brow { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .xw-brow .i { flex: 1; min-width: 150px; }
+    .xw-brow .i b { display: block; font-size: 15px; direction: ltr; text-align: right; letter-spacing: .5px; }
+    .xw-brow .i span { font-size: 12px; color: var(--muted); }
+    .xw-flag { font-size: 11px; font-weight: 800; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line-2); white-space: nowrap; }
+    .xw-flag.hot { color: #dc2626; border-color: rgba(220,38,38,.4); background: rgba(220,38,38,.08); }
+    .xw-flag.warm { color: #b45309; border-color: rgba(180,83,9,.4); background: rgba(180,83,9,.08); }
+    .xw-flag.ok { color: #15803d; border-color: rgba(21,128,61,.4); background: rgba(21,128,61,.08); }
+/* the chart reads left to right, oldest column first, the newest on the right */
+.xw-vchart { display: flex; align-items: flex-end; gap: 3px; height: 150px; padding-top: 12px; direction: ltr; }
+.xw-vcol { flex: 1; min-width: 0; height: 100%; display: flex; align-items: flex-end; position: relative; }
+.xw-vcol i { display: block; width: 100%; border-radius: 6px 6px 3px 3px; background: linear-gradient(180deg, #FF8A3D, #FF4B1F); }
+.xw-vcol u { position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; background: rgba(15,23,42,.55); }
+.xw-vleg { display: flex; gap: 16px; margin-top: 12px; font-size: 11px; color: var(--muted); }
+.xw-vleg .sw { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-left: 5px; vertical-align: -2px; }
+.xw-vleg .sw.v { background: linear-gradient(180deg, #FF8A3D, #FF4B1F); }
+.xw-vleg .sw.u { background: rgba(15,23,42,.55); }
+.xw-vwrap { overflow-x: auto; }
+.xw-vtbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.xw-vtbl th, .xw-vtbl td { padding: 9px 8px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.xw-vtbl th { font-size: 11px; color: var(--muted); font-weight: 700; }
+.xw-vtbl td { font-family: var(--what-font); }
+.xw-vtbl tr.best td { color: var(--accent); font-weight: 800; }
 .xw-order { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
 .xw-order.new { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255,107,0,.1); }
 .xw-oh { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
@@ -982,9 +1081,12 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     .nav-logo-img { width: 40px; height: 40px; }
   }
 
-  /* the logo mark carries the brand here, so the wordmark steps aside */
+  /* the logo mark carries the brand here, so the wordmark steps aside - in the
+     header only. The footer keeps it (p52: the owner reads his shop's name on his
+     phone, and that column has nothing to squeeze past). */
   @media (max-width: 400px) {
     .nav-word { display: none; }
+    .foot-logo .nav-word { display: block; font-size: 21px; letter-spacing: .5px; }
   }
 
   /* ---- 400px and under: keep the fold from being eaten by the hero ---- */
@@ -1307,6 +1409,14 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 
   html[data-theme="dark"] .rev-ava { background: linear-gradient(135deg, #C2410C, #7C2D12); }
   html[data-theme="dark"] .rev-who b { color: #FFEADF; }
+  html[data-theme="dark"] .rate-box { background: rgba(255, 150, 80, .05); border-color: rgba(255, 182, 124, .2); }
+  html[data-theme="dark"] .rate-stars button { color: rgba(255, 182, 124, .25); }
+  html[data-theme="dark"] .rate-stars button.on { color: #FBBF24; }
+  html[data-theme="dark"] .rate-err { color: #fca5a5; }
+  html[data-theme="dark"] #rateCount, html[data-theme="dark"] #rateAvg { color: var(--warm); }
+  html[data-theme="dark"] .pol-card { background: rgba(255, 150, 80, .05); border-color: rgba(255, 182, 124, .2); }
+  html[data-theme="dark"] .pol-card b { color: var(--warm); }
+  html[data-theme="dark"] .pol-card span { color: #C7A28D; }
 
   html[data-theme="dark"] .deals .section-head h2 { color: var(--warm); text-shadow: 0 0 28px rgba(255, 107, 0, .45); }
   html[data-theme="dark"] .marquee { background: rgba(255, 150, 80, .028); border-color: rgba(255, 172, 112, .11); }
@@ -1323,6 +1433,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     color: #E8D2C2;
   }
   html[data-theme="dark"] .pill:hover { background: rgba(255, 150, 80, .12); }
+  html[data-theme="dark"] .pill.fb:hover { border-color: rgba(24,119,242,.7); color: #60a5fa; }
   html[data-theme="dark"] .fs {
     background: rgba(255, 150, 80, .08);
     border-color: rgba(255, 182, 124, .24);
@@ -1373,6 +1484,8 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   html[data-theme="dark"] .xw-choice button { background: rgba(255, 150, 80, .06); color: #E8D2C2; }
   html[data-theme="dark"] .xw-choice button.on { background: rgba(255, 107, 0, .16); border-color: rgba(255, 107, 0, .6); }
   html[data-theme="dark"] .xw-sum { background: #140D09; border-color: rgba(255, 172, 112, .14); }
+  html[data-theme="dark"] .xw-save { background: linear-gradient(135deg, #3B2000, #6B3800); color: #FFE9CB; border-color: rgba(255, 176, 96, .5); box-shadow: 0 10px 24px -12px rgba(255, 130, 40, .5); }
+  html[data-theme="dark"] .xw-tot.off span:last-child { color: #FFB45A; }
   html[data-theme="dark"] .xw-gal-nav { background: rgba(15, 10, 8, .88); border-color: rgba(255, 182, 124, .28); color: #E8D2C2; }
   html[data-theme="dark"] .xw-gal-nav:hover { background: rgba(255, 150, 80, .18); }
   html[data-theme="dark"] .xw-gal-dots i { background: rgba(255, 200, 170, .5); box-shadow: 0 0 0 1px rgba(0, 0, 0, .5); }
@@ -1410,6 +1523,12 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   html[data-theme="dark"] .xw-tab em.grey { background: rgba(255, 150, 80, .16); }
   html[data-theme="dark"] .xw-badge { background: rgba(16, 185, 129, .18); color: #34D399; }
   html[data-theme="dark"] .xw-badge.off { background: rgba(234, 179, 8, .18); color: #FACC15; }
+  html[data-theme="dark"] .xw-vchg.up { background: rgba(34, 197, 94, .18); color: #4ade80; }
+  html[data-theme="dark"] .xw-vchg.down { background: rgba(239, 68, 68, .18); color: #f87171; }
+  html[data-theme="dark"] .xw-flag.hot { color: #f87171; border-color: rgba(248,113,113,.45); background: rgba(248,113,113,.12); }
+  html[data-theme="dark"] .xw-flag.warm { color: #fbbf24; border-color: rgba(251,191,36,.45); background: rgba(251,191,36,.12); }
+  html[data-theme="dark"] .xw-flag.ok { color: #4ade80; border-color: rgba(74,222,128,.45); background: rgba(74,222,128,.12); }
+  html[data-theme="dark"] .xw-vcol u, html[data-theme="dark"] .xw-vleg .sw.u { background: rgba(255, 255, 255, .55); }
   html[data-theme="dark"] .xw-order.new { border-color: rgba(255, 107, 0, .55); box-shadow: 0 0 0 3px rgba(255, 107, 0, .1); }
   html[data-theme="dark"] .xw-order.back { border-color: rgba(16, 185, 129, .5); }
   html[data-theme="dark"] .xw-order.back.new { border-color: rgba(255, 107, 0, .55); }
@@ -1633,7 +1752,8 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     <div class="mm-logo"><img data-logo src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="X Store" /><span class="nav-word">X<b> STORE</b></span></div>
     <a href="#home" class="mm-link">الرئيسية</a>
     <a href="#shop" class="mm-link">المتجر</a>
-    <a href="#categories" class="mm-link">الفئات</a>
+    <div class="mm-cat-row"><a href="#categories" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▸</button></div>
+    <ul class="mm-cats" id="mmCats" hidden></ul>
     <a href="#reviews" class="mm-link">آراء الزبائن</a>
     <div class="mm-lang"><a href="#" data-lang="en">English</a><a href="#" class="active" data-lang="ar">العربية</a></div>
     <a href="#shop" class="cta-btn mm-cta">تسوق الآن</a>
@@ -1723,6 +1843,48 @@ body.cart-open .cart-drawer { transform: translateX(0); }
       <div class="more-wrap" id="moreWrap"></div>
     </section>
 
+    <!-- p59 - ماذا نقدم: أول قسم تحت المنتجات مباشرة -->
+    <section id="categories" class="section cats">
+      <div class="section-head">
+        <h2 data-i18n="whatWeOffer">ماذا نقدم</h2>
+        <p class="faint">اختر فئتك المفضلة وارتقِ بمستوى لعبك</p>
+      </div>
+      <div class="cats-grid" id="catsGrid"></div>
+    </section>
+
+    <!-- p54 - أضف تقييمك بعد الشراء (مع عدد التقييمات): القسم اللي يجي مباشرة بعد ماذا نقدم -->
+    <section id="rate" class="section rate">
+      <div class="section-head">
+        <h2 data-i18n="rateTitle">أضف تقييمك بعد الشراء</h2>
+        <p class="faint">عدد التقييمات: <b id="rateCount">0</b> · متوسط التقييم: <b id="rateAvg">—</b></p>
+      </div>
+      <div class="rate-box" id="rateBox">
+        <div id="rateStep1">
+          <p class="rate-lead">دخّل رقم الهاتف اللي طلبت بيه، ونفتحلك الاستبيان. ولاّ ما طلبتيش من عندنا؟ راسلنا على واتساب.</p>
+          <div class="rate-row">
+            <div class="xw-field"><label>رقم الهاتف</label><input id="ratePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="0555 00 00 00" autocomplete="tel"></div>
+            <button class="btn btn-primary" id="rateGo" type="button">تابع</button>
+          </div>
+        </div>
+        <form id="rateForm" style="display:none">
+          <p class="rate-lead" id="rateWho"></p>
+          <div class="rate-row">
+            <div class="xw-field"><label>المنتج</label><select id="rateProd"></select></div>
+            <div class="rate-stars" id="rateStars">
+              <button type="button" data-n="1" aria-label="نجمة">★</button>
+              <button type="button" data-n="2" aria-label="نجمتان">★</button>
+              <button type="button" data-n="3" aria-label="3 نجوم">★</button>
+              <button type="button" data-n="4" aria-label="4 نجوم">★</button>
+              <button type="button" data-n="5" aria-label="5 نجوم">★</button>
+            </div>
+            <button class="btn btn-primary" id="rateSend" type="submit">أرسل التقييم</button>
+          </div>
+          <div class="xw-field" style="margin-top:14px"><label>رأيك <small>(اختياري)</small></label><textarea id="rateText" maxlength="400" rows="3" placeholder="المنتج، التوصيل، الخدمة… اكتب ما شاء الله."></textarea></div>
+        </form>
+        <p class="rate-err" id="rateErr"></p>
+      </div>
+    </section>
+
     <!-- Hot deals -->
     <section id="products" class="section deals">
       <div class="section-head">
@@ -1734,12 +1896,12 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     <!-- Reviews -->
     <section id="reviews" class="section reviews">
       <div class="section-head">
-        <h2 data-i18n="whatGamersSay">ماذا يقول اللاعبون</h2>
-        <p class="faint">⭐ متجر بتقييم 5 نجوم</p>
+        <h2 data-i18n="whatGamersSay">آراء الزبائن</h2>
+        <p class="faint" id="revStat">⭐ متجر بتقييم 5 نجوم</p>
       </div>
       <div class="rev-grid" id="revGrid"></div>
       <div class="review-cta">
-        <a href="#shop" class="btn btn-primary">أضف تقييمك بعد الشراء</a>
+        <a href="#rate" class="btn btn-primary">أضف تقييمك بعد الشراء</a>
       </div>
     </section>
 
@@ -1750,6 +1912,10 @@ body.cart-open .cart-drawer { transform: translateX(0); }
         <p class="faint">24.5 ألف متابع</p>
       </div>
       <div class="social-pills">
+        <a href="https://www.facebook.com/" class="pill fb" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg>
+          Facebook
+        </a>
         <a href="https://www.instagram.com/xstore_algeria" class="pill ig" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
           @xstore_algeria
@@ -1759,15 +1925,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
           @xstore_dz
         </a>
       </div>
-    </section>
-
-<!-- Categories -->
-    <section id="categories" class="section cats">
-      <div class="section-head">
-        <h2 data-i18n="whatWeOffer">ماذا نقدم</h2>
-        <p class="faint">اختر فئتك المفضلة وارتقِ بمستوى لعبك</p>
-      </div>
-      <div class="cats-grid" id="catsGrid"></div>
     </section>
 
   </main>
@@ -1811,6 +1968,21 @@ body.cart-open .cart-drawer { transform: translateX(0); }
       </div>
     </section>
 
+  <!-- p54 - the last thing on the page: the policies, out in the open -->
+  <section id="policy" class="section policies">
+    <div class="section-head">
+      <h2 data-i18n="polTitle">سياسات المتجر</h2>
+      <p class="faint">اضغط على أي سياسة باش تقراها كاملة</p>
+    </div>
+    <div class="pol-grid">
+      <button class="pol-card" data-pol="shipping"><b>سياسة الشحن والتوصيل</b><span>الأسعار والتوصيل بالدينار الجزائري: إلى المنزل ولا إلى نقطة الاستلام.</span></button>
+      <button class="pol-card" data-pol="returns"><b>سياسة الإرجاع والاستبدال</b><span>كيفاش نرجّع ولا نبدّل المنتج، وكم ياخد وقت.</span></button>
+      <button class="pol-card" data-pol="terms"><b>شروط الاستخدام</b><span>قواعد الطلب والأسعار والبضاعة في X Store.</span></button>
+      <button class="pol-card" data-pol="privacy"><b>سياسة الخصوصية</b><span>شكون يطّلع على معلوماتك، وكيفاش نحفظها.</span></button>
+    </div>
+    <p class="faint pol-note">الدفع عند الاستلام · التوصيل لكل ولايات الوطن · الأسعار بالدينار الجزائري</p>
+  </section>
+
   <!-- Footer -->
   <footer id="footer">
     <div class="foot-line"></div>
@@ -1819,6 +1991,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
         <div class="foot-logo"><img data-logo src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="X Store" /><span class="nav-word">X<b> STORE</b></span></div>
         <p data-i18n="footDesc">معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.</p>
         <div class="foot-social">
+          <a href="https://www.facebook.com/" class="fs fs-fb" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"/></svg></a>
           <a href="https://www.tiktok.com/@xstore_dz" class="fs fs-tt" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.4 2.2 1.8 3.7 4 3.9v3c-1.5 0-2.9-.5-4-1.3v6.6c0 3.4-2.7 5.7-5.9 5.5A5.3 5.3 0 0 1 5.7 13c.6-2.7 3.2-4.6 6.2-4.3v3a2.5 2.5 0 0 0-2.9 2.2c-.2 1.4.8 2.6 2.3 2.7 1.4 0 2.6-1 2.6-2.7V3h2.6Z"/></svg></a>
           <a href="https://www.instagram.com/xstore_algeria" class="fs fs-ig" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
           <a href="https://wa.me/213600000000" class="fs fs-wa" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.4 0-.5s-.6-1.5-.8-2c-.2-.6-.4-.5-.6-.5h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8 14.7 14.7 0 0 0 1.4.5 3.4 3.4 0 0 0 1.6.1 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .2-1.2c-.1-.1-.3-.2-.6-.3Z"/></svg></a>
@@ -1839,6 +2012,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
           <li class="li-phone"><a href="https://wa.me/213600000000" target="_blank" rel="noopener">+213 600 00 00 00</a></li>
           <li class="li-ig"><a href="https://www.instagram.com/xstore_algeria" target="_blank" rel="noopener">Instagram</a></li>
           <li class="li-tt"><a href="https://www.tiktok.com/@xstore_dz" target="_blank" rel="noopener">TikTok</a></li>
+          <li class="li-fb"><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -2045,7 +2219,7 @@ window.REVIEWS = [
       f3: "منتجات أصيلة", f3d: "نحن موزعون معتمدون لجميع ماركات الألعاب الكبرى.",
       f4: "دعم على مدار الساعة", f4d: "فريقنا دائماً هنا لمساعدتك، ليلاً ونهاراً.",
       whatWeOffer: "ماذا نقدم", featured: "المنتجات المميزة",
-      hotDeals: "عروض ساخنة", whatGamersSay: "ماذا يقول اللاعبون",
+      hotDeals: "عروض ساخنة", whatGamersSay: "آراء الزبائن", rateTitle: "أضف تقييمك بعد الشراء", polTitle: "سياسات المتجر",
       footDesc: "معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.",
       shopCol: "المتجر", supportCol: "الدعم", exploreGear: "اكتشف المعدات"
     },
@@ -2060,7 +2234,7 @@ window.REVIEWS = [
       f3: "Authentic Products", f3d: "Authorized distributors for all major gaming brands.",
       f4: "24/7 Support", f4d: "Our team is always here to help, day and night.",
       whatWeOffer: "What we offer", featured: "Featured Products",
-      hotDeals: "Hot Deals", whatGamersSay: "What gamers say",
+      hotDeals: "Hot Deals", whatGamersSay: "What gamers say", rateTitle: "Rate us after your purchase", polTitle: "Store policies",
       footDesc: "Mobile gaming gear in Algeria. Cooling fans, earphones, finger sleeves and chargers — fast delivery, prices in Dinar.",
       shopCol: "Shop", supportCol: "Support", exploreGear: "Discover the gear"
     }
@@ -2114,6 +2288,18 @@ window.REVIEWS = [
   menuClose.addEventListener("click", closeMenu);
   mmOverlay.addEventListener("click", closeMenu);
   $$(".mm-link").forEach((l) => l.addEventListener("click", closeMenu));
+  /* p52 - one tap on the arrow opens every category; the arrow is a sibling of the
+     link on purpose, so the tap that opens it does not also close the menu. */
+  const mmCaret = $("#mmCaret"), mmCats = $("#mmCats");
+  if (mmCaret && mmCats) {
+    mmCaret.addEventListener("click", () => {
+      const open = mmCats.hasAttribute("hidden");
+      if (open) mmCats.removeAttribute("hidden"); else mmCats.setAttribute("hidden", "");
+      mmCaret.textContent = open ? "▾" : "▸";
+      mmCaret.setAttribute("aria-expanded", String(open));
+    });
+    mmCats.addEventListener("click", closeMenu);
+  }
 
   /* ---------- Marquee: duplicate for seamless loop ---------- */
   const track = $("#marqueeTrack");
@@ -2330,8 +2516,8 @@ window.REVIEWS = [
   const xwMiss = () => { let n = 0; try { n = (Number(localStorage.getItem("xw-miss") || 0) + 1); localStorage.setItem("xw-miss", String(n)); } catch (e) {} return n; };
   const xwMissRead = () => { try { return Number(localStorage.getItem("xw-miss") || 0); } catch (e) { return 0; } };
   const xwMissClear = () => { sealOff(); try { localStorage.removeItem("xw-miss"); } catch (e) {} };
-  const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings" };
-  const XW_WILAYAS = [["01","أدرار",1450,870],["02","الشلف",850,520],["03","الأغواط",1000,620],["04","أم البواقي",800,520],["05","باتنة",850,520],["06","بجاية",800,520],["07","بسكرة",1000,620],["08","بشار",1150,720],["09","البليدة",800,520],["10","البويرة",800,520],["11","تمنراست",1650,1070],["12","تبسة",900,520],["13","تلمسان",950,570],["14","تيارت",850,520],["15","تيزي وزو",800,520],["16","الجزائر",600,470],["17","الجلفة",1000,620],["18","جيجل",500,370],["19","سطيف",750,520],["20","سعيدة",850,570],["21","سكيكدة",800,520],["22","سيدي بلعباس",850,520],["23","عنابة",850,520],["24","قالمة",800,520],["25","قسنطينة",800,520],["26","المدية",850,520],["27","مستغانم",850,520],["28","المسيلة",900,570],["29","معسكر",850,520],["30","ورقلة",1000,670],["31","وهران",800,520],["32","البيض",1150,670],["33","إليزي",1500,null],["34","برج بوعريريج",650,520],["35","بومرداس",800,520],["36","الطارف",850,520],["37","تندوف",1400,null],["38","تيسمسيلت",850,520],["39","الوادي",1000,670],["40","خنشلة",850,520],["41","سوق أهراس",800,520],["42","تيبازة",800,520],["43","ميلة",800,520],["44","عين الدفلى",800,520],["45","النعامة",1150,670],["46","عين تموشنت",850,520],["47","غرداية",1000,670],["48","غليزان",850,520],["49","تيميمون",1450,870],["50","برج باجي مختار",1700,null],["51","أولاد جلال",950,620],["52","بني عباس",1200,870],["53","عين صالح",1650,1070],["54","عين قزام",1650,1070],["55","تقرت",1000,670],["56","جانت",1700,null],["57","المغير",1100,null],["58","المنيعة",1050,670]];
+  const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings", visits: "xw_visits", visitsM: "xw_visits_m", blocks: "xw_blocks", pcount: "xw_pcount", reviews: "xw_reviews", rateKeys: "xw_ratingkeys" };
+  const XW_WILAYAS = [["01","أدرار",1450,870],["02","الشلف",850,520],["03","الأغواط",950,620],["04","أم البواقي",800,520],["05","باتنة",850,520],["06","بجاية",800,520],["07","بسكرة",950,620],["08","بشار",1150,720],["09","البليدة",800,520],["10","البويرة",800,520],["11","تمنراست",1650,1070],["12","تبسة",900,520],["13","تلمسان",950,570],["14","تيارت",850,520],["15","تيزي وزو",800,520],["16","الجزائر",600,470],["17","الجلفة",950,620],["18","جيجل",500,370],["19","سطيف",750,520],["20","سعيدة",850,570],["21","سكيكدة",800,520],["22","سيدي بلعباس",850,520],["23","عنابة",850,520],["24","قالمة",800,520],["25","قسنطينة",800,520],["26","المدية",850,520],["27","مستغانم",850,520],["28","المسيلة",900,570],["29","معسكر",850,520],["30","ورقلة",950,600],["31","وهران",800,520],["32","البيض",1150,600],["34","برج بوعريريج",650,520],["35","بومرداس",800,520],["36","الطارف",850,520],["38","تيسمسيلت",850,520],["39","الوادي",950,600],["40","خنشلة",850,520],["41","سوق أهراس",800,520],["42","تيبازة",800,520],["43","ميلة",800,520],["44","عين الدفلى",800,520],["45","النعامة",1150,600],["46","عين تموشنت",850,520],["47","غرداية",950,600],["48","غليزان",850,520],["49","تيميمون",1450,870],["51","أولاد جلال",950,620],["52","بني عباس",1200,870],["53","عين صالح",1650,1070],["54","عين قزام",1650,1070],["55","تقرت",950,600],["57","المغير",1100,null],["58","المنيعة",1050,600]];
 
   const XW_OFFICES = {"10":["البويرة"],"11":["تمنراست"],"12":["تبسة"],"13":["تلمسان"],"14":["تيارت"],"15":["تيزي وزو"],"16":["بئر توتة","براقي","بئر خادم","أولاد فايت","برج الكيفان","رغاية","الكاليتوس","الشراقة"],"17":["الجلفة"],"18":["جيجل","الطاهير"],"19":["سطيف","العلمة"],"20":["سعيدة"],"21":["سكيكدة"],"22":["سيدي بلعباس"],"23":["عنابة","البوني"],"24":["قالمة"],"25":["قسنطينة","المدينة الجديدة علي منجلي","الزواغي"],"26":["المدية"],"27":["مستغانم"],"28":["المسيلة","بوسعادة"],"29":["معسكر"],"30":["ورقلة","حاسي مسعود"],"31":["وهران - مارافال","وهران - المرشد","وهران - كاناستيل"],"32":["البيض"],"34":["برج بوعريريج"],"35":["بومرداس","برج منايل","دلس"],"36":["الطارف"],"38":["تيسمسيلت"],"39":["الوادي"],"40":["خنشلة"],"41":["سوق أهراس"],"42":["تيبازة","القليعة"],"43":["ميلة"],"44":["عين الدفلى"],"45":["المشرية"],"46":["عين تموشنت"],"47":["غرداية"],"48":["غليزان"],"49":["تيميمون"],"51":["أولاد جلال"],"52":["بني عباس"],"53":["عين صالح"],"54":["عين قزام"],"55":["تقرت"],"58":["المنيعة"],"01":["أدرار"],"02":["الشلف","تنس"],"03":["الأغواط"],"04":["أم البواقي","عين البيضاء"],"05":["باتنة"],"06":["بجاية","أقبو","سوق الاثنين"],"07":["بسكرة"],"08":["بشار"],"09":["البليدة","بوفاريك","موزاية"]};
 
@@ -2340,7 +2526,7 @@ window.REVIEWS = [
   const XW_STATUS = { new: "جديد", confirmed: "مؤكد", shipped: "قيد التوصيل", delivered: "مسلّم", cancelled: "ملغي" };
   const XW_INFO_DEFAULTS = {
     brand: "X", phone: "0600000000",
-    instagram: "xstore_algeria", tiktok: "", whatsapp: "",
+    instagram: "xstore_algeria", tiktok: "", whatsapp: "", facebook: "",
     followers: "24.5 ألف متابع",
     heroBadge: "متخصصون في قيمنغ الموبايل · الجزائر",
     heroDesc: "مراوح تبريد، سماعات قيمنغ، قفازات أصابع وشواحن مصممة للاعبي الموبايل. توصيل سريع لكل الجزائر.",
@@ -2349,15 +2535,24 @@ window.REVIEWS = [
     /* the address the shop is published at - change it in the admin room, never here */
     site: "https://x-store-18.netlify.app",
     /* the owner's own pictures for the top of the page; null = the three that shipped */
-    hero: null
+    hero: null,
+    /* p52 - the four policies, writable from the admin room. Empty means "the text
+       that shipped in this page", so a policy can never vanish by accident. */
+    polShipping: "", polReturns: "", polTerms: "", polPrivacy: ""
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
-  const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp"];
+  const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp", "facebook"];
 
   const XW_INFO_FIELDS = [
     ["instagram", "حساب إنستغرام (يظهر دائماً)"],
     ["tiktok", "حساب تيك توك — اتركه فارغاً لإخفاء الرابط"],
+    ["facebook", "صفحة فيسبوك — اتركها فارغة لإخفاء الرابط"],
     ["whatsapp", "واتساب (رقم أو رابط) — اتركه فارغاً لإخفاء الأيقونة"],
+    /* the policies the owner writes in his own words (p52) */
+    ["polShipping", "سياسة الشحن والتوصيل — فارغة = النص الافتراضي", "area"],
+    ["polReturns", "سياسة الإرجاع والاستبدال — فارغة = النص الافتراضي", "area"],
+    ["polTerms", "شروط الاستخدام — فارغة = النص الافتراضي", "area"],
+    ["polPrivacy", "سياسة الخصوصية — فارغة = النص الافتراضي", "area"],
     ["heroBadge", "الشارة أعلى الصفحة الرئيسية"], ["heroDesc", "وصف الصفحة الرئيسية", "area"],
     ["phone", "رقم الهاتف — يتبان في الفوتر ول Requests"],
     ["shopSub", "النص تحت عنوان المنتجات"], ["footDesc", "وصف المتجر في أسفل الموقع", "area"]
@@ -2397,16 +2592,26 @@ window.REVIEWS = [
     const scr = window.screen ? " · " + window.screen.width + "×" + window.screen.height : "";
     return coarse + " · " + os + " · " + br + px + scr;
   })();
-  /* ---------- Anti-spam: three orders a day from one device ----------
-     The device keeps a tiny note of what it already sent us today, so the fourth
-     try never leaves the phone. No server, no cost, and the customer only reads
-     that we will call them to confirm. Clearing the browser resets the note —
-     this stops the lazy spammer, not a determined one. */
+  /* ---------- Anti-spam: three orders in any twenty-four hours ----------
+     p53. It used to be a calendar day: an order at 23:50 and three at 00:10
+     were five orders with nothing in common, and the fifth went through. The
+     note is now a short list of {t, p} - when, and which number - and anything
+     older than a day falls out of it on its own, so the door opens by itself
+     without a clock and without anyone cleaning anything up.
+
+     It is a list, not a counter, because the number is now part of the answer:
+     the module below asks the cloud the same question this asks about the
+     device, and two phones with one number are still three orders. Clearing the
+     browser resets this half - which is why the other half exists. */
   const XW_DAILY_MAX = 3;
-  const XW_DAILY_MSG = "لهذا الرقم عدة طلبات قيد المعالجة اليوم — سنتصل بك لتأكيدها";
-  const xwDayKey = () => { const d = new Date(); return "xw-sent-" + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); };
-  const xwSentToday = () => { try { return Math.max(0, parseInt(localStorage.getItem(xwDayKey()) || "0", 10) || 0); } catch (e) { return 0; } };
-  const xwNoteSent = () => { try { localStorage.setItem(xwDayKey(), String(xwSentToday() + 1)); } catch (e) {} };
+  const XW_BLOCK_MS = 24 * 3600 * 1000;
+  const XW_DAILY_MSG = "وصلت للحد الأقصى للطلبات اليومية. إذا كنت تريد إضافة منتج آخر، تواصل معنا مباشرة عبر الواتساب وسنسعد بخدمتك!";
+  const XW_SENT_LOG = "xw-sent-log";
+  const xwLog = () => { try { const a = JSON.parse(localStorage.getItem(XW_SENT_LOG) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } };
+  const xwLogFresh = () => { const cut = Date.now() - XW_BLOCK_MS; return xwLog().filter((e) => Number(e && e.t) > cut); };
+  const xwSentToday = () => xwLogFresh().length;
+  const xwSentPhone = (phone) => { const p = String(phone == null ? "" : phone).replace(/\D/g, ""); return xwLogFresh().filter((e) => String(e && e.p || "") === p).length; };
+  const xwNoteSent = (phone) => { const a = xwLogFresh(); a.push({ t: Date.now(), p: String(phone == null ? "" : phone).replace(/\D/g, "") }); try { localStorage.setItem(XW_SENT_LOG, JSON.stringify(a.slice(-12))); } catch (e) {} };
   const xwSpamLocked = () => xwSentToday() >= XW_DAILY_MAX;
 
   window.XW_VISITOR = { uid: XW_UID, dev: XW_DEVICE };
@@ -2456,6 +2661,7 @@ window.REVIEWS = [
   const XW_SOCIAL = [
     { v: "instagram", base: "https://www.instagram.com/", links: ".pill.ig, .fs-ig, .li-ig, .slogan-ig", pill: ".pill.ig", text: ".li-ig a", name: "Instagram" },
     { v: "tiktok", base: "https://www.tiktok.com/@", links: ".pill.tt, .fs-tt, .li-tt", pill: ".pill.tt", text: ".li-tt a", name: "TikTok" },
+    { v: "facebook", base: "https://facebook.com/", links: ".pill.fb, .fs-fb, .li-fb, .li-fb a", pill: ".pill.fb", text: ".li-fb a", name: "Facebook" },
     { v: "whatsapp", base: "https://wa.me/", links: ".fs-wa", name: "WhatsApp" },
   ];
   const socialLink = (val, base) => {
@@ -2720,10 +2926,15 @@ window.REVIEWS = [
 
   /* ---------- Products: cards, tabs, deals, categories ---------- */
   const inStock = (p) => p.stock == null || p.stock > 0;
+  /* p56 - a category is a category the moment the owner writes it down.
+     This used to end with a filter that kept only the names some product
+     already used, so a new category stayed invisible exactly until the
+     moment it stopped mattering. The three lists below now show every
+     name, and the shop says so plainly when one of them is still empty. */
   const tabCats = () => {
     const names = window.CATEGORIES.map((c) => c.name);
     window.PRODUCTS.forEach((p) => { if (p.cat && names.indexOf(p.cat) < 0) names.push(p.cat); });
-    return names.filter((n) => window.PRODUCTS.some((p) => p.cat === n));
+    return names.filter((n) => !!n);
   };
   const CART_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>';
 
@@ -2813,7 +3024,14 @@ window.REVIEWS = [
 
   const cardHTML = (p, i) => {
     const out = !inStock(p);
-    const tag = out ? '<div class="ptag-row"><span class="ptag">نفد المخزون</span></div>' : tagsHTML(p);
+    /* the veil in the middle of the photo now carries those two words, so the
+       corner tag is dropped for a dead product: the same sentence three times
+       on one card is noise, not clarity. */
+    const tag = out ? "" : tagsHTML(p);
+    /* an empty product cannot be opened, so it gets no data-open at all — not on
+       the photo, not on the name. The deep link still works for anyone who has
+       the address, and the buttons there stay locked either way. */
+    const open = out ? "" : ' data-open="' + esc(p.id) + '"';
     const lp = listPrice(p), sp = sellPrice(p);
     const old = lp ? '<span class="pold">' + fmt(lp) + " دج</span>" : "";
     /* the countdown sits on the photo, so it never disturbs the price row */
@@ -2822,10 +3040,10 @@ window.REVIEWS = [
     const stock = typeof p.stock === "number" ? '<div class="pstock ' + (p.stock <= 0 ? "out" : p.stock <= 5 ? "low" : "") + '">' + (p.stock <= 0 ? "نفد المخزون" : p.stock <= 5 ? "بقي " + p.stock + " فقط" : "متوفر: " + p.stock) + "</div>" : "";
     const dis = out ? " disabled" : "";
     return (
-      '<article class="pcard" data-reveal="zoom" data-id="' + esc(p.id) + '">' +
-      '<div class="pimg" data-open="' + esc(p.id) + '">' + tmr + tag + imgTag(p.img, 640, [320, 640, 960], ' loading="lazy" alt="' + esc(p.name) + '" width="600" height="600"', { h: 600, sizes: CARD_SIZES, hi: i === 0 }) + "</div>" +
+      '<article class="pcard' + (out ? " out" : "") + '" data-reveal="zoom" data-id="' + esc(p.id) + '">' +
+      '<div class="pimg"' + open + '>' + tmr + tag + imgTag(p.img, 640, [320, 640, 960], ' loading="lazy" alt="' + esc(p.name) + '" width="600" height="600"', { h: 600, sizes: CARD_SIZES, hi: i === 0 }) + "</div>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + "</span>" +
-      '<h3 class="pname" data-open="' + esc(p.id) + '">' + esc(p.name) + "</h3>" + rate + stock +
+      '<h3 class="pname"' + open + '>' + esc(p.name) + "</h3>" + rate + stock +
       '<div class="pbottom"><div class="pprice"><span class="pnow' + (lp ? " fire" : "") + '">' + fmt(sp) + "</span>" + old + "</div>" +
       '<div class="pacts"><button class="add-btn" data-add="' + esc(p.id) + '"' + dis + ">" + CART_SVG + '<span class="txt">أضف للسلة</span></button>' +
       '<button class="buy-btn" data-buy="' + esc(p.id) + '"' + dis + ">اشترِ الآن</button></div></div>" +
@@ -2842,7 +3060,12 @@ window.REVIEWS = [
   };
   const renderProducts = () => {
     const list = shopFilter === "all" ? window.PRODUCTS : window.PRODUCTS.filter((p) => p.cat === shopFilter);
-    prodGrid.innerHTML = list.slice(0, shopLimit).map((p, i) => cardHTML(p, i)).join("");
+    /* p56 - an empty category used to leave a bare grid, which reads as a
+       broken page. It says what is true, and offers the way back. */
+    prodGrid.innerHTML = list.length
+      ? list.slice(0, shopLimit).map((p, i) => cardHTML(p, i)).join("")
+      : '<div class="no-prod"><span>ما كاين حتى منتج في هاد الفئة دروك.</span>' +
+        '<button class="btn btn-ghost" id="allBtn" type="button">شوف كل المنتجات</button></div>';
     const rest = list.length - shopLimit;
     $("#moreWrap").innerHTML = rest > 0 ? '<button class="btn btn-ghost" id="moreBtn">عرض المزيد (' + rest + ")</button>" : "";
   };
@@ -2854,12 +3077,32 @@ window.REVIEWS = [
   const renderCats = () => {
     const base = window.CATEGORIES.slice();
     tabCats().forEach((n) => { if (!base.some((c) => c.name === n)) base.push({ name: n, desc: "", icon: "🏷️" }); });
+    const catN = (name) => window.PRODUCTS.filter((p) => p.cat === name).length;
     $("#catsGrid").innerHTML = base.map((c) =>
-      '<a href="#shop" class="cat-card" data-reveal>' +
+      '<a href="#shop" class="cat-card" data-cat="' + esc(c.name) + '" data-reveal>' +
       '<div class="cat-ico">' + c.icon + "</div>" +
       '<div class="cat-body"><h3>' + esc(c.name) + "</h3><p>" + esc(c.desc) + "</p>" +
-      '<span class="cat-count">' + window.PRODUCTS.filter((p) => p.cat === c.name).length + " منتج</span></div></a>"
+      '<span class="cat-count">' + catN(c.name) + " منتج</span></div></a>"
     ).join("");
+    /* p52 - the same list, one number per category, for the arrow in the phone menu.
+       p56 - and now it does what the press says: this category's products,
+       not the shelf where all the categories sit. */
+    const mm = $("#mmCats");
+    if (mm) mm.innerHTML = base.map((c) =>
+      '<li><a href="#shop" data-cat="' + esc(c.name) + '">' + esc(c.name) + "<span>" +
+      catN(c.name) + "</span></a></li>").join("");
+  };
+
+  /* p56 - one press, one meaning. The tabs, the cards and the phone menu all
+     come through here, so they cannot disagree with each other again: show
+     that category's products, mark its tab, and take the eye there. A name
+     that is not a category is refused rather than half-honoured. */
+  const goCat = (name) => {
+    if (!name || tabCats().indexOf(name) < 0) return false;
+    shopFilter = name; shopLimit = 8;
+    renderTabs(); renderProducts();
+    const el = document.getElementById("shop"); if (el) el.scrollIntoView({ behavior: "smooth" });
+    return true;
   };
   let xwAfterRender = null;   /* the announcement block plugs in here; null until it does */
   const renderStore = () => { renderTabs(); renderProducts(); renderDeals(); renderCats(); if (xwAfterRender) xwAfterRender(); };
@@ -3034,13 +3277,18 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const isOff = st.delivery === "office";
       const left = XW_DAILY_MAX - xwSentToday();
       const guard = xwSpamLocked()
-        ? '<div class="xw-spam"><b>🚫 ' + XW_DAILY_MSG + "</b><span>للتفادي من الطلبات المكررة، نقبل 3 طلبات في اليوم من نفس الجهاز. غادي نتصلو بك على رقمك باش نأكدو الطلبات ديالك.</span></div>"
-        : (left < XW_DAILY_MAX ? '<div class="xw-spam soft">استعملت <b>' + xwSentToday() + "</b> من " + XW_DAILY_MAX + " طلبات اليوم — باقيلك <b>" + left + "</b>.</div>" : "");
+        ? '<div class="xw-spam"><b>🚫 ' + XW_DAILY_MSG + "</b><span>للتفادي من الطلبات المكررة، نقبل " + XW_DAILY_MAX + ' طلبات في 24 ساعة من نفس الجهاز ونفس الرقم. غادي نتصلو بك على رقمك باش نأكدو الطلبات ديالك.</span></div>'
+        : (left < XW_DAILY_MAX ? '<div class="xw-spam soft">استعملت <b>' + xwSentToday() + "</b> من " + XW_DAILY_MAX + " طلبات في آخر 24 ساعة — باقيلك <b>" + left + "</b>.</div>" : "");
       const multi = list.length > 1;
       let communeBlock = "";
       if (multi) {
         communeBlock = '<div class="xw-field"><label>' + (isOff ? "اختر مكتب الاستلام" : "اختر البلدية") + ' <i>*</i></label><select id="fCommune"><option value="">' + (isOff ? "اختر مكتب التوصيل" : "اختر البلدية") + '</option>' + list.map((o) => opt(o, st.cSel)).join("") + "</select></div>";
       }
+      /* p58 - per product: every line of 2 or more earns that product's own
+         bundleOff (typed by the owner in the product form), once per line, capped
+         at the payable total so an order can never go negative. */
+      const bOff = ls.filter((x) => x.it.qty >= 2).reduce((a, x) => a + Math.max(0, Number(x.p.bundleOff) || 0), 0);
+      const saved = Math.min(bOff, sub + (sh || 0));
       box.innerHTML =
         '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><form id="xwChkForm" novalidate><div class="xw-chk"><div>' +
         "<h3>معلومات الطلب</h3>" + guard +
@@ -3055,12 +3303,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<div class="xw-field"><label>ملاحظات <small>(اختياري)</small></label><textarea id="fNotes" style="min-height:64px">' + esc(st.notes) + "</textarea></div>" +
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
+        (saved > 0 ? '<div class="xw-save">وفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك🔥</div>' : "") +
         ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + fmt(sellPrice(x.p) * x.it.qty) + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
-        '<div class="xw-tot big"><span>المجموع</span><b>' + fmt(sub + (sh || 0)) + " دج</b></div>" +
+        (saved > 0 ? '<div class="xw-tot off"><span>خصم العرض</span><span>−' + fmt(saved) + " دج</span></div>" : "") +
+        '<div class="xw-tot big"><span>المجموع</span><b>' + fmt(sub + (sh || 0) - saved) + " دج</b></div>" +
         '<div class="xw-err" id="fErr">' + st.err + "</div>" +
-        '<button class="xw-btn wide" type="submit"' + (st.busy || xwSpamLocked() ? " disabled" : "") + ">" + (st.busy ? "جاري الإرسال..." : xwSpamLocked() ? "⛔ reached the daily limit" : "تأكيد الطلب") + "</button>" +
+        '<button class="xw-btn wide" type="submit"' + (st.busy ? " disabled" : "") + ">" + (st.busy ? "جاري الإرسال..." : xwSpamLocked() ? "⛔ وصلت للحد الأقصى للطلبات" : "تأكيد الطلب") + "</button>" +
         '<p class="xw-note" style="text-align:center">💵 الدفع عند الاستلام</p></div></div></form>';
     };
 
@@ -3094,8 +3344,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     };
     box.onsubmit = async (e) => {
       e.preventDefault(); if (st.busy) return;
-      if (xwSpamLocked()) { st.err = XW_DAILY_MSG; render(); return; }
       collect();
+      /* p53 - the door. One read of the phone number's own row, then the device
+         note. If the cloud cannot answer, the order still goes: a quiet
+         Firestore must never be the reason a customer is turned away. */
+      st.busy = true; render();
+      const gate = await xwBlockGate(st.phone, st.wilaya);
+      st.busy = false;
+      if (gate) { st.err = gate; render(); return; }
       const ls = lines(), r = rates();
       const fail = (m) => { st.err = m; render(); };
       if (st.name.trim().length < 3) return fail("اكتب الاسم الكامل.");
@@ -3106,13 +3362,16 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.");
       for (const x of ls) if (typeof x.p.stock === "number" && x.it.qty > x.p.stock) return fail("الكمية المتوفرة من «" + x.p.name + "» هي " + x.p.stock + " فقط.");
       const sub = ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0), sh = shipping();
+      /* p58 - the same per-product bundle figure the summary shows goes into the order itself */
+      const bOff = ls.filter((x) => x.it.qty >= 2).reduce((a, x) => a + Math.max(0, Number(x.p.bundleOff) || 0), 0);
+      const saved = Math.min(bOff, sub + (sh || 0));
       const order = {
         id: "XS-" + Date.now().toString().slice(-8),
         uid: XW_UID, dev: XW_DEVICE,
         customer: { name: st.name.trim(), phone: st.phone, wilaya: st.wilaya, commune: cv, address: st.delivery === "home" ? st.address.trim() : "استلام من مكتب: " + cv, notes: st.notes.trim() },
         delivery: st.delivery,
         items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, quantity: x.it.qty, price: sellPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
-        subtotal: sub, shipping: sh, total: sub + sh, status: "new", createdAt: new Date().toISOString()
+        subtotal: sub, shipping: sh, discount: saved, total: sub + (sh || 0) - saved, status: "new", createdAt: new Date().toISOString()
       };
       st.busy = true; st.err = ""; render();
       try {
@@ -3123,7 +3382,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         st.err = 'تعذّر إرسال الطلب. <a style="color:#25D366;text-decoration:underline" target="_blank" rel="noopener" href="https://wa.me/' + waNumber() + "?text=" + encodeURIComponent(msg) + '">أرسله عبر واتساب</a>';
         render(); return;
       }
-      xwNoteSent();
+      xwNoteSent(st.phone);
+      xwNotePhoneOrder(st.phone);
       /* update local stock */
       const changed = [];
       ls.forEach((x) => { if (typeof x.p.stock === "number") { x.p.stock = Math.max(0, x.p.stock - x.it.qty); changed.push(x); } });
@@ -3152,13 +3412,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (e.target.closest("#moreBtn")) { shopLimit += 8; renderProducts(); return; }
     const t = e.target.closest("#shopTabs .tab");
     if (t) { shopFilter = t.dataset.tab; shopLimit = 8; renderTabs(); renderProducts(); return; }
-    const cc = e.target.closest(".cat-card");
-    if (cc) {
-      e.preventDefault();
-      const name = cc.querySelector("h3").textContent;
-      if (tabCats().indexOf(name) >= 0) { shopFilter = name; shopLimit = 8; renderTabs(); renderProducts(); }
-      const el = document.getElementById("shop"); if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
+    /* p56 - the cards and the phone menu are one list of names in two
+       shapes, so they are one press: the name on the element is the truth,
+       not whatever the heading happens to render. */
+    const cat = e.target.closest("[data-cat]");
+    if (cat) { e.preventDefault(); goCat(cat.dataset.cat); return; }
+    if (e.target.closest("#allBtn")) { shopFilter = "all"; shopLimit = 8; renderTabs(); renderProducts(); return; }
   });
 
   /* ---------- Admin: login ---------- */
@@ -3319,7 +3578,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["bin", "🗑️ سلة المهملات"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["stats", "📊 الإحصائيات"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -3333,7 +3592,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, bin: tabBin, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, bin: tabBin, block: tabBlock, stats: tabStats, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -3344,6 +3603,16 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (gol) { adminTab = "log"; renderAdmin(); return; }
     const ob = e.target.closest("[data-ob]");
     if (ob) { await setOrderStatus(ob.dataset.ob, "new"); return; }
+    const rta = e.target.closest("[data-rate]");
+    if (rta) {
+      const ro = orderById(rta.dataset.rate);
+      if (!ro) return;
+      rta.disabled = true;
+      const opened = await xwRateOpen(ro);
+      rta.disabled = false;
+      if (opened) toast("خليت هذا الرقم يقدر يقيّم — قولو يدخل من قسم أضف تقييمك بعد الشراء", true);
+      return;
+    }
     const or = e.target.closest("[data-or]");
     if (or) {
       const o = orderById(or.dataset.or);
@@ -3418,11 +3687,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       (o.uid ? '<div><small>رمز الجهاز</small><span dir="ltr">' + esc(o.uid) + "</span></div>" : "") + "</div>" +
       '<div class="xw-oi">' + (o.items || []).map((i) => "<div><span>" + esc(i.name) + " × " + esc(i.quantity) + "</span><span>" + fmt(i.price * i.quantity) + " دج</span></div>").join("") +
       "<div><span>التوصيل</span><span>" + fmt(o.shipping || 0) + " دج</span></div>" +
+      (o.discount > 0 ? "<div><span>خصم العرض</span><span>−" + fmt(o.discount) + " دج</span></div>" : "") +
       '<div style="font-weight:800;border-top:1px dashed var(--line-2);margin-top:4px;padding-top:6px"><span>المجموع</span><span style="color:#FF6B00">' + fmt(o.total) + " دج</span></div></div>" +
       '<div class="xw-oa"><select data-os="' + esc(o.id) + '">' + Object.keys(XW_STATUS).map((k) => '<option value="' + k + '"' + (o.status === k ? " selected" : "") + ">" + XW_STATUS[k] + "</option>").join("") + "</select>" +
       '<a class="xw-btn ghost sm" href="tel:' + esc(c.phone) + '">📞 اتصال</a>' +
       '<a class="xw-btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/213' + esc(String(c.phone).replace(/^0/, "")) + '">واتساب</a>' +
       (logged && !cancelled ? '<button class="xw-btn ghost sm" data-ob="' + esc(o.id) + '">↩ رجوع للطلبات</button>' : "") +
+      (logged && !cancelled ? '<button class="xw-btn ghost sm" data-rate="' + esc(o.id) + '">⭐ اسمح للتقييم</button>' : "") +
       (cancelled ? '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف</button>' : "") + "</div></div>";
   };
   /* pulls the orders once and refreshes both tab labels */
@@ -3513,6 +3784,563 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     $("#xwBinQ").addEventListener("input", draw);
   };
   const redrawOrders = () => ({ log: tabLog, bin: tabBin }[adminTab] || tabOrders)();
+
+  /* p51:VISITS:BEGIN ═════════════════════════════════════════════════════
+     الإحصائيات — كم واحد دخل للمتجر
+     ══════════════════════════════════════════════════════════════════════
+     Where the numbers live
+     --------------------
+     Firestore has no tables and no SQL, so daily_visits is the collection
+     xw_visits and the primary key is the document id itself: the day in
+     Algiers time, 2026-10-02. One row a day, never one row a visit — a
+     thousand visitors cost the same single read as one. Two kinds of row live
+     in there: the day rows, and "total", the running sum, so the admin never
+     has to add up four hundred numbers to answer "how many, ever".
+
+     One request, no read before the write
+     -------------------------------------
+     Counting is a batch of two set(..., merge) calls, each carrying
+     FieldValue.increment(1). The +1 is applied by Firestore itself, inside the
+     row, at write time: a hundred phones arriving in the same second are a
+     hundred requests that each add their own one, and not one of them is lost
+     to the read-then-write race a "how many are we at?" call would cause.
+     This is the exact equivalent of INSERT ... ON CONFLICT (day) DO UPDATE
+     SET visits = visits + 1.
+
+     The unique column
+     -----------------
+     A browser cannot prove who it is, so "unique" means: this browser, this
+     day, counted once. The day is kept in localStorage, so the fifth page of
+     the day does not make a fifth visitor. Clearing the browser makes you a
+     stranger again — that is the honest limit of counting without a login,
+     and it is a limit on the precision, never on the total.
+
+     The rest
+     --------
+     The admin reads the last 90 days in one request and works out every sum,
+     every week, every month and every percentage from those same rows — no
+     second query, no library, no chart service. The answer is kept for a
+     minute, so moving between tabs costs nothing, and a button refreshes it
+     by hand. Nothing here ever waits for the page, and nothing here ever
+     shows an error to a visitor: if the write fails, the day is one visit
+     lighter and the shop does not know or care.
+     ═════════════════════════════════════════════════════════════════════ */
+  const XW_VISIT_KEEP = 400;          /* a day keeps its own row up to here, then it folds into its month */
+  const XW_VISIT_CACHE_MS = 60 * 1000;
+  const XW_VISIT_CACHE = "xw-vstat-v1";
+  const XW_VISIT_SESSION = "xw-visit-session";
+  const XW_VISIT_DAYMARK = "xw-visit-day";
+  const XW_VISIT_CLEANED = "xw-vstat-cleaned";
+  const XW_TZ = "Africa/Algiers";
+  const vPad = (n) => (n < 10 ? "0" + n : String(n));
+  /* "today" in Algiers, not on the phone. At half past midnight Algiers time
+     the phone is already on the next day, and one single day would land in two
+     rows — and every week would lose a day at the seam. */
+  const vDay = (d) => {
+    const t = d || new Date();
+    try { return new Intl.DateTimeFormat("en-CA", { timeZone: XW_TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(t); }
+    catch (e) { return t.getFullYear() + "-" + vPad(t.getMonth() + 1) + "-" + vPad(t.getDate()); }
+  };
+  /* noon UTC as the anchor, so walking days backwards never lands on the wrong
+     side of midnight in whatever timezone the visitor is sitting in */
+  const vAgo = (n, from) => vDay(new Date(Date.parse(String(from || vDay()) + "T12:00:00Z") - n * 86400000));
+  const vMonth = (iso) => String(iso || "").slice(0, 7);
+  const vPrevMonth = (m) => { const y = Number(m.slice(0, 4)), k = Number(m.slice(5, 7)); return k === 1 ? (y - 1) + "-12" : y + "-" + vPad(k - 1); };
+  const vNice = (iso) => { const p = String(iso).split("-"); return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso; };
+  const XW_BOT_UA = /bot\b|bot\/|crawl|spider|slurp|mediapartners|externalhit|applebot|petalbot|duckduck|baiduspider|yandexbot|exabot|ia_archiver|netcraft|semrush|ahrefs|mj12|dotbot|serpstat|adsbot|scrapy|curl\/|wget\/|python-requests|go-http-client|java\/|okhttp|headless|phantomjs|chrome-lighthouse|lighthouse|gtmetrix|pingdom|uptimerobot|dataprovider|archive\.org_bot|feedfetcher/i;
+  const vIsBot = () => {
+    const ua = navigator.userAgent || "";
+    /* A messenger opens the shop inside its own browser, and that user agent
+       carries its name together with Mozilla: a real person. The puff that
+       previews a shared link is the same name with no browser in it, and that
+       one is not a visitor. "externalhit" is the mark those previews all wear. */
+    if (/whatsapp|telegram|externalhit|discordbot|slackbot|twitterbot/i.test(ua) && !/mozilla/i.test(ua)) return true;
+    return XW_BOT_UA.test(ua);
+  };
+
+  /* ---------- the count: one request, in the background, then forgotten ---------- */
+  const countVisit = () => {
+    try {
+      if (!db) return;                                          /* local mode: there is nowhere to count */
+      if (atAdminURL() || adminUnlocked || adminCred) return;    /* the admin room, and the owner, are not traffic */
+      if (vIsBot()) return;
+      const day = vDay();
+      if (sessionStorage.getItem(XW_VISIT_SESSION) === day) return;   /* once per session: a refresh or a second page is still one visit */
+      let uniq;
+      try {
+        if (localStorage.getItem(XW_VISIT_DAYMARK) !== day) { localStorage.setItem(XW_VISIT_DAYMARK, day); uniq = true; }
+        else uniq = false;
+      } catch (e) { uniq = sessionStorage.getItem(XW_VISIT_SESSION) !== day; }   /* a browser that refuses to keep the mark */
+      sessionStorage.setItem(XW_VISIT_SESSION, day);
+      const inc = firebase.firestore.FieldValue.increment(1);
+      const ts = firebase.firestore.ServerValue.TIMESTAMP;
+      const row = { day: day, u: ts, visits: inc };
+      const all = { day: "total", u: ts, visits: inc };
+      if (uniq) { row.unique_visitors = inc; all.unique_visitors = inc; }
+      const b = db.batch();
+      b.set(db.collection(XW_COL.visits).doc(day), row, { merge: true });
+      b.set(db.collection(XW_COL.visits).doc("total"), all, { merge: true });
+      b.commit().catch(() => {});     /* never awaited, never shown: the page does not wait for a number */
+    } catch (e) { /* silent on purpose */ }
+  };
+
+  /* ---------- the read: 90 days, one request, remembered for a minute ---------- */
+  let vCache = null;
+  const vReadStats = async (force) => {
+    if (!db) return null;
+    if (!force) {
+      if (vCache && Date.now() - vCache.t < XW_VISIT_CACHE_MS) return vCache;
+      try { const c = JSON.parse(sessionStorage.getItem(XW_VISIT_CACHE) || "null"); if (c && Date.now() - c.t < XW_VISIT_CACHE_MS) { vCache = c; return c; } } catch (e) {}
+    }
+    /* The range starts at day −89 and is open above, and the "total" row sorts
+       after every date — so it rides along inside this one request instead of
+       costing a second one. */
+    const snap = await tmo(db.collection(XW_COL.visits).orderBy("day").startAt(vAgo(89)).get(), 9000);
+    const days = {};
+    let total = { visits: 0, unique_visitors: 0 };
+    snap.docs.forEach((d) => {
+      const v = d.data() || {};
+      const n = (k) => Math.max(0, Number(v[k]) || 0);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(String(v.day))) days[v.day] = { v: n("visits"), u: n("unique_visitors") };
+      else if (v.day === "total") total = { visits: n("visits"), unique_visitors: n("unique_visitors") };
+    });
+    const st = { t: Date.now(), days: days, total: total, rows: snap.docs.length };
+    vCache = st;
+    try { sessionStorage.setItem(XW_VISIT_CACHE, JSON.stringify(st)); } catch (e) {}
+    return st;
+  };
+
+  /* ---------- the arithmetic, all of it, from those same rows ---------- */
+  const vChg = (now, prev) => {
+    if (!prev) return now ? '<span class="xw-vchg up">↑ جديد</span>' : '<span class="xw-vchg flat">— ما كاينش</span>';
+    const p = Math.round(((now - prev) / prev) * 100);
+    if (!p) return '<span class="xw-vchg flat">→ بلا تغيير</span>';
+    return '<span class="xw-vchg ' + (p > 0 ? "up" : "down") + '">' + (p > 0 ? "↑ +" : "↓ ") + p + "%</span>";
+  };
+  const vCard = (label, u, chg, v) =>
+    '<div class="xw-vcard"><b>' + fmt(u) + "</b><span>" + label + "</span>" + chg +
+    '<div class="xw-vnote" style="margin-top:5px">الزيارات: ' + fmt(v) + "</div></div>";
+
+  const vStatsHTML = (st) => {
+    const days = (st && st.days) || {};
+    const total = (st && st.total) || { visits: 0, unique_visitors: 0 };
+    const row = (n) => days[vAgo(n)] || { v: 0, u: 0 };
+    const sum = (a, b, k) => { let s = 0; for (let i = a; i <= b; i++) s += row(i)[k]; return s; };
+    const mon = vMonth(vDay()), prev = vPrevMonth(mon), prev2 = vPrevMonth(prev);
+    const monSum = (m, k, upto) => Object.keys(days).filter((d) => vMonth(d) === m && (!upto || Number(d.slice(8)) <= upto))
+      .reduce((s, d) => s + (Number(days[d][k]) || 0), 0);
+    const dom = Number(vDay().slice(8));   /* how far into the month we already are */
+    const best = Object.keys(days).reduce((b, d) => (!b || days[d].u > days[b].u ? d : b), "");
+    /* 30 columns: the bar is the visits, the small line inside it the visitors */
+    const chart = [];
+    for (let i = 29; i >= 0; i--) chart.push({ d: vAgo(i), v: row(i).v, u: row(i).u });
+    const max = Math.max.apply(null, chart.map((c) => c.v).concat([1]));
+    const bars = chart.map((c) =>
+      '<div class="xw-vcol" title="' + esc(vNice(c.d)) + " · " + c.v + " زيارة · " + c.u + ' زائر">' +
+      '<i style="height:' + (c.v ? Math.max(4, Math.round((c.v / max) * 100)) : 1) + '%"></i>' +
+      (c.u ? '<u style="bottom:' + Math.max(3, Math.round((c.u / max) * 100)) + '%"></u>' : "") + "</div>").join("");
+    const t14 = [];
+    for (let i = 0; i < 14; i++) t14.push({ d: vAgo(i), v: row(i).v, u: row(i).u });
+    const trs = t14.map((r) =>
+      "<tr" + (r.d === best ? ' class="best"' : "") + "><td>" + esc(vNice(r.d)) + (r.d === vDay() ? " · اليوم" : "") +
+      "</td><td>" + fmt(r.v) + "</td><td>" + fmt(r.u) + "</td></tr>").join("");
+    const secs = Math.max(0, Math.round((Date.now() - (st && st.t ? st.t : Date.now())) / 1000));
+    return (
+      '<div class="xw-vbar"><button class="xw-btn ghost sm" id="xwVRefresh">↻ تحديث الإحصائيات</button>' +
+      '<button class="xw-btn ghost sm" id="xwVClean">🧹 تنظيف الجدول</button>' +
+      '<span class="xw-vnote">آخر قراءة: ' + (secs < 5 ? "الآن" : secs < 90 ? secs + " ثانية" : Math.round(secs / 60) + " دقيقة") +
+      " · الكاش 60 ثانية · " + Object.keys(days).length + " يوم محفوظ</span></div>" +
+      '<div class="xw-vcards">' +
+      vCard("زوار اليوم", row(0).u, vChg(row(0).u, row(1).u), row(0).v) +
+      vCard("زوار أمس", row(1).u, vChg(row(1).u, row(2).u), row(1).v) +
+      vCard("آخر 7 أيام", sum(0, 6, "u"), vChg(sum(0, 6, "u"), sum(7, 13, "u")), sum(0, 6, "v")) +
+      vCard("الأسبوع الماضي", sum(7, 13, "u"), vChg(sum(7, 13, "u"), sum(14, 20, "u")), sum(7, 13, "v")) +
+      vCard("هذا الشهر", monSum(mon, "u"), vChg(monSum(mon, "u"), monSum(prev, "u", dom)), monSum(mon, "v")) +
+      vCard("الشهر الماضي", monSum(prev, "u"), vChg(monSum(prev, "u"), monSum(prev2, "u")), monSum(prev, "v")) +
+      '<div class="xw-vcard"><b>' + fmt(total.unique_visitors) + '</b><span>زوار — الإجمالي الكلي</span>' +
+      '<span class="xw-vchg flat">منذ البداية</span><div class="xw-vnote" style="margin-top:5px">الزيارات: ' + fmt(total.visits) + "</div></div>" +
+      "</div>" +
+      '<div class="xw-card" style="margin-bottom:16px"><h3 style="margin:0 0 4px;font-size:15px">آخر 30 يوماً</h3>' +
+      '<div class="xw-vchart">' + bars + "</div>" +
+      '<div class="xw-vleg"><span><i class="sw v"></i> الزيارات</span><span><i class="sw u"></i> الزوار الفريدون</span></div></div>' +
+      '<div class="xw-card" style="margin-bottom:16px"><b style="font-family:var(--what-font);font-size:15px">🏆 أفضل يوم: ' +
+      (best ? esc(vNice(best)) + " · " + fmt(days[best].u) + " زائر · " + fmt(days[best].v) + " زيارة" : "ما كاين بعد") + "</b></div>" +
+      '<div class="xw-card"><h3 style="margin:0 0 10px;font-size:15px">آخر 14 يوماً</h3><div class="xw-vwrap">' +
+      '<table class="xw-vtbl"><thead><tr><th>التاريخ</th><th>الزيارات</th><th>الزوار الفريدون</th></tr></thead><tbody>' + trs + "</tbody></table></div></div>"
+    );
+  };
+
+  /* ---------- the fold: 400 days become a row a month, so the table stays tiny ---------- */
+  const vCleanupVisits = async (quiet) => {
+    try {
+      if (!db) return 0;
+      const snap = await tmo(db.collection(XW_COL.visits).where("day", "<", vAgo(XW_VISIT_KEEP)).limit(500).get(), 12000);
+      if (snap.empty) { lsSet(XW_VISIT_CLEANED, vMonth(vDay())); return 0; }
+      const months = {};
+      const b = db.batch();
+      snap.docs.forEach((d) => {
+        const v = d.data() || {}, m = vMonth(v.day);
+        if (!/^\d{4}-\d{2}$/.test(m)) { b.delete(d.ref); return; }   /* not a day row: nothing to fold it into */
+        const a = months[m] || (months[m] = { visits: 0, unique_visitors: 0 });
+        a.visits += Math.max(0, Number(v.visits) || 0);
+        a.unique_visitors += Math.max(0, Number(v.unique_visitors) || 0);
+        b.delete(d.ref);
+      });
+      const inc = firebase.firestore.FieldValue.increment;
+      Object.keys(months).forEach((m) => b.set(db.collection(XW_COL.visitsM).doc(m),
+        { month: m, u: firebase.firestore.ServerValue.TIMESTAMP, visits: inc(months[m].visits), unique_visitors: inc(months[m].unique_visitors) },
+        { merge: true }));
+      await tmo(b.commit(), 20000);
+      lsSet(XW_VISIT_CLEANED, vMonth(vDay()));
+      if (!quiet) toast("تم التنظيف: " + snap.size + " يوم اندمجو في صفوفهم الشهرية", true);
+      return snap.size;
+    } catch (e) { if (!quiet) toast("تعذّر التنظيف: " + ((e && (e.code || e.message)) || "")); return 0; }
+  };
+  const vMaybeCleanup = () => {
+    if (!db) return;
+    if (lsGet(XW_VISIT_CLEANED, "") === vMonth(vDay())) return;   /* once a month, and only ever from the admin room */
+    vCleanupVisits(true);
+  };
+
+  /* ---------- the tab itself ---------- */
+  const vPaint = async (force) => {
+    const body = $("#xwBody");
+    if (!body) return;
+    if (!db) { body.innerHTML = '<div class="xw-card"><div class="xw-empty">ما كاينش قاعدة بيانات — الإحصائيات كتحتاج الاتصال بها.</div></div>'; return; }
+    if (!body.dataset.ready) body.innerHTML = '<div class="xw-empty">جاري تحميل الإحصائيات...</div>';
+    let st = null;
+    try { st = await vReadStats(!!force); }
+    catch (err) { body.innerHTML = '<div class="xw-card"><div class="xw-empty">تعذّر قراءة الإحصائيات: ' + esc((err && (err.code || err.message)) || "") + "</div></div>"; return; }
+    body.innerHTML = vStatsHTML(st);
+    body.dataset.ready = "1";
+    const rf = $("#xwVRefresh");
+    if (rf) rf.addEventListener("click", async () => { toast("جاري التحديث..."); body.dataset.ready = ""; await vPaint(true); });
+    const cl = $("#xwVClean");
+    if (cl) cl.addEventListener("click", async () => {
+      if (!confirm("كل يوم أقدم من " + XW_VISIT_KEEP + " يوم يندمج في صف واحد شهري ثم ينحيد. الإجمالي الكلّي ما يضيعش. نكملو؟")) return;
+      const folded = await vCleanupVisits(true);
+      vCache = null;
+      try { sessionStorage.removeItem(XW_VISIT_CACHE); } catch (e) {}
+      body.dataset.ready = "";
+      await vPaint(true);
+      toast(folded ? "ندمجمو " + folded + " يوم في صفوفهم الشهرية" : "ما كاين والو أقدم من " + XW_VISIT_KEEP + " يوم", true);
+    });
+  };
+  const tabStats = async () => { await vPaint(false); vMaybeCleanup(); };
+  /* p51:VISITS:END ══════════════════════════════════════════════════════ */
+
+  /* p53:BLOCK:BEGIN ═════════════════════════════════════════════════════
+     الحظر بعد ثلاثة طلبات في 24 ساعة — بالجهاز وبالرقم تليفون
+     ══════════════════════════════════════════════════════════════════════
+     Two keys, and the one that is not there
+     ----------------------------------------
+     The device is free to know, and the phone number is what the customer
+     typed. The IP address cannot join them: a browser never learns its own
+     address without asking somebody else, and this site has nobody else - no
+     server, no function, no third party. Only Cloud Functions or Netlify
+     Functions could read it, and that is a decision for the owner, not a line
+     of JavaScript.
+
+     Two rows in the cloud, and nobody can read the list
+     ---------------------------------------------------
+       xw_pcount/{hash}   n, at    the number's own count, one more per order
+       xw_blocks/{hash}   until   when it opens again; ok when the owner said yes
+     The document id is a hash of the number, never the number itself, and the
+     rules shipped next to this file refuse any list of either collection: a
+     visitor can read the single row his own number makes and can only ever
+     count his own number up. The admin room never lists them either - it reads
+     the orders it already holds and asks for the handful of rows it needs, one
+     request for all of them.
+
+     A quiet cloud never stops a sale
+     ---------------------------------
+     Every read is wrapped and every write ends in a catch that eats the error.
+     If Firestore is down the order goes through on the device count alone:
+     losing a count is cheaper than losing a customer.
+     ══════════════════════════════════════════════════════════════════════ */
+  const XW_BLOCK_SALT = "xstore18-b0999-allow";
+  /* p55 - one sentence for one wall. The device half and the cloud half used
+     to explain themselves differently; from the customer's side they are the
+     same wall, so they say the same thing - and it is his sentence. */
+  const XW_BLOCK_MSG_CLOUD = XW_DAILY_MSG;
+  const XW_BLOCK_MSG_LOCAL = XW_DAILY_MSG;
+  const xwPhoneKey = (phone) => {
+    const p = String(phone == null ? "" : phone).replace(/\D/g, "");
+    return p.length >= 10 ? xwSha256(XW_BLOCK_SALT + "|" + p).slice(0, 20) : "";
+  };
+  /* one read, and the three answers it can give */
+  const xwCloudBlock = async (phone) => {
+    const k = xwPhoneKey(phone);
+    const out = { key: k, exists: false, until: 0, ok: false };
+    if (!k || !db) return out;
+    try {
+      const d = await tmo(db.collection(XW_COL.blocks).doc(k).get(), 6000);
+      if (!d.exists) return out;
+      const b = d.data() || {};
+      out.exists = true;
+      out.until = Number(b.until) || 0;
+      out.ok = b.ok === 1 || b.ok === true;
+      return out;
+    } catch (e) { return out; }
+  };
+  /* the +1 that makes the number's count real, whichever device sent the order */
+  const xwNotePhoneOrder = (phone) => {
+    const k = xwPhoneKey(phone);
+    if (!k || !db) return Promise.resolve();
+    try { return db.collection(XW_COL.pcount).doc(k).set({ n: FieldValue.increment(1), at: Date.now() }, { merge: true }).catch(() => {}); }
+    catch (e) { return Promise.resolve(); }
+  };
+  /* this device reached the limit: shut the NUMBER too, so the other phone as well */
+  const xwBlockSelf = (phone, wilaya) => {
+    const k = xwPhoneKey(phone);
+    if (!k || !db) return Promise.resolve();
+    try {
+      return db.collection(XW_COL.blocks).doc(k)
+        .set({ until: Date.now() + XW_BLOCK_MS, at: Date.now(), ok: 0, n: xwSentToday(), wilaya: String(wilaya == null ? "" : wilaya) }, { merge: true })
+        .catch(() => {});
+    } catch (e) { return Promise.resolve(); }
+  };
+  /* the one gate. An empty string means the order may go. */
+  const xwBlockGate = async (phone, wilaya) => {
+    const p = String(phone == null ? "" : phone).replace(/\D/g, "");
+    if (!/^(05|06|07)\d{8}$/.test(p)) return "";
+    const c = await xwCloudBlock(p);
+    /* the owner's own button is the last word, even over a date that has not come */
+    if (!c.ok && c.until > Date.now()) return XW_BLOCK_MSG_CLOUD;
+    if (!c.ok && xwSpamLocked()) { await xwBlockSelf(p, wilaya); return XW_BLOCK_MSG_LOCAL; }
+    return "";
+  };
+  /* ---------- the admin room: who ordered a lot, and the button ---------- */
+  const xwBlockHours = (until, now) => Math.max(1, Math.ceil((until - now) / 3600000));
+  const tabBlock = async () => {
+    const body = $("#xwBody");
+    body.innerHTML = '<div class="xw-empty">جاري تحميل الحظر...</div>';
+    if (!await loadOrders(body)) return;
+    const now = Date.now(), cut = now - XW_BLOCK_MS;
+    const by = {};
+    (ordersCache || []).forEach((o) => {
+      const c = o.customer || {};
+      const p = String(c.phone == null ? "" : c.phone).replace(/\D/g, "");
+      if (!/^(05|06|07)\d{8}$/.test(p)) return;
+      const t = Date.parse(o.createdAt || "") || 0;
+      const e = by[p] || (by[p] = { phone: p, n: 0, n24: 0, name: "", wilaya: "", last: 0, total: 0 });
+      e.n++;
+      e.total += Number(o.total) || 0;
+      if (t > e.last) { e.last = t; e.name = String(c.name || ""); e.wilaya = String(c.wilaya || ""); }
+      if (t > cut) e.n24++;
+    });
+    const list = Object.keys(by).map((k) => by[k]).sort((a, b) => (b.n24 - a.n24) || (b.last - a.last));
+    /* one request for every row of state - never a list, and never a read per line */
+    const states = {};
+    if (db && list.length) {
+      try {
+        const refs = list.map((e) => db.collection(XW_COL.blocks).doc(xwPhoneKey(e.phone)));
+        const docs = await tmo(db.getAll.apply(db, refs), 9000);
+        (docs || []).forEach((d) => { if (d && d.exists) states[d.id] = d.data() || {}; });
+      } catch (e) { /* a quiet cloud shows nobody as shut: the orders themselves still stand */ }
+    }
+    const rowOf = (e) => {
+      const b = states[xwPhoneKey(e.phone)] || {};
+      const until = Number(b.until) || 0;
+      const shut = until > now;
+      const heavy = e.n24 >= XW_DAILY_MAX;
+      const flag = shut ? '<span class="xw-flag hot">🚫 محظور ' + xwBlockHours(until, now) + " ساعة</span>"
+        : heavy ? '<span class="xw-flag warm">⚠ ' + e.n24 + " طلبات في 24 ساعة</span>"
+          : '<span class="xw-flag ok">✅ عادي</span>';
+      return '<div class="xw-brow"><div class="i"><b>' + esc(e.phone) + "</b><span>" + esc(e.name || "بلا اسم") +
+        (e.wilaya ? " · " + esc(e.wilaya) : "") + " · " + e.n + " طلب · " + fmt(e.total) + " دج</span></div>" + flag +
+        '<div class="xw-oa">' +
+        (shut || heavy ? '<button class="xw-btn ghost sm" data-allow="' + esc(e.phone) + '">✅ السماح</button>' : "") +
+        (shut ? "" : '<button class="xw-btn ghost sm" data-shut="' + esc(e.phone) + '" data-w="' + esc(e.wilaya) + '">🚫 حظر 24 ساعة</button>') +
+        "</div></div>";
+    };
+    body.innerHTML = '<div class="xw-card"><h3>🚫 الحظر بعد ' + XW_DAILY_MAX + " طلبات في 24 ساعة</h3>" +
+      '<p class="xw-note">الحد يُحسب بالرقم تليفون وبالجهاز. العنوان (IP) ما ينجمش نقراه في موقع بلا سيرفر — الحاجزان هما الرقم والجهاز وحدهم.</p>' +
+      (list.length ? list.map(rowOf).join("") : '<div class="xw-empty">ما كاين حتى طلب.</div>') + "</div>";
+    const write = async (phone, data) => {
+      const k = xwPhoneKey(phone);
+      if (!db || !k) { toast("ما كاينش اتصال بالقاعدة."); return false; }
+      try { await db.collection(XW_COL.blocks).doc(k).set(data, { merge: true }); return true; }
+      catch (e) { toast("تعذّر الحفظ."); return false; }
+    };
+    body.addEventListener("click", async (e) => {
+      const al = e.target.closest("[data-allow]"), sh = e.target.closest("[data-shut]");
+      if (!al && !sh) return;
+      const btn = al || sh;
+      btn.disabled = true;
+      const good = al
+        ? await write(al.dataset.allow, { until: 0, ok: 1, at: now })
+        : await write(sh.dataset.shut, { until: now + XW_BLOCK_MS, at: now, ok: 0, wilaya: sh.dataset.w || "" });
+      if (good) toast(al ? "رُخّص هذا الرقم — يقدر يطلب من جديد." : "حُظر هذا الرقم 24 ساعة.", true);
+      if (good) await tabBlock();
+    });
+  };
+  /* p53:BLOCK:END ══════════════════════════════════════════════════════ */
+
+  /* p54:RATE:BEGIN ════════════════════════════════════════════════════════
+     أضف تقييمك بعد الشراء — والرقم هو المفتاح، لا الاسم
+     ══════════════════════════════════════════════════════════════════════
+     The customer types the number they ordered with. We hash it here, ask
+     Firestore whether that hash has been let in, and only then does the form
+     appear. The visitor never reads xw_orders: no name, no address and no
+     phone of anybody is on the other side of this form. What the owner's
+     button writes from the order card is one row in xw_ratingkeys — "this
+     number may rate". The word itself lands in xw_reviews under hash_product,
+     so a number has one word about each product, and one word only.
+     ══════════════════════════════════════════════════════════════════════ */
+  const XW_RATE_SALT = "xstore18-b0999-rate";
+  const XW_RATE_TTL = 30 * 60 * 1000;
+  const XW_RATE_CACHE = "xw-rev-cache";
+  const XW_RATE_SHOW = 9;
+  const XW_RATE_MAX = 400;
+  const XW_RATE_NO = "ما لقينا حتى طلب سجّلناه بهذا الرقم. تأكّد من الرقم اللي طلبت بيه (نفس رقم الواتساب)، ولا راسلنا على واتساب ونحلّها لك.";
+  const xwRateDigits = (v) => String(v == null ? "" : v).replace(/\D/g, "").slice(0, 10);
+  const xwRateKey = (phone) => {
+    const p = xwRateDigits(phone);
+    return p.length >= 10 ? xwSha256(XW_RATE_SALT + "|" + p).slice(0, 20) : "";
+  };
+  const xwRateId = (phone, pid) => xwRateKey(phone) + "_" + String(pid == null ? "" : pid).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 40);
+  /* may this number rate? one read, and the answer is yes or no */
+  const xwRateAllowed = async (phone) => {
+    const k = xwRateKey(phone);
+    if (!k || !db) return false;
+    try { const d = await tmo(db.collection(XW_COL.rateKeys).doc(k).get(), 6000); return !!d.exists; }
+    catch (e) { return false; }
+  };
+  /* the owner's button: from the order, open the number */
+  const xwRateOpen = async (o) => {
+    const k = xwRateKey((o && o.customer || {}).phone);
+    if (!k) { toast("ما كاينش رقم هاتف في هذا الطلب."); return false; }
+    if (!db) { toast("ما كاينش اتصال بالقاعدة."); return false; }
+    try {
+      await tmo(db.collection(XW_COL.rateKeys).doc(k).set({ at: Date.now(), for: String((o && o.id) || "") }), 9000);
+      return true;
+    } catch (e) { toast("تعذّر الحفظ: " + ((e && e.code) || "خطأ")); return false; }
+  };
+  /* the wall, newest first, remembered on the device for half an hour */
+  const xwRateRead = async (fresh) => {
+    const hit = lsGet(XW_RATE_CACHE, null);
+    const old = hit && Array.isArray(hit.list) ? hit.list : [];
+    if (!fresh && old.length && Number(hit.t) && Date.now() - Number(hit.t) < XW_RATE_TTL) return old;
+    if (!db) return old;
+    try {
+      const snap = await tmo(db.collection(XW_COL.reviews).get(), 9000);
+      const list = (snap.docs || []).map((d) => Object.assign({ id: d.id }, d.data() || {}))
+        .filter((r) => Number(r.n) >= 1 && Number(r.n) <= 5 && !!r.p)
+        .sort((a, b) => (Number(b.at) || 0) - (Number(a.at) || 0));
+      lsSet(XW_RATE_CACHE, { t: Date.now(), list: list });
+      return list;
+    } catch (e) { return old; }
+  };
+  const rvStats = (list) => {
+    let s = 0;
+    for (let i = 0; i < list.length; i++) s += Number(list[i].n) || 0;
+    return { n: list.length, avg: list.length ? s / list.length : 0 };
+  };
+  const rvOne = (v) => (Math.round(Number(v) * 10) / 10).toFixed(1);
+  const rvProd = (id) => { const p = (window.PRODUCTS || []).filter((x) => x && x.id === id)[0]; return p ? p.name : ""; };
+  /* the words that shipped keep standing until a real voice arrives, so the
+     wall is never empty - and the first real word replaces them all */
+  const rvSamples = () => window.REVIEWS.map((r) =>
+    '<article class="rev-card" data-reveal="zoom">' +
+    '<span class="rev-quote">”</span>' +
+    '<div class="rev-stars">' + stars(r.rating) + "</div>" +
+    '<p class="rev-text">' + r.text + "</p>" +
+    '<div class="rev-who"><div class="rev-ava">' + r.name.charAt(0) + "</div>" +
+    "<div><b>" + r.name + '</b><span>مشترٍ موثق</span></div></div>' +
+    "</article>"
+  ).join("");
+  const rvPaint = (list) => {
+    const arr = Array.isArray(list) ? list : [];
+    const st = rvStats(arr);
+    const cnt = $("#rateCount"), avg = $("#rateAvg"), stat = $("#revStat"), grid = $("#revGrid");
+    if (cnt) cnt.textContent = String(st.n);
+    if (avg) avg.textContent = st.n ? rvOne(st.avg) + " من 5" : "—";
+    if (stat) stat.innerHTML = st.n ? stars(st.avg) + " · " + st.n + " تقييم · " + rvOne(st.avg) + " من 5" : "⭐ متجر بتقييم 5 نجوم";
+    if (!grid) return;
+    if (!st.n) { grid.innerHTML = rvSamples(); return; }
+    grid.innerHTML = arr.slice(0, XW_RATE_SHOW).map((r) => {
+      const pn = rvProd(r.p);
+      return '<article class="rev-card" data-reveal="zoom">' +
+        '<span class="rev-quote">”</span>' +
+        '<div class="rev-stars">' + stars(Number(r.n)) + "</div>" +
+        '<p class="rev-text">' + esc(String(r.t || "").trim() || "—") + "</p>" +
+        '<div class="rev-who"><div class="rev-ava">X</div><div><b>زبون X Store</b><span>' +
+        (pn ? esc(pn) + " · " : "") + esc(fmtDate(r.at)) + "</span></div></div>" +
+        "</article>";
+    }).join("");
+  };
+  const rvBoot = () => {
+    const box = $("#rateBox");
+    if (!box) return;
+    const err = $("#rateErr"), sel = $("#rateProd"), starsBox = $("#rateStars");
+    let picked = 0;
+    const gv = (id) => { const el = document.getElementById(id); return el ? String(el.value == null ? "" : el.value) : ""; };
+    const say = (n) => { $$("[data-n]", starsBox).forEach((b) => b.classList.toggle("on", Number(b.dataset.n) <= n)); };
+    /* what can be rated is what is on sale right now */
+    const fill = () => {
+      const cur = sel ? sel.value : "";
+      sel.innerHTML = '<option value="">اختر المنتج…</option>' + (window.PRODUCTS || []).filter(inStock).map((p) =>
+        '<option value="' + esc(p.id) + '">' + esc(p.name) + " — " + fmt(sellPrice(p)) + " دج</option>").join("");
+      if (cur) sel.value = cur;
+    };
+    fill();
+    if (starsBox) starsBox.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-n]");
+      if (!b) return;
+      picked = Number(b.dataset.n) || 0;
+      say(picked);
+    });
+    const ask = async () => {
+      const num = xwRateDigits(gv("ratePhone"));
+      if (num.length < 10) { if (err) err.textContent = "اكتب رقم الهاتف كامل: عشرة أرقام."; return; }
+      const go = $("#rateGo");
+      if (go) go.disabled = true;
+      if (err) err.textContent = "";
+      const yes = await xwRateAllowed(num);
+      if (go) go.disabled = false;
+      if (!yes) { if (err) err.textContent = XW_RATE_NO; return; }
+      box.dataset.phone = num;
+      const one = $("#ratePhone"); if (one) one.value = num;
+      const who = $("#rateWho");
+      if (who) who.textContent = "راك مسجّل بالرقم " + num.slice(0, 4) + "••••" + num.slice(-2) + " — نقر النجوم على المنتج اللي شريتو.";
+      const s1 = $("#rateStep1"), s2 = $("#rateForm");
+      if (s1) s1.style.display = "none";
+      if (s2) s2.style.display = "";
+      fill();
+      const t = document.getElementById("rateText"); if (t) t.focus();
+    };
+    const go = $("#rateGo");
+    if (go) go.addEventListener("click", ask);
+    const phoneIn = $("#ratePhone");
+    if (phoneIn) phoneIn.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); ask(); } });
+    const form = $("#rateForm");
+    if (form) form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const sub = $("#rateSend");
+      if (sub) sub.disabled = true;
+      const pid = gv("rateProd");
+      const txt = gv("rateText").trim().slice(0, XW_RATE_MAX);
+      const num = picked;
+      const id = xwRateId(box.dataset.phone || "", pid);
+      if (!pid) { if (err) err.textContent = "اختر المنتج اللي بغيتي تقيّمو."; if (sub) sub.disabled = false; return; }
+      if (num < 1 || num > 5) { if (err) err.textContent = "نقر النجوم باش تعطي عدد النجوم."; if (sub) sub.disabled = false; return; }
+      if (!id) { if (err) err.textContent = "ما لقينا حتى رقم. عُد من الأول."; if (sub) sub.disabled = false; return; }
+      if (!db) { if (err) err.textContent = "ما كاينش اتصال بالقاعدة. جرّب من بعد شوية، ولا راسلنا على واتساب."; if (sub) sub.disabled = false; return; }
+      try {
+        await tmo(db.collection(XW_COL.reviews).doc(id).set({ n: num, p: pid, t: txt, at: Date.now() }), 9000);
+        const t = document.getElementById("rateText"); if (t) t.value = "";
+        picked = 0; say(0);
+        toast("تسجّل التقييم. شكرا على الكلمة الطيبة", true);
+        rvPaint(await xwRateRead(true));
+      } catch (e2) {
+        if (err) err.textContent = "ما تسجّلش التقييم: " + ((e2 && e2.code) || "خطأ في الاتصال");
+      }
+      if (sub) sub.disabled = false;
+    });
+    xwRateRead().then(rvPaint).catch(() => rvPaint([]));
+  };
+  /* p54:RATE:END ══════════════════════════════════════════════════════════ */
 
   /* ----- حالة الطلب، والكمية لي ترجع مع الإلغاء -----
      The card has drawn a status select, a back button and a delete button
@@ -3817,6 +4645,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field" id="pCatNewWrap" style="display:none"><label>اسم الفئة الجديدة</label><input id="pCatNew"></div></div>' +
       '<div class="xw-row"><div class="xw-field"><label><span id="pPriceLbl">السعر (دج)</span> <i>*</i> <small>(السعر الذي يدفعه الزبون)</small></label><input id="pPrice" type="number" min="0" value="' + (p ? p.price : "") + '"></div>' +
       '<div class="xw-field"><label>الكمية المتوفرة <i>*</i></label><input id="pStock" type="number" min="0" value="' + (p && typeof p.stock === "number" ? p.stock : "") + '" placeholder="مثال: 20"></div></div>' +
+      '<div class="xw-field"><label>خصم العرض (دج) <small>(اختياري — إذا طلب الزبون كمية 2 فأكثر من هذا المنتج، ينقص هذا المبلغ من المجموع الكلي. ضع 0 لإيقاف العرض)</small></label><input id="pBundle" type="number" min="0" step="1" value="' + (p && Number(p.bundleOff) > 0 ? Number(p.bundleOff) : "") + '" placeholder="مثال: 500"></div>' +
       '<div class="xw-field"><label>الوسوم <small>(اختياري — يمكن اختيار أكثر من وسم)</small></label><div class="xw-tags">' +
       XW_TAGS.map((t) => '<label class="xw-tagchk"><input type="checkbox" data-tid="' + t.id + '"' + (initIds.indexOf(t.id) >= 0 ? " checked" : "") + "><span>" + t.label + "</span></label>").join("") +
       '<label class="xw-tagchk"><input type="checkbox" data-tid="__custom"' + (customTags.length ? " checked" : "") + '><span>وسم آخر…</span></label></div>' +
@@ -3959,7 +4788,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const seoTitle = String(($("#pSeoT") || {}).value || "").trim();
       const seoDesc = String(($("#pSeoD") || {}).value || "").trim();
       const seoKeys = String(($("#pSeoK") || {}).value || "").trim();
-      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), bundleOff: Math.max(0, Math.floor(Number(($("#pBundle") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
       if (JSON.stringify(data).length > 900000) return err("حجم الصور كبير جداً، استخدم روابط صور أو صوراً أصغر.");
       const btn = $("#pSave"); btn.disabled = true; err("");
@@ -3976,6 +4805,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           if (!data.seoTitle) delete upd.seoTitle;
           if (!data.seoDesc) delete upd.seoDesc;
           if (!data.seoKeys) delete upd.seoKeys;
+          /* the per-product offer: taken out too when emptied (0 = off) */
+          if (!(data.bundleOff > 0)) delete upd.bundleOff;
           await commitProducts(window.PRODUCTS.map((x) => (x.id === p.id ? upd : x)), upd, null);
           toast("تم حفظ التعديلات", true);
         } else {
@@ -4121,43 +4952,18 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       `<form id="xwSeoForm" onsubmit="return false">`,
       `<div class="xw-card" style="max-width:900px">`,
       `<h3>الظهور في جوجل</h3>`,
-      `<p class="xw-note" style="margin:-6px 0 16px">جوجل يقرا ثلاث حوايج: <b>العنوان</b> و<b>الوصف</b> لي يلقاهم في كل منتج، و<b>هاد الملفين</b> باش يعلم كل المنتجات. ولا حاجة أخرى — ما تحتاجش مفتاح، ولا اشتراك، ولا واجهة. الدومين هو كل شي.</p>`,
+      `<p class="xw-note" style="margin:-6px 0 16px">جوجل يقرا العنوان والوصف لي تكتبهم في خانة جوجل في كل منتج — هادو اللي يظهرون في نتائج البحث. ولا حاجة أخرى — ما تحتاجش مفتاح، ولا اشتراك، ولا واجهة. الدومين هو كل شي.</p>`,
       `<div class="xw-field"><label>دومين الموقع <i>*</i> <small>(بلا / في الأخير)</small></label>`,
       `<input data-si="site" value="${esc(INFO.site || "")}" placeholder="https://mon-magasin.com" spellcheck="false" dir="ltr" style="text-align:left">`,
       `<div class="xw-note" style="margin-top:8px">`,
-      bad ? `<b style="color:#E24A1B">ما كاين حتى دومين. اكتب العنوان الكامل لي راه منشور عليه — بلا مثال.</b>` : `مستعمل في كل الروابط وفي الملفين اللي تحت.`,
+      bad ? `<b style="color:#E24A1B">ما كاين حتى دومين. اكتب العنوان الكامل لي راه منشور عليه — بلا مثال.</b>` : `مستعمل في كل روابط الموقع.`,
       `</div></div>`,
       `<div class="xw-row" style="margin-top:6px">`,
       `<button type="button" class="xw-btn" id="seoSave">حفظ الدومين</button>`,
-      `<button type="button" class="xw-btn ghost" id="seoMap">نزّل sitemap.xml</button>`,
-      `<button type="button" class="xw-btn ghost" id="seoRob">نزّل robots.txt</button>`,
       `</div>`,
       `<div class="xw-note" style="margin-top:10px">${note}</div>`,
       `</div>`,
-      `<div class="xw-card" style="max-width:900px">`,
-      `<h3>وين تحطّ الملفين بالضبط</h3>`,
-      `<div class="xw-note" style="margin:-6px 0 14px;line-height:2.1">`,
-      `1 · نزّل الملفين بالأزرار فوق — راح يلقاهم في مجلد التنزيلات.<br>`,
-      `2 · حطّهم في نفس البلاصة لي فيها <b>index.html</b> — يعني <b>D:\المجهول المجنون\</b> — موش في مجلد فرعي.<br>`,
-      `3 · ارفعهم لـ Netlify مع <b>index.html</b> و<b>sw.js</b> — trio دايما مع بعض.<br>`,
-      `4 · تأكد وصلاتك: افتح <b>دومينك/sitemap.xml</b> و<b>دومينك/robots.txt</b> — لو طلع النص، خبّر.<br>`,
-      `5 · كل ما تزيد ولا تحيّد منتج، عاود نزّل sitemap.xml وارفعه من جديد.`,
-      `</div>`,
-      `<h3 style="margin-top:24px">تثبيت الموقع في Google Search Console</h3>`,
-      `<div class="xw-note" style="margin:-6px 0 0;line-height:2.1">`,
-      `دخل على <b>search.google.com/search-console</b> → <b>الموقع</b> → <b>الإعدادات</b> → <b>تحقّق الملكية</b>.<br>`,
-      `أسهل طريقة: <b>سجل DNS</b> — حطّ سطر TXT يديهم ليك في الاستضافة. ولا تحتاج حتى ملف.<br>`,
-      `الطريقة الثانية: <b>ملف HTML</b> — سميّتو <b>google</b> + أربع حروف + <b>.html</b>، ينزل في نفس البلاصة ديال index.html.<br>`,
-      `<b>مهم:</b> ما كاينش مفتاح ولا اشتراك. الدومين وحدو كافي.`,
-      `</div>`,
-      `<h3 style="margin-top:24px">شنو اللي كيرفع الموقع فعلاً</h3>`,
-      `<div class="xw-note" style="margin:-6px 0 0;line-height:2.1">`,
-      `<b>1.</b> عنوان ووصف كل منتج (خانة جوجل في نموذج المنتج) — هادو هوما اللي كيقراهم الزائر في نتائج البحث.<br>`,
-      `<b>2.</b> سرعة الصفحة والصور — خافيفة بزاف درو، وخلي صورة واحدة كبيرة لكل منتج.<br>`,
-      `<b>3.</b> منتج جديد كل أسبوع، مع السعر والخصم باش يبقى الموقع طري.<br>`,
-      `<b>ملاحظة صريحة:</b> sitemap.xml وحدو ما كيطلعش الموقع في الترتيب. هو غير كيعلم جوجل <i>وين</i> يلاقي. الترتيب يجي من العنوان والوصف، ومن زوارّ كيشريو.`,
-      `</div>`,
-      `</div></form>`,
+      `</form>`,
     ].join("");
     /* read at use time, never cached - the same lesson as the hero tab */
     const box = $("#xwSeoForm");
@@ -4176,8 +4982,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         toast("تّبعت — راه محفوظ", true);
       } catch (e) { toast("ما تّبعتش — تحقّق من الاتصال"); }
     });
-    on("seoMap", () => { if (readSite()) INFO.site = readSite(); saveFile("sitemap.xml", sitemapXML()); });
-    on("seoRob", () => { if (readSite()) INFO.site = readSite(); saveFile("robots.txt", robotsTxt()); });
   };
 
   const tabInfo = () => {
@@ -4308,16 +5112,22 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     }
   };
 
+  const XW_POL_FIELD = { privacy: "polPrivacy", terms: "polTerms", returns: "polReturns", shipping: "polShipping" };
   const openPolicy = (key) => {
     const p = ZR_POLICIES[key]; if (!p) return;
+    /* p52 - the owner's own words beat the text that shipped. They are typed into a
+       textarea, so they are escaped like any other input and a new line becomes a
+       break: a stray < can never leave the modal open. Empty means the original. */
+    const mine = String((INFO[XW_POL_FIELD[key]] || "")).trim();
+    const body = mine ? esc(mine).replace(/\n/g, "<br>") : p.body;
     $("#xwPolicyBox").innerHTML =
       '<button class="xw-x" data-xclose aria-label="إغلاق">×</button>' +
-      "<h3>" + esc(p.title) + '</h3><div class="xw-policy">' + p.body + "</div>" +
+      "<h3>" + esc(p.title) + '</h3><div class="xw-policy">' + body + "</div>" +
       '<button class="xw-btn wide" style="margin-top:18px" data-xclose>إغلاق</button>';
     openModal($("#xwPolicy"));
   };
   document.addEventListener("click", (e) => {
-    const a = e.target.closest(".foot-policy");
+    const a = e.target.closest(".foot-policy, [data-pol]");
     if (a) { e.preventDefault(); openPolicy(a.dataset.pol); }
   });
 
@@ -4571,6 +5381,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     initCloud();
     if (atAdminURL()) loadRemote();
     else refreshIfStale();          /* products stay put for 40 h; a ~100-byte check says if you published */
+    countVisit();                   /* one number, in the background; the page never waits for it */
   });
   if (atAdminURL()) setTimeout(askAdminPass, 260);
   window.addEventListener("popstate", () => { if (atAdminURL()) askAdminPass(); });
@@ -4589,16 +5400,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (id && !$("#xwProduct").classList.contains("open")) openHashedProduct(6);
   });
 
-  /* ---------- Reviews ---------- */
-  $("#revGrid").innerHTML = window.REVIEWS.map((r) =>
-    '<article class="rev-card" data-reveal="zoom">' +
-    '<span class="rev-quote">”</span>' +
-    '<div class="rev-stars">' + stars(r.rating) + "</div>" +
-    '<p class="rev-text">' + r.text + "</p>" +
-    '<div class="rev-who"><div class="rev-ava">' + r.name.charAt(0) + "</div>" +
-    "<div><b>" + r.name + '</b><span>مشترٍ موثق</span></div></div>' +
-    "</article>"
-  ).join("");
+  /* ---------- Reviews ---------- */  /* ---------- Reviews ---------- */
+  /* p54 - the opinions belong to the customers now, not to the shop. Until the
+     first one arrives the words that shipped keep standing, so the wall is
+     never an empty shelf, and the counter above stays at zero. */
+  rvBoot();
 
   /* ---------- Event delegation: add-to-cart ---------- */
   document.addEventListener("click", (e) => {
@@ -4628,10 +5434,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const hits = window.PRODUCTS.filter((p) => (p.name + " " + p.cat).toLowerCase().includes(q)).slice(0, 8);
     if (hits.length === 0) { searchResults.innerHTML = '<div class="sr-none">لا توجد نتائج لـ "' + searchInput.value + '"</div>'; return; }
     hits.forEach((p) => {
+      const out = !inStock(p);
       const item = document.createElement("div");
-      item.className = "sr-item";
-      item.innerHTML = '<img src="' + esc(cld(p.img, 180, 180)) + '" width="120" height="120" loading="lazy" decoding="async" alt=""><div><b>' + esc(p.name) + "</b><span>" + fmt(sellPrice(p)) + ' دج</span></div>';
-      item.addEventListener("click", () => { addToCart(p.id); toast("تمت الإضافة إلى السلة", true); closeSearch(); });
+      item.className = "sr-item" + (out ? " out" : "");
+      item.innerHTML = '<img src="' + esc(cld(p.img, 180, 180)) + '" width="120" height="120" loading="lazy" decoding="async" alt=""><div><b>' + esc(p.name) + "</b><span>" + fmt(sellPrice(p)) + ' دج' + (out ? ' · <i class="sout">نفد المخزون</i>' : "") + "</span></div>";
+      /* a search result is the way to the product, not a second add-to-cart
+         button: picking a name from here meant landing in the basket, which is
+         how the shop lost the click. Open the page, hash and all. */
+      item.addEventListener("click", () => { closeSearch(); openProduct(p.id); });
       searchResults.appendChild(item);
     });
   });
