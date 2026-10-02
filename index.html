@@ -896,18 +896,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
 .xw-stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 20px; font-size: 13px; color: var(--muted); }
 .xw-stat b { display: block; font-family: var(--what-font); font-size: 22px; color: var(--ink); }
-/* p51 — الإحصائيات: بطاقات الأرقام، رسم بالأعمدة، والجدول. كل الألوان جاية من
-   متغيرات اللوحة نفسها، فالباقي ديال الموقع ما يتبدلش. */
-.xw-vcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.xw-vcard { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
-.xw-vcard b { display: block; font-family: var(--what-font); font-size: 26px; line-height: 1.2; color: var(--ink); }
-.xw-vcard > span { font-size: 12px; color: var(--muted); }
-.xw-vchg { display: inline-block; margin-top: 7px; font-family: var(--what-font); font-size: 11px; font-weight: 800; border-radius: 999px; padding: 2px 9px; }
-.xw-vchg.up { background: rgba(34,197,94,.15); color: #15803d; }
-.xw-vchg.down { background: rgba(239,68,68,.15); color: #dc2626; }
-.xw-vchg.flat { background: rgba(100,116,139,.15); color: var(--muted); }
-.xw-vbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
-.xw-vnote { font-size: 12px; color: var(--muted); }
 
     /* p53 - the rows of the block tab: a number on the right, a flag, and the
        two buttons. The colours are painted here for the light theme and in the
@@ -920,21 +908,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     .xw-flag.hot { color: #dc2626; border-color: rgba(220,38,38,.4); background: rgba(220,38,38,.08); }
     .xw-flag.warm { color: #b45309; border-color: rgba(180,83,9,.4); background: rgba(180,83,9,.08); }
     .xw-flag.ok { color: #15803d; border-color: rgba(21,128,61,.4); background: rgba(21,128,61,.08); }
-/* the chart reads left to right, oldest column first, the newest on the right */
-.xw-vchart { display: flex; align-items: flex-end; gap: 3px; height: 150px; padding-top: 12px; direction: ltr; }
-.xw-vcol { flex: 1; min-width: 0; height: 100%; display: flex; align-items: flex-end; position: relative; }
-.xw-vcol i { display: block; width: 100%; border-radius: 6px 6px 3px 3px; background: linear-gradient(180deg, #FF8A3D, #FF4B1F); }
-.xw-vcol u { position: absolute; left: 0; right: 0; height: 2px; border-radius: 2px; background: rgba(15,23,42,.55); }
-.xw-vleg { display: flex; gap: 16px; margin-top: 12px; font-size: 11px; color: var(--muted); }
-.xw-vleg .sw { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-left: 5px; vertical-align: -2px; }
-.xw-vleg .sw.v { background: linear-gradient(180deg, #FF8A3D, #FF4B1F); }
-.xw-vleg .sw.u { background: rgba(15,23,42,.55); }
-.xw-vwrap { overflow-x: auto; }
-.xw-vtbl { width: 100%; border-collapse: collapse; font-size: 13px; }
-.xw-vtbl th, .xw-vtbl td { padding: 9px 8px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
-.xw-vtbl th { font-size: 11px; color: var(--muted); font-weight: 700; }
-.xw-vtbl td { font-family: var(--what-font); }
-.xw-vtbl tr.best td { color: var(--accent); font-weight: 800; }
 .xw-order { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin-bottom: 14px; }
 .xw-order.new { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255,107,0,.1); }
 .xw-oh { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
@@ -1523,12 +1496,9 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   html[data-theme="dark"] .xw-tab em.grey { background: rgba(255, 150, 80, .16); }
   html[data-theme="dark"] .xw-badge { background: rgba(16, 185, 129, .18); color: #34D399; }
   html[data-theme="dark"] .xw-badge.off { background: rgba(234, 179, 8, .18); color: #FACC15; }
-  html[data-theme="dark"] .xw-vchg.up { background: rgba(34, 197, 94, .18); color: #4ade80; }
-  html[data-theme="dark"] .xw-vchg.down { background: rgba(239, 68, 68, .18); color: #f87171; }
   html[data-theme="dark"] .xw-flag.hot { color: #f87171; border-color: rgba(248,113,113,.45); background: rgba(248,113,113,.12); }
   html[data-theme="dark"] .xw-flag.warm { color: #fbbf24; border-color: rgba(251,191,36,.45); background: rgba(251,191,36,.12); }
   html[data-theme="dark"] .xw-flag.ok { color: #4ade80; border-color: rgba(74,222,128,.45); background: rgba(74,222,128,.12); }
-  html[data-theme="dark"] .xw-vcol u, html[data-theme="dark"] .xw-vleg .sw.u { background: rgba(255, 255, 255, .55); }
   html[data-theme="dark"] .xw-order.new { border-color: rgba(255, 107, 0, .55); box-shadow: 0 0 0 3px rgba(255, 107, 0, .1); }
   html[data-theme="dark"] .xw-order.back { border-color: rgba(16, 185, 129, .5); }
   html[data-theme="dark"] .xw-order.back.new { border-color: rgba(255, 107, 0, .55); }
@@ -2516,7 +2486,7 @@ window.REVIEWS = [
   const xwMiss = () => { let n = 0; try { n = (Number(localStorage.getItem("xw-miss") || 0) + 1); localStorage.setItem("xw-miss", String(n)); } catch (e) {} return n; };
   const xwMissRead = () => { try { return Number(localStorage.getItem("xw-miss") || 0); } catch (e) { return 0; } };
   const xwMissClear = () => { sealOff(); try { localStorage.removeItem("xw-miss"); } catch (e) {} };
-  const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings", visits: "xw_visits", visitsM: "xw_visits_m", blocks: "xw_blocks", pcount: "xw_pcount", reviews: "xw_reviews", rateKeys: "xw_ratingkeys" };
+  const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings", blocks: "xw_blocks", pcount: "xw_pcount", reviews: "xw_reviews", rateKeys: "xw_ratingkeys" };
   const XW_WILAYAS = [["01","أدرار",1450,870],["02","الشلف",850,520],["03","الأغواط",950,620],["04","أم البواقي",800,520],["05","باتنة",850,520],["06","بجاية",800,520],["07","بسكرة",950,620],["08","بشار",1150,720],["09","البليدة",800,520],["10","البويرة",800,520],["11","تمنراست",1650,1070],["12","تبسة",900,520],["13","تلمسان",950,570],["14","تيارت",850,520],["15","تيزي وزو",800,520],["16","الجزائر",600,470],["17","الجلفة",950,620],["18","جيجل",500,370],["19","سطيف",750,520],["20","سعيدة",850,570],["21","سكيكدة",800,520],["22","سيدي بلعباس",850,520],["23","عنابة",850,520],["24","قالمة",800,520],["25","قسنطينة",800,520],["26","المدية",850,520],["27","مستغانم",850,520],["28","المسيلة",900,570],["29","معسكر",850,520],["30","ورقلة",950,600],["31","وهران",800,520],["32","البيض",1150,600],["34","برج بوعريريج",650,520],["35","بومرداس",800,520],["36","الطارف",850,520],["38","تيسمسيلت",850,520],["39","الوادي",950,600],["40","خنشلة",850,520],["41","سوق أهراس",800,520],["42","تيبازة",800,520],["43","ميلة",800,520],["44","عين الدفلى",800,520],["45","النعامة",1150,600],["46","عين تموشنت",850,520],["47","غرداية",950,600],["48","غليزان",850,520],["49","تيميمون",1450,870],["51","أولاد جلال",950,620],["52","بني عباس",1200,870],["53","عين صالح",1650,1070],["54","عين قزام",1650,1070],["55","تقرت",950,600],["57","المغير",1100,null],["58","المنيعة",1050,600]];
 
   const XW_OFFICES = {"10":["البويرة"],"11":["تمنراست"],"12":["تبسة"],"13":["تلمسان"],"14":["تيارت"],"15":["تيزي وزو"],"16":["بئر توتة","براقي","بئر خادم","أولاد فايت","برج الكيفان","رغاية","الكاليتوس","الشراقة"],"17":["الجلفة"],"18":["جيجل","الطاهير"],"19":["سطيف","العلمة"],"20":["سعيدة"],"21":["سكيكدة"],"22":["سيدي بلعباس"],"23":["عنابة","البوني"],"24":["قالمة"],"25":["قسنطينة","المدينة الجديدة علي منجلي","الزواغي"],"26":["المدية"],"27":["مستغانم"],"28":["المسيلة","بوسعادة"],"29":["معسكر"],"30":["ورقلة","حاسي مسعود"],"31":["وهران - مارافال","وهران - المرشد","وهران - كاناستيل"],"32":["البيض"],"34":["برج بوعريريج"],"35":["بومرداس","برج منايل","دلس"],"36":["الطارف"],"38":["تيسمسيلت"],"39":["الوادي"],"40":["خنشلة"],"41":["سوق أهراس"],"42":["تيبازة","القليعة"],"43":["ميلة"],"44":["عين الدفلى"],"45":["المشرية"],"46":["عين تموشنت"],"47":["غرداية"],"48":["غليزان"],"49":["تيميمون"],"51":["أولاد جلال"],"52":["بني عباس"],"53":["عين صالح"],"54":["عين قزام"],"55":["تقرت"],"58":["المنيعة"],"01":["أدرار"],"02":["الشلف","تنس"],"03":["الأغواط"],"04":["أم البواقي","عين البيضاء"],"05":["باتنة"],"06":["بجاية","أقبو","سوق الاثنين"],"07":["بسكرة"],"08":["بشار"],"09":["البليدة","بوفاريك","موزاية"]};
@@ -2614,7 +2584,7 @@ window.REVIEWS = [
   const xwNoteSent = (phone) => { const a = xwLogFresh(); a.push({ t: Date.now(), p: String(phone == null ? "" : phone).replace(/\D/g, "") }); try { localStorage.setItem(XW_SENT_LOG, JSON.stringify(a.slice(-12))); } catch (e) {} };
   const xwSpamLocked = () => xwSentToday() >= XW_DAILY_MAX;
 
-  window.XW_VISITOR = { uid: XW_UID, dev: XW_DEVICE };
+
 
 
   let db = null, online = false, seeded = false, cloudEmpty = false;
@@ -3578,7 +3548,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["stats", "📊 الإحصائيات"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -3592,7 +3562,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, bin: tabBin, block: tabBlock, stats: tabStats, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -3784,250 +3754,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     $("#xwBinQ").addEventListener("input", draw);
   };
   const redrawOrders = () => ({ log: tabLog, bin: tabBin }[adminTab] || tabOrders)();
-
-  /* p51:VISITS:BEGIN ═════════════════════════════════════════════════════
-     الإحصائيات — كم واحد دخل للمتجر
-     ══════════════════════════════════════════════════════════════════════
-     Where the numbers live
-     --------------------
-     Firestore has no tables and no SQL, so daily_visits is the collection
-     xw_visits and the primary key is the document id itself: the day in
-     Algiers time, 2026-10-02. One row a day, never one row a visit — a
-     thousand visitors cost the same single read as one. Two kinds of row live
-     in there: the day rows, and "total", the running sum, so the admin never
-     has to add up four hundred numbers to answer "how many, ever".
-
-     One request, no read before the write
-     -------------------------------------
-     Counting is a batch of two set(..., merge) calls, each carrying
-     FieldValue.increment(1). The +1 is applied by Firestore itself, inside the
-     row, at write time: a hundred phones arriving in the same second are a
-     hundred requests that each add their own one, and not one of them is lost
-     to the read-then-write race a "how many are we at?" call would cause.
-     This is the exact equivalent of INSERT ... ON CONFLICT (day) DO UPDATE
-     SET visits = visits + 1.
-
-     The unique column
-     -----------------
-     A browser cannot prove who it is, so "unique" means: this browser, this
-     day, counted once. The day is kept in localStorage, so the fifth page of
-     the day does not make a fifth visitor. Clearing the browser makes you a
-     stranger again — that is the honest limit of counting without a login,
-     and it is a limit on the precision, never on the total.
-
-     The rest
-     --------
-     The admin reads the last 90 days in one request and works out every sum,
-     every week, every month and every percentage from those same rows — no
-     second query, no library, no chart service. The answer is kept for a
-     minute, so moving between tabs costs nothing, and a button refreshes it
-     by hand. Nothing here ever waits for the page, and nothing here ever
-     shows an error to a visitor: if the write fails, the day is one visit
-     lighter and the shop does not know or care.
-     ═════════════════════════════════════════════════════════════════════ */
-  const XW_VISIT_KEEP = 400;          /* a day keeps its own row up to here, then it folds into its month */
-  const XW_VISIT_CACHE_MS = 60 * 1000;
-  const XW_VISIT_CACHE = "xw-vstat-v1";
-  const XW_VISIT_SESSION = "xw-visit-session";
-  const XW_VISIT_DAYMARK = "xw-visit-day";
-  const XW_VISIT_CLEANED = "xw-vstat-cleaned";
-  const XW_TZ = "Africa/Algiers";
-  const vPad = (n) => (n < 10 ? "0" + n : String(n));
-  /* "today" in Algiers, not on the phone. At half past midnight Algiers time
-     the phone is already on the next day, and one single day would land in two
-     rows — and every week would lose a day at the seam. */
-  const vDay = (d) => {
-    const t = d || new Date();
-    try { return new Intl.DateTimeFormat("en-CA", { timeZone: XW_TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(t); }
-    catch (e) { return t.getFullYear() + "-" + vPad(t.getMonth() + 1) + "-" + vPad(t.getDate()); }
-  };
-  /* noon UTC as the anchor, so walking days backwards never lands on the wrong
-     side of midnight in whatever timezone the visitor is sitting in */
-  const vAgo = (n, from) => vDay(new Date(Date.parse(String(from || vDay()) + "T12:00:00Z") - n * 86400000));
-  const vMonth = (iso) => String(iso || "").slice(0, 7);
-  const vPrevMonth = (m) => { const y = Number(m.slice(0, 4)), k = Number(m.slice(5, 7)); return k === 1 ? (y - 1) + "-12" : y + "-" + vPad(k - 1); };
-  const vNice = (iso) => { const p = String(iso).split("-"); return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : iso; };
-  const XW_BOT_UA = /bot\b|bot\/|crawl|spider|slurp|mediapartners|externalhit|applebot|petalbot|duckduck|baiduspider|yandexbot|exabot|ia_archiver|netcraft|semrush|ahrefs|mj12|dotbot|serpstat|adsbot|scrapy|curl\/|wget\/|python-requests|go-http-client|java\/|okhttp|headless|phantomjs|chrome-lighthouse|lighthouse|gtmetrix|pingdom|uptimerobot|dataprovider|archive\.org_bot|feedfetcher/i;
-  const vIsBot = () => {
-    const ua = navigator.userAgent || "";
-    /* A messenger opens the shop inside its own browser, and that user agent
-       carries its name together with Mozilla: a real person. The puff that
-       previews a shared link is the same name with no browser in it, and that
-       one is not a visitor. "externalhit" is the mark those previews all wear. */
-    if (/whatsapp|telegram|externalhit|discordbot|slackbot|twitterbot/i.test(ua) && !/mozilla/i.test(ua)) return true;
-    return XW_BOT_UA.test(ua);
-  };
-
-  /* ---------- the count: one request, in the background, then forgotten ---------- */
-  const countVisit = () => {
-    try {
-      if (!db) return;                                          /* local mode: there is nowhere to count */
-      if (atAdminURL() || adminUnlocked || adminCred) return;    /* the admin room, and the owner, are not traffic */
-      if (vIsBot()) return;
-      const day = vDay();
-      if (sessionStorage.getItem(XW_VISIT_SESSION) === day) return;   /* once per session: a refresh or a second page is still one visit */
-      let uniq;
-      try {
-        if (localStorage.getItem(XW_VISIT_DAYMARK) !== day) { localStorage.setItem(XW_VISIT_DAYMARK, day); uniq = true; }
-        else uniq = false;
-      } catch (e) { uniq = sessionStorage.getItem(XW_VISIT_SESSION) !== day; }   /* a browser that refuses to keep the mark */
-      sessionStorage.setItem(XW_VISIT_SESSION, day);
-      const inc = firebase.firestore.FieldValue.increment(1);
-      const ts = firebase.firestore.ServerValue.TIMESTAMP;
-      const row = { day: day, u: ts, visits: inc };
-      const all = { day: "total", u: ts, visits: inc };
-      if (uniq) { row.unique_visitors = inc; all.unique_visitors = inc; }
-      const b = db.batch();
-      b.set(db.collection(XW_COL.visits).doc(day), row, { merge: true });
-      b.set(db.collection(XW_COL.visits).doc("total"), all, { merge: true });
-      b.commit().catch(() => {});     /* never awaited, never shown: the page does not wait for a number */
-    } catch (e) { /* silent on purpose */ }
-  };
-
-  /* ---------- the read: 90 days, one request, remembered for a minute ---------- */
-  let vCache = null;
-  const vReadStats = async (force) => {
-    if (!db) return null;
-    if (!force) {
-      if (vCache && Date.now() - vCache.t < XW_VISIT_CACHE_MS) return vCache;
-      try { const c = JSON.parse(sessionStorage.getItem(XW_VISIT_CACHE) || "null"); if (c && Date.now() - c.t < XW_VISIT_CACHE_MS) { vCache = c; return c; } } catch (e) {}
-    }
-    /* The range starts at day −89 and is open above, and the "total" row sorts
-       after every date — so it rides along inside this one request instead of
-       costing a second one. */
-    const snap = await tmo(db.collection(XW_COL.visits).orderBy("day").startAt(vAgo(89)).get(), 9000);
-    const days = {};
-    let total = { visits: 0, unique_visitors: 0 };
-    snap.docs.forEach((d) => {
-      const v = d.data() || {};
-      const n = (k) => Math.max(0, Number(v[k]) || 0);
-      if (/^\d{4}-\d{2}-\d{2}$/.test(String(v.day))) days[v.day] = { v: n("visits"), u: n("unique_visitors") };
-      else if (v.day === "total") total = { visits: n("visits"), unique_visitors: n("unique_visitors") };
-    });
-    const st = { t: Date.now(), days: days, total: total, rows: snap.docs.length };
-    vCache = st;
-    try { sessionStorage.setItem(XW_VISIT_CACHE, JSON.stringify(st)); } catch (e) {}
-    return st;
-  };
-
-  /* ---------- the arithmetic, all of it, from those same rows ---------- */
-  const vChg = (now, prev) => {
-    if (!prev) return now ? '<span class="xw-vchg up">↑ جديد</span>' : '<span class="xw-vchg flat">— ما كاينش</span>';
-    const p = Math.round(((now - prev) / prev) * 100);
-    if (!p) return '<span class="xw-vchg flat">→ بلا تغيير</span>';
-    return '<span class="xw-vchg ' + (p > 0 ? "up" : "down") + '">' + (p > 0 ? "↑ +" : "↓ ") + p + "%</span>";
-  };
-  const vCard = (label, u, chg, v) =>
-    '<div class="xw-vcard"><b>' + fmt(u) + "</b><span>" + label + "</span>" + chg +
-    '<div class="xw-vnote" style="margin-top:5px">الزيارات: ' + fmt(v) + "</div></div>";
-
-  const vStatsHTML = (st) => {
-    const days = (st && st.days) || {};
-    const total = (st && st.total) || { visits: 0, unique_visitors: 0 };
-    const row = (n) => days[vAgo(n)] || { v: 0, u: 0 };
-    const sum = (a, b, k) => { let s = 0; for (let i = a; i <= b; i++) s += row(i)[k]; return s; };
-    const mon = vMonth(vDay()), prev = vPrevMonth(mon), prev2 = vPrevMonth(prev);
-    const monSum = (m, k, upto) => Object.keys(days).filter((d) => vMonth(d) === m && (!upto || Number(d.slice(8)) <= upto))
-      .reduce((s, d) => s + (Number(days[d][k]) || 0), 0);
-    const dom = Number(vDay().slice(8));   /* how far into the month we already are */
-    const best = Object.keys(days).reduce((b, d) => (!b || days[d].u > days[b].u ? d : b), "");
-    /* 30 columns: the bar is the visits, the small line inside it the visitors */
-    const chart = [];
-    for (let i = 29; i >= 0; i--) chart.push({ d: vAgo(i), v: row(i).v, u: row(i).u });
-    const max = Math.max.apply(null, chart.map((c) => c.v).concat([1]));
-    const bars = chart.map((c) =>
-      '<div class="xw-vcol" title="' + esc(vNice(c.d)) + " · " + c.v + " زيارة · " + c.u + ' زائر">' +
-      '<i style="height:' + (c.v ? Math.max(4, Math.round((c.v / max) * 100)) : 1) + '%"></i>' +
-      (c.u ? '<u style="bottom:' + Math.max(3, Math.round((c.u / max) * 100)) + '%"></u>' : "") + "</div>").join("");
-    const t14 = [];
-    for (let i = 0; i < 14; i++) t14.push({ d: vAgo(i), v: row(i).v, u: row(i).u });
-    const trs = t14.map((r) =>
-      "<tr" + (r.d === best ? ' class="best"' : "") + "><td>" + esc(vNice(r.d)) + (r.d === vDay() ? " · اليوم" : "") +
-      "</td><td>" + fmt(r.v) + "</td><td>" + fmt(r.u) + "</td></tr>").join("");
-    const secs = Math.max(0, Math.round((Date.now() - (st && st.t ? st.t : Date.now())) / 1000));
-    return (
-      '<div class="xw-vbar"><button class="xw-btn ghost sm" id="xwVRefresh">↻ تحديث الإحصائيات</button>' +
-      '<button class="xw-btn ghost sm" id="xwVClean">🧹 تنظيف الجدول</button>' +
-      '<span class="xw-vnote">آخر قراءة: ' + (secs < 5 ? "الآن" : secs < 90 ? secs + " ثانية" : Math.round(secs / 60) + " دقيقة") +
-      " · الكاش 60 ثانية · " + Object.keys(days).length + " يوم محفوظ</span></div>" +
-      '<div class="xw-vcards">' +
-      vCard("زوار اليوم", row(0).u, vChg(row(0).u, row(1).u), row(0).v) +
-      vCard("زوار أمس", row(1).u, vChg(row(1).u, row(2).u), row(1).v) +
-      vCard("آخر 7 أيام", sum(0, 6, "u"), vChg(sum(0, 6, "u"), sum(7, 13, "u")), sum(0, 6, "v")) +
-      vCard("الأسبوع الماضي", sum(7, 13, "u"), vChg(sum(7, 13, "u"), sum(14, 20, "u")), sum(7, 13, "v")) +
-      vCard("هذا الشهر", monSum(mon, "u"), vChg(monSum(mon, "u"), monSum(prev, "u", dom)), monSum(mon, "v")) +
-      vCard("الشهر الماضي", monSum(prev, "u"), vChg(monSum(prev, "u"), monSum(prev2, "u")), monSum(prev, "v")) +
-      '<div class="xw-vcard"><b>' + fmt(total.unique_visitors) + '</b><span>زوار — الإجمالي الكلي</span>' +
-      '<span class="xw-vchg flat">منذ البداية</span><div class="xw-vnote" style="margin-top:5px">الزيارات: ' + fmt(total.visits) + "</div></div>" +
-      "</div>" +
-      '<div class="xw-card" style="margin-bottom:16px"><h3 style="margin:0 0 4px;font-size:15px">آخر 30 يوماً</h3>' +
-      '<div class="xw-vchart">' + bars + "</div>" +
-      '<div class="xw-vleg"><span><i class="sw v"></i> الزيارات</span><span><i class="sw u"></i> الزوار الفريدون</span></div></div>' +
-      '<div class="xw-card" style="margin-bottom:16px"><b style="font-family:var(--what-font);font-size:15px">🏆 أفضل يوم: ' +
-      (best ? esc(vNice(best)) + " · " + fmt(days[best].u) + " زائر · " + fmt(days[best].v) + " زيارة" : "ما كاين بعد") + "</b></div>" +
-      '<div class="xw-card"><h3 style="margin:0 0 10px;font-size:15px">آخر 14 يوماً</h3><div class="xw-vwrap">' +
-      '<table class="xw-vtbl"><thead><tr><th>التاريخ</th><th>الزيارات</th><th>الزوار الفريدون</th></tr></thead><tbody>' + trs + "</tbody></table></div></div>"
-    );
-  };
-
-  /* ---------- the fold: 400 days become a row a month, so the table stays tiny ---------- */
-  const vCleanupVisits = async (quiet) => {
-    try {
-      if (!db) return 0;
-      const snap = await tmo(db.collection(XW_COL.visits).where("day", "<", vAgo(XW_VISIT_KEEP)).limit(500).get(), 12000);
-      if (snap.empty) { lsSet(XW_VISIT_CLEANED, vMonth(vDay())); return 0; }
-      const months = {};
-      const b = db.batch();
-      snap.docs.forEach((d) => {
-        const v = d.data() || {}, m = vMonth(v.day);
-        if (!/^\d{4}-\d{2}$/.test(m)) { b.delete(d.ref); return; }   /* not a day row: nothing to fold it into */
-        const a = months[m] || (months[m] = { visits: 0, unique_visitors: 0 });
-        a.visits += Math.max(0, Number(v.visits) || 0);
-        a.unique_visitors += Math.max(0, Number(v.unique_visitors) || 0);
-        b.delete(d.ref);
-      });
-      const inc = firebase.firestore.FieldValue.increment;
-      Object.keys(months).forEach((m) => b.set(db.collection(XW_COL.visitsM).doc(m),
-        { month: m, u: firebase.firestore.ServerValue.TIMESTAMP, visits: inc(months[m].visits), unique_visitors: inc(months[m].unique_visitors) },
-        { merge: true }));
-      await tmo(b.commit(), 20000);
-      lsSet(XW_VISIT_CLEANED, vMonth(vDay()));
-      if (!quiet) toast("تم التنظيف: " + snap.size + " يوم اندمجو في صفوفهم الشهرية", true);
-      return snap.size;
-    } catch (e) { if (!quiet) toast("تعذّر التنظيف: " + ((e && (e.code || e.message)) || "")); return 0; }
-  };
-  const vMaybeCleanup = () => {
-    if (!db) return;
-    if (lsGet(XW_VISIT_CLEANED, "") === vMonth(vDay())) return;   /* once a month, and only ever from the admin room */
-    vCleanupVisits(true);
-  };
-
-  /* ---------- the tab itself ---------- */
-  const vPaint = async (force) => {
-    const body = $("#xwBody");
-    if (!body) return;
-    if (!db) { body.innerHTML = '<div class="xw-card"><div class="xw-empty">ما كاينش قاعدة بيانات — الإحصائيات كتحتاج الاتصال بها.</div></div>'; return; }
-    if (!body.dataset.ready) body.innerHTML = '<div class="xw-empty">جاري تحميل الإحصائيات...</div>';
-    let st = null;
-    try { st = await vReadStats(!!force); }
-    catch (err) { body.innerHTML = '<div class="xw-card"><div class="xw-empty">تعذّر قراءة الإحصائيات: ' + esc((err && (err.code || err.message)) || "") + "</div></div>"; return; }
-    body.innerHTML = vStatsHTML(st);
-    body.dataset.ready = "1";
-    const rf = $("#xwVRefresh");
-    if (rf) rf.addEventListener("click", async () => { toast("جاري التحديث..."); body.dataset.ready = ""; await vPaint(true); });
-    const cl = $("#xwVClean");
-    if (cl) cl.addEventListener("click", async () => {
-      if (!confirm("كل يوم أقدم من " + XW_VISIT_KEEP + " يوم يندمج في صف واحد شهري ثم ينحيد. الإجمالي الكلّي ما يضيعش. نكملو؟")) return;
-      const folded = await vCleanupVisits(true);
-      vCache = null;
-      try { sessionStorage.removeItem(XW_VISIT_CACHE); } catch (e) {}
-      body.dataset.ready = "";
-      await vPaint(true);
-      toast(folded ? "ندمجمو " + folded + " يوم في صفوفهم الشهرية" : "ما كاين والو أقدم من " + XW_VISIT_KEEP + " يوم", true);
-    });
-  };
-  const tabStats = async () => { await vPaint(false); vMaybeCleanup(); };
-  /* p51:VISITS:END ══════════════════════════════════════════════════════ */
 
   /* p53:BLOCK:BEGIN ═════════════════════════════════════════════════════
      الحظر بعد ثلاثة طلبات في 24 ساعة — بالجهاز وبالرقم تليفون
@@ -5381,7 +5107,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     initCloud();
     if (atAdminURL()) loadRemote();
     else refreshIfStale();          /* products stay put for 40 h; a ~100-byte check says if you published */
-    countVisit();                   /* one number, in the background; the page never waits for it */
   });
   if (atAdminURL()) setTimeout(askAdminPass, 260);
   window.addEventListener("popstate", () => { if (atAdminURL()) askAdminPass(); });
