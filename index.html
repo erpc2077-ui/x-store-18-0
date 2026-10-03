@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="ltr">
 <head>
   <meta charset="utf-8" />
@@ -1619,7 +1619,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   <meta property="og:locale" content="ar_DZ" />
   <meta property="og:title" content="متجر X Store — معدات قيمنغ الهاتف والآيباد في الجزائر" />
   <meta property="og:description" content="متجر متخصص في ملحقات الألعاب والجيمينغ: سماعات، مبردات هواتف، شواحن وإكسسوارات أصلية بأفضل الأسعار في الجزائر" />
-  <meta property="og:url" content="https://x-store-18.netlify.app/" />
+  <meta property="og:url" content="https://xstore-18.netlify.app/" />
   <meta property="og:image" content="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_1200,h_630/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778504512712-ff9r97z4.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -1627,13 +1627,13 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   <meta name="twitter:title" content="متجر X Store — معدات قيمنغ الهاتف والآيباد في الجزائر" />
   <meta name="twitter:description" content="متجر متخصص في ملحقات الألعاب والجيمينغ: سماعات، مبردات هواتف، شواحن وإكسسوارات أصلية بأفضل الأسعار في الجزائر" />
   <meta name="twitter:image" content="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_1200,h_630/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778504512712-ff9r97z4.jpg" />
-  <link rel="canonical" href="https://x-store-18.netlify.app/" />
+  <link rel="canonical" href="https://xstore-18.netlify.app/" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "OnlineStore",
     "name": "X Store",
-    "url": "https://x-store-18.netlify.app/",
+    "url": "https://xstore-18.netlify.app/",
     "description": "متجر متخصص في ملحقات الألعاب والجيمينغ: سماعات، مبردات هواتف، شواحن وإكسسوارات أصلية بأفضل الأسعار في الجزائر",
     "image": "https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_1200,h_630/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778504512712-ff9r97z4.jpg",
     "telephone": "+213600000000",
@@ -2388,8 +2388,6 @@ window.REVIEWS = [
     closeDrawer();
     openCheckout(cart.map((c) => ({ id: c.id, qty: c.qty })), { fromCart: true });
   });
-  renderCartBadge();
-  renderCart();
 
   /* =====================================================================
      XW — Store engine: data layer (Firestore + localStorage fallback),
@@ -2503,7 +2501,7 @@ window.REVIEWS = [
     footDesc: "معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.",
     shopSub: "+100 منتج متوفر — أسعار بالدينار الجزائري",
     /* the address the shop is published at - change it in the admin room, never here */
-    site: "https://x-store-18.netlify.app",
+    site: "https://xstore-18.netlify.app",
     /* the owner's own pictures for the top of the page; null = the three that shipped */
     hero: null,
     /* p52 - the four policies, writable from the admin room. Empty means "the text
@@ -3076,6 +3074,12 @@ window.REVIEWS = [
   };
   let xwAfterRender = null;   /* the announcement block plugs in here; null until it does */
   const renderStore = () => { renderTabs(); renderProducts(); renderDeals(); renderCats(); if (xwAfterRender) xwAfterRender(); };
+  /* the cart badge and the drawer are painted only now, once the image helpers
+     above exist: before this point a cart that already holds items at page load
+     would touch cld() while it is still in the temporal dead zone and the whole
+     store would stay empty for the visitor */
+  renderCartBadge();
+  renderCart();
 
   /* ---------- Modal helpers ---------- */
   const openModal = (el) => { el.classList.add("open"); document.body.style.overflow = "hidden"; };
@@ -3225,6 +3229,25 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     };
     const shipping = () => { const r = rates(); if (!r) return null; return st.delivery === "office" ? r.office : r.home; };
 
+    /* the two tier prices a product's own form carries: a line of exactly 2 earns
+       that product's "price when ordering 2"; a line of 3 or more earns its "new
+       price when ordering 3" (or the 2 price where the 3 price is not set). Saved
+       per line = (price - tier price) x quantity, summed, capped at the payable
+       total. has3 wins the message when any 3+ line saved; otherwise has2. */
+    const tiers = (ls, sub, sh) => {
+      let saved = 0, has3 = false, has2 = false;
+      for (const x of ls) {
+        const q = x.it.qty, pr = Math.max(0, Number(x.p.price) || 0), q2 = Math.max(0, Number(x.p.price2) || 0), q3 = Math.max(0, Number(x.p.price3) || 0);
+        if (q >= 3) {
+          const u = (q3 > 0 ? q3 : q2);
+          if (u > 0 && u < pr) { saved += (pr - u) * q; has3 = true; }
+        } else if (q === 2) {
+          if (q2 > 0 && q2 < pr) { saved += (pr - q2) * q; has2 = true; }
+        }
+      }
+      return { saved: Math.min(saved, sub + (sh || 0)), has3, has2 };
+    };
+
     const render = () => {
       if (st.done) {
         const first = (st.name || "").trim().split(/\s+/)[0] || "بكم";
@@ -3254,11 +3277,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (multi) {
         communeBlock = '<div class="xw-field"><label>' + (isOff ? "اختر مكتب الاستلام" : "اختر البلدية") + ' <i>*</i></label><select id="fCommune"><option value="">' + (isOff ? "اختر مكتب التوصيل" : "اختر البلدية") + '</option>' + list.map((o) => opt(o, st.cSel)).join("") + "</select></div>";
       }
-      /* p58 - per product: every line of 2 or more earns that product's own
-         bundleOff (typed by the owner in the product form), once per line, capped
-         at the payable total so an order can never go negative. */
-      const bOff = ls.filter((x) => x.it.qty >= 2).reduce((a, x) => a + Math.max(0, Number(x.p.bundleOff) || 0), 0);
-      const saved = Math.min(bOff, sub + (sh || 0));
+      /* per product: a line of exactly 2 earns the product's own "price when
+         ordering 2"; a line of 3 or more earns its "new price when ordering 3"
+         (or the 2 price when the 3 price is not set), capped at the payable
+         total so an order can never go negative. */
+      const t = tiers(ls, sub, sh);
+      const saved = t.saved;
       box.innerHTML =
         '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><form id="xwChkForm" novalidate><div class="xw-chk"><div>' +
         "<h3>معلومات الطلب</h3>" + guard +
@@ -3273,7 +3297,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<div class="xw-field"><label>ملاحظات <small>(اختياري)</small></label><textarea id="fNotes" style="min-height:64px">' + esc(st.notes) + "</textarea></div>" +
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
-        (saved > 0 ? '<div class="xw-save">وفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك🔥</div>' : "") +
+        (saved > 0 ? '<div class="xw-save">' + (t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
         ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + fmt(sellPrice(x.p) * x.it.qty) + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
@@ -3332,9 +3356,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.");
       for (const x of ls) if (typeof x.p.stock === "number" && x.it.qty > x.p.stock) return fail("الكمية المتوفرة من «" + x.p.name + "» هي " + x.p.stock + " فقط.");
       const sub = ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0), sh = shipping();
-      /* p58 - the same per-product bundle figure the summary shows goes into the order itself */
-      const bOff = ls.filter((x) => x.it.qty >= 2).reduce((a, x) => a + Math.max(0, Number(x.p.bundleOff) || 0), 0);
-      const saved = Math.min(bOff, sub + (sh || 0));
+      /* the same tier figure the summary shows goes into the order itself */
+      const t = tiers(ls, sub, sh);
+      const saved = t.saved;
       const order = {
         id: "XS-" + Date.now().toString().slice(-8),
         uid: XW_UID, dev: XW_DEVICE,
@@ -4371,7 +4395,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field" id="pCatNewWrap" style="display:none"><label>اسم الفئة الجديدة</label><input id="pCatNew"></div></div>' +
       '<div class="xw-row"><div class="xw-field"><label><span id="pPriceLbl">السعر (دج)</span> <i>*</i> <small>(السعر الذي يدفعه الزبون)</small></label><input id="pPrice" type="number" min="0" value="' + (p ? p.price : "") + '"></div>' +
       '<div class="xw-field"><label>الكمية المتوفرة <i>*</i></label><input id="pStock" type="number" min="0" value="' + (p && typeof p.stock === "number" ? p.stock : "") + '" placeholder="مثال: 20"></div></div>' +
-      '<div class="xw-field"><label>خصم العرض (دج) <small>(اختياري — إذا طلب الزبون كمية 2 فأكثر من هذا المنتج، ينقص هذا المبلغ من المجموع الكلي. ضع 0 لإيقاف العرض)</small></label><input id="pBundle" type="number" min="0" step="1" value="' + (p && Number(p.bundleOff) > 0 ? Number(p.bundleOff) : "") + '" placeholder="مثال: 500"></div>' +
+      '<div class="xw-row"><div class="xw-field"><label>السعر إذا طلب 2 (دج) <small>(لكل قطعة — إذا طلب الزبون قطعتين من هذا المنتج ينخفض سعر كل قطعة إلى هذا. اتركها فارغة لإيقاف العرض)</small></label><input id="pQ2" type="number" min="0" step="1" value="' + (p && Number(p.price2) > 0 ? Number(p.price2) : "") + '" placeholder="مثال: 1500"></div>' +
+'<div class="xw-field"><label>السعر الجديد إذا طلب 3 (دج) <small>(لكل قطعة — إذا طلب 3 أو أكثر يسري هذا السعر على كل القطع)</small></label><input id="pQ3" type="number" min="0" step="1" value="' + (p && Number(p.price3) > 0 ? Number(p.price3) : "") + '" placeholder="مثال: 1200"></div></div>' +
       '<div class="xw-field"><label>الوسوم <small>(اختياري — يمكن اختيار أكثر من وسم)</small></label><div class="xw-tags">' +
       XW_TAGS.map((t) => '<label class="xw-tagchk"><input type="checkbox" data-tid="' + t.id + '"' + (initIds.indexOf(t.id) >= 0 ? " checked" : "") + "><span>" + t.label + "</span></label>").join("") +
       '<label class="xw-tagchk"><input type="checkbox" data-tid="__custom"' + (customTags.length ? " checked" : "") + '><span>وسم آخر…</span></label></div>' +
@@ -4514,7 +4539,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const seoTitle = String(($("#pSeoT") || {}).value || "").trim();
       const seoDesc = String(($("#pSeoD") || {}).value || "").trim();
       const seoKeys = String(($("#pSeoK") || {}).value || "").trim();
-      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), bundleOff: Math.max(0, Math.floor(Number(($("#pBundle") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
       if (JSON.stringify(data).length > 900000) return err("حجم الصور كبير جداً، استخدم روابط صور أو صوراً أصغر.");
       const btn = $("#pSave"); btn.disabled = true; err("");
@@ -4531,8 +4556,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           if (!data.seoTitle) delete upd.seoTitle;
           if (!data.seoDesc) delete upd.seoDesc;
           if (!data.seoKeys) delete upd.seoKeys;
-          /* the per-product offer: taken out too when emptied (0 = off) */
-          if (!(data.bundleOff > 0)) delete upd.bundleOff;
+          /* the two tier prices: taken out too when emptied (0 = off) */
+          if (!(data.price2 > 0)) delete upd.price2;
+          if (!(data.price3 > 0)) delete upd.price3;
           await commitProducts(window.PRODUCTS.map((x) => (x.id === p.id ? upd : x)), upd, null);
           toast("تم حفظ التعديلات", true);
         } else {
