@@ -4393,8 +4393,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field"><label>وصف المنتج</label><textarea id="pDesc">' + esc(p ? p.desc || "" : "") + "</textarea></div>" +
       '<div class="xw-note" style="margin:20px 0 12px;font-weight:600;color:var(--ink)">خانة جوجل <small style="font-weight:400">— سيبهم فارغين والموقع يملاهم لوحدو</small></div>' +
       '<div class="xw-field"><label>الرابط في شريط العنوان <small>(بالإنجليزية — حروف صغيرة وأرقام و - فقط)</small></label>' +
-      '<input id="pSlug" value="' + esc(p ? p.slug || "" : "") + '" placeholder="marwaha-tab3id" spellcheck="false" dir="ltr" style="text-align:left">' +
-      '<div class="xw-note" style="margin-top:6px">هذا الرابط هو لي كيتقرا في جوجل. ما تكتبش بالعربية.</div></div>' +
+      '<input id="pSlug" value="' + esc(p ? p.slug || "" : "") + '" placeholder="سيبو فارغ — يولّد من اسم المنتج" spellcheck="false" dir="ltr" style="text-align:left">' +
+      '<div class="xw-note" style="margin-top:6px">سيبو فارغ والموقع يولّدو من اسم المنتج تلقائياً (سماعة قيمنغ ← smaaa-qymngh)، ولا تكتبش بالعربية. تقدر تكتبو بنفسك: marwaha-tab3id</div></div>' +
       '<div class="xw-field" style="margin-top:16px"><label>العنوان في نتائج جوجل <small>(يظهر تحت الرابط — أهم سطر عندك)</small></label>' +
       '<input id="pSeoT" value="' + esc(p ? p.seoTitle || "" : "") + '" placeholder="مروحة تبريد للأيباد - سعر في الجزائر">' +
       '</div>' +
@@ -4517,6 +4517,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         seoSlug = seoSlugRaw.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
         if (!seoSlug) return err("الرابط لازم يكون بحروف إنجليزية صغيرة وأرقام و - فقط. مثال: marwaha-tab3id");
         if (slugTaken(seoSlug, p ? p.id : null)) return err("هذا الرابط مستعمل من قبل منتج آخر. اختار رابط آخر.");
+      } else {
+        /* no link typed: build it from the product name so the share link reads
+           like the product, never like a random id (m8) */
+        seoSlug = uniqueSlug(name, p ? p.id : null);
       }
       const seoTitle = String(($("#pSeoT") || {}).value || "").trim();
       const seoDesc = String(($("#pSeoD") || {}).value || "").trim();
@@ -4985,9 +4989,19 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
      screen and put back when it closes. Nothing here talks to Google - it only fills in
      the fields a crawler already reads. */
   const siteUrl = () => String(INFO.site || XW_INFO_DEFAULTS.site || "").trim().replace(/\/+$/, "");
+  /* a product link reads like the product: an empty slug box in the admin is a
+     real answer, and the shop builds the link from the product name instead of
+     the random id. Arabic letters are carried over into latin (m8). */
+  const autoSlug = (n) => {
+    const ar = { "ا":"a","أ":"a","إ":"a","آ":"a","ء":"a","ب":"b","ت":"t","ث":"th","ج":"j","ح":"h","خ":"kh","د":"d","ذ":"dh","ر":"r","ز":"z","س":"s","ش":"sh","ص":"s","ض":"d","ط":"t","ظ":"z","ع":"a","غ":"gh","ف":"f","ق":"q","ك":"k","ل":"l","م":"m","ن":"n","ه":"h","ة":"a","و":"w","ي":"y","ى":"y","ؤ":"w","ئ":"y" };
+    let s = "";
+    for (const ch of String(n || "").trim().toLowerCase()) s += (/[a-z0-9]/.test(ch) ? ch : (ar[ch] !== undefined ? ar[ch] : "-"));
+    return s.replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "produit";
+  };
+  const uniqueSlug = (n, except) => { let s = autoSlug(n), i = 2; while (slugTaken(s, except)) s = autoSlug(n) + "-" + i++; return s; };
   const slugOf = (p) => {
-    const s = String((p && (p.slug || p.id)) || "").trim().toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const base = (p && (p.slug || autoSlug(p.name))) || "";
+    const s = String(base).trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     return s || "produit";
   };
   const productURL = (p) => siteUrl() + "/product/" + slugOf(p);
@@ -5094,7 +5108,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const s = slugFromPath();
     if (!s) return;
     const p = findBySlug(s);
-    if (p) { openProduct(p.id, false); return; }
+    if (p) {
+      /* same deal as the #p/ links: the shop sits one step back in the history */
+      try { history.replaceState({}, "", location.pathname + location.search); } catch (e) {}
+      openProduct(p.id, true);
+      return;
+    }
     if (tries > 0) setTimeout(() => openSlugsProduct(tries - 1), 400);
   };
 
@@ -5117,19 +5136,41 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     else refreshIfStale();          /* products stay put for 40 h; a ~100-byte check says if you published */
   });
   if (atAdminURL()) setTimeout(askAdminPass, 260);
-  window.addEventListener("popstate", () => { if (atAdminURL()) askAdminPass(); });
+  /* the phone's back button is product-aware: one press closes the open product
+     (or the checkout sitting on top of it) and the shop stays put - it never
+     kicks the visitor out of the site while a product is on screen (m8) */
+  let pvEaten = null;
+  const closeOpenProduct = () => {
+    const chk = $("#xwCheckout");
+    if (chk && chk.classList.contains("open")) { closeModal(chk); return true; }
+    const pv = $("#xwProduct");
+    if (!pv || !pv.classList.contains("open")) return false;
+    pvEaten = hashProductId() || true;
+    if (pvEaten !== true) { try { history.replaceState({}, "", location.pathname + location.search); } catch (e) { location.hash = ""; } }
+    closeModal(pv);
+    return true;
+  };
+  window.addEventListener("popstate", () => { if (closeOpenProduct()) return; if (atAdminURL()) askAdminPass(); });
 
   /* open a product straight from its ad link (#p/<id>), waiting for the cloud load */
   const openHashedProduct = (tries) => {
     const id = hashProductId();
     if (!id) return;
-    if (findProduct(id)) { openProduct(id, false); return; }
+    if (findProduct(id)) {
+      /* the ad link lands with the shop one step back in the history, so the
+         phone's back button closes the product instead of leaving the site */
+      try { history.replaceState({}, "", location.pathname + location.search); } catch (e) { location.hash = ""; }
+      openProduct(id, true);
+      return;
+    }
     if (tries > 0) setTimeout(() => openHashedProduct(tries - 1), 400);
   };
   if (!atAdminURL() && hashProductId()) setTimeout(() => openHashedProduct(12), 120);
   if (!atAdminURL() && slugFromPath()) setTimeout(() => openSlugsProduct(14), 160);
   window.addEventListener("hashchange", () => {
     const id = hashProductId();
+    if (id && pvEaten === id) { pvEaten = null; return; }
+    if (!id) pvEaten = null;
     if (id && !$("#xwProduct").classList.contains("open")) openHashedProduct(6);
   });
 
