@@ -209,7 +209,7 @@ b { font-weight: inherit; }
    one tap on it lists every category the shop really has. */
 .mm-cat-row { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
 .mm-cat-row .mm-link { flex: 1; border-bottom: 0; }
-.mm-caret { background: none; border: 0; color: var(--muted); font-size: 15px; line-height: 1; padding: 12px 16px; cursor: pointer; }
+.mm-caret { background: none; border: 0; color: var(--muted); font-size: 21px; line-height: 1; padding: 12px 16px; cursor: pointer; transition: color .2s ease; }
 .mm-caret:hover { color: var(--accent); }
 .mm-cats { list-style: none; margin: 0; padding: 0; background: var(--fill); border-bottom: 1px solid var(--line); }
 .mm-cats a { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; font-size: 13px; color: var(--muted); }
@@ -436,17 +436,7 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .rate-err:empty { margin: 0; min-height: 0; }
 #rateCount, #rateAvg { color: #FF6B00; }
 
-/* ============ The policies, said out loud (p54) ============ */
-.policies { background: var(--bg-2); }
-.pol-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-.pol-card { display: block; text-align: right; cursor: pointer; font: inherit; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 22px; transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease; }
-.pol-card:hover { transform: translateY(-5px); border-color: #FF6B00; box-shadow: var(--shadow); }
-.pol-card b { display: block; font-size: 15px; margin-bottom: 8px; color: #FF6B00; }
-.pol-card span { font-size: 13px; color: var(--muted); line-height: 1.75; }
-.pol-note { text-align: center; margin-top: 28px; }
-@media (max-width: 900px) { .pol-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) {
-  .pol-grid { grid-template-columns: 1fr; }
   .rate-box { padding: 20px 16px; }
   .rate-row { flex-direction: column; align-items: stretch; }
   .rate-stars { height: auto; justify-content: center; }
@@ -1052,14 +1042,25 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     .nav-mobile { gap: 4px; }
     .nav-mobile .icon-btn { min-width: 40px; min-height: 40px; }
     .nav-logo-img { width: 40px; height: 40px; }
+    .nav-logo { gap: 8px; }
+    .nav-word { font-size: 22px; letter-spacing: .3px; }
   }
 
-  /* the logo mark carries the brand here, so the wordmark steps aside - in the
-     header only. The footer keeps it (p52: the owner reads his shop's name on his
-     phone, and that column has nothing to squeeze past). */
+  /* the brand name stays beside the logo on the phone too - in a compact size so
+     the top bar still fits its five buttons (the owner asked for the wordmark in
+     both versions). The footer keeps its own, bigger wordmark. */
   @media (max-width: 400px) {
-    .nav-word { display: none; }
+    .nav-word { display: block; font-size: 18px; letter-spacing: .2px; }
+    html[data-theme="dark"] .nav-word { font-size: 18px; letter-spacing: .2px; }
     .foot-logo .nav-word { display: block; font-size: 21px; letter-spacing: .5px; }
+  }
+  /* very small screens: everything squeezes again, the name stays visible */
+  @media (max-width: 360px) {
+    .nav-mobile { gap: 2px; }
+    .nav-mobile .icon-btn { min-width: 34px; min-height: 34px; }
+    .nav-logo { gap: 6px; }
+    .nav-word { font-size: 16px; letter-spacing: .1px; }
+    html[data-theme="dark"] .nav-word { font-size: 16px; letter-spacing: .1px; }
   }
 
   /* ---- 400px and under: keep the fold from being eaten by the hero ---- */
@@ -1387,10 +1388,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   html[data-theme="dark"] .rate-stars button.on { color: #FBBF24; }
   html[data-theme="dark"] .rate-err { color: #fca5a5; }
   html[data-theme="dark"] #rateCount, html[data-theme="dark"] #rateAvg { color: var(--warm); }
-  html[data-theme="dark"] .pol-card { background: rgba(255, 150, 80, .05); border-color: rgba(255, 182, 124, .2); }
-  html[data-theme="dark"] .pol-card b { color: var(--warm); }
-  html[data-theme="dark"] .pol-card span { color: #C7A28D; }
-
   html[data-theme="dark"] .deals .section-head h2 { color: var(--warm); text-shadow: 0 0 28px rgba(255, 107, 0, .45); }
   html[data-theme="dark"] .marquee { background: rgba(255, 150, 80, .028); border-color: rgba(255, 172, 112, .11); }
   html[data-theme="dark"] .f-left { background: linear-gradient(90deg, #120C08, transparent); }
@@ -1722,7 +1719,7 @@ body.cart-open .cart-drawer { transform: translateX(0); }
     <div class="mm-logo"><img data-logo src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="X Store" /><span class="nav-word">X<b> STORE</b></span></div>
     <a href="#home" class="mm-link">الرئيسية</a>
     <a href="#shop" class="mm-link">المتجر</a>
-    <div class="mm-cat-row"><a href="#categories" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▸</button></div>
+    <div class="mm-cat-row"><a href="#categories" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▼</button></div>
     <ul class="mm-cats" id="mmCats" hidden></ul>
     <a href="#reviews" class="mm-link">آراء الزبائن</a>
     <div class="mm-lang"><a href="#" data-lang="en">English</a><a href="#" class="active" data-lang="ar">العربية</a></div>
@@ -1937,21 +1934,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
         </div>
       </div>
     </section>
-
-  <!-- p54 - the last thing on the page: the policies, out in the open -->
-  <section id="policy" class="section policies">
-    <div class="section-head">
-      <h2 data-i18n="polTitle">سياسات المتجر</h2>
-      <p class="faint">اضغط على أي سياسة باش تقراها كاملة</p>
-    </div>
-    <div class="pol-grid">
-      <button class="pol-card" data-pol="shipping"><b>سياسة الشحن والتوصيل</b><span>الأسعار والتوصيل بالدينار الجزائري: إلى المنزل ولا إلى نقطة الاستلام.</span></button>
-      <button class="pol-card" data-pol="returns"><b>سياسة الإرجاع والاستبدال</b><span>كيفاش نرجّع ولا نبدّل المنتج، وكم ياخد وقت.</span></button>
-      <button class="pol-card" data-pol="terms"><b>شروط الاستخدام</b><span>قواعد الطلب والأسعار والبضاعة في X Store.</span></button>
-      <button class="pol-card" data-pol="privacy"><b>سياسة الخصوصية</b><span>شكون يطّلع على معلوماتك، وكيفاش نحفظها.</span></button>
-    </div>
-    <p class="faint pol-note">الدفع عند الاستلام · التوصيل لكل ولايات الوطن · الأسعار بالدينار الجزائري</p>
-  </section>
 
   <!-- Footer -->
   <footer id="footer">
@@ -2265,7 +2247,7 @@ window.REVIEWS = [
     mmCaret.addEventListener("click", () => {
       const open = mmCats.hasAttribute("hidden");
       if (open) mmCats.removeAttribute("hidden"); else mmCats.setAttribute("hidden", "");
-      mmCaret.textContent = open ? "▾" : "▸";
+      mmCaret.textContent = open ? "▲" : "▼";
       mmCaret.setAttribute("aria-expanded", String(open));
     });
     mmCats.addEventListener("click", closeMenu);
