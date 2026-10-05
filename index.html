@@ -3078,6 +3078,15 @@ window.REVIEWS = [
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwLight").classList.contains("open")) $$(".xw-modal.open").forEach(closeModal); });
 
   /* ---------- Product details ---------- */
+  /* the shape of the address on its own, asked before the products have drawn:
+     a phone following an ad link on a cold connection must open the product,
+     not the shop that was still empty when the page read its own address (m9) */
+  const hashRoute = () => {
+    const h = location.hash || "";
+    if (/^#p\/.+/.test(h)) return "p";
+    if (/^#\/d\/.+/.test(h)) return "d";
+    return "";
+  };
   /* every product owns a readable ad link (#/d/<name>) so ads can point straight
      at it; the old #p/<id> hash still opens the same product (m8) */
   const hashProduct = () => {
@@ -3498,8 +3507,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     askAdminRoute().then((ok) => { if (ok) write(base + "/admin" + location.search + location.hash); });
   };
   const offAdminURL = () => {
-    if (!/\/admin\/?$/.test(location.pathname)) return;
-    try { history.pushState({ admin: 0 }, "", (adminBase() || "") + "/" + location.search + location.hash); } catch (e) {}
+    /* the room can stand on three addresses - /admin, /?admin and #admin - and
+       the exit button has to clear every one of them: leave the ?admin behind
+       and one F5 walks the owner straight back into the password box (m9) */
+    if (!atAdminURL()) return;
+    const q = location.search.replace(/(?:^\?|&)admin(?:=[^&]*)?/g, "").replace(/^[?&]+/, "").replace(/[?&]+$/, "");
+    const hash = /^#admin$/.test(location.hash) ? "" : location.hash;
+    /* replaced, not pushed: the way in was pushed, so one back press now stays
+       in the shop instead of walking back into the room */
+    try { history.replaceState({ admin: 0 }, "", (adminBase() || "") + "/" + (q ? "?" + q : "") + hash); } catch (e) {}
   };
 
   const askAdminPass = () => {
@@ -5171,11 +5187,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   };
   window.addEventListener("popstate", () => { if (closeOpenProduct()) return; if (atAdminURL()) askAdminPass(); });
 
-  /* open a product straight from its ad link (#p/<id>), waiting for the cloud load */
+  /* open a product straight from its ad link (#/d/<name>, or the old #p/<id>),
+     waiting for the products to arrive: whoever follows the link on a slow
+     connection gets the product, not the shop that was still empty */
   const openHashedProduct = (tries) => {
+    if (!hashRoute()) return;
     const id = hashProduct();
-    if (!id) return;
-    if (findProduct(id)) {
+    if (id && findProduct(id)) {
       /* the ad link lands with the shop one step back in the history, so the
          phone's back button closes the product instead of leaving the site */
       try { history.replaceState({}, "", location.pathname + location.search); } catch (e) { location.hash = ""; }
@@ -5184,13 +5202,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     }
     if (tries > 0) setTimeout(() => openHashedProduct(tries - 1), 400);
   };
-  if (!atAdminURL() && hashProduct()) setTimeout(() => openHashedProduct(12), 120);
+  if (!atAdminURL() && hashRoute()) setTimeout(() => openHashedProduct(12), 120);
   if (!atAdminURL() && slugFromPath()) setTimeout(() => openSlugsProduct(14), 160);
   window.addEventListener("hashchange", () => {
     const id = hashProduct();
     if (id && pvEaten === id) { pvEaten = null; return; }
     if (!id) pvEaten = null;
-    if (id && !$("#xwProduct").classList.contains("open")) openHashedProduct(6);
+    if (hashRoute() && !$("#xwProduct").classList.contains("open")) openHashedProduct(6);
   });
 
   /* ---------- Reviews ---------- */  /* ---------- Reviews ---------- */
