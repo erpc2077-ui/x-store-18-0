@@ -934,6 +934,19 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-fb { font-family: inherit; font-size: 12px; font-weight: 800; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--fill); color: var(--muted); cursor: pointer; transition: border-color .15s, color .15s, background .15s; }
 .xw-fb:hover { border-color: var(--ink); color: var(--ink); }
 .xw-fb.on { background: #FF6B00; border-color: #FF6B00; color: #fff; }
+button.xw-stat { font-family: inherit; text-align: center; cursor: pointer; line-height: 1.5; }
+button.xw-stat:hover { border-color: var(--ink); }
+button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 0, .12); }
+.xw-crow { display: flex; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.xw-crow .num { width: 26px; height: 26px; border-radius: 50%; background: var(--fill); border: 1px solid var(--line-2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--muted); }
+.xw-crow .i { flex: 1; min-width: 170px; }
+.xw-crow .i b { display: block; font-size: 14px; }
+.xw-crow .i span { font-size: 12px; color: var(--muted); display: block; }
+.xw-crow .d, .xw-crow .t { min-width: 96px; }
+.xw-crow small { display: block; font-size: 10px; color: var(--faint); font-weight: 800; margin-bottom: 2px; }
+.xw-crow .d span { font-size: 12px; }
+.xw-crow .t b { font-size: 15px; color: var(--ink); }
+.xw-crow .t b.sum { color: #FF6B00; }
 .xw-prow { display: flex; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .xw-prow img { width: 60px; height: 60px; border-radius: 12px; object-fit: cover; border: 1px solid var(--line); }
 .xw-prow .i { flex: 1; min-width: 0; }
@@ -1524,6 +1537,9 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   html[data-theme="dark"] .xw-fb { border-color: rgba(255, 255, 255, .14); background: rgba(255, 255, 255, .05); color: rgba(255, 255, 255, .66); }
   html[data-theme="dark"] .xw-fb:hover { border-color: rgba(255, 255, 255, .5); color: #fff; }
   html[data-theme="dark"] .xw-fb.on { background: #FF6B00; border-color: #FF6B00; color: #fff; }
+  html[data-theme="dark"] button.xw-stat:hover { border-color: rgba(255, 255, 255, .5); }
+  html[data-theme="dark"] button.xw-stat.on { border-color: rgba(255, 107, 0, .6); box-shadow: 0 0 0 3px rgba(255, 107, 0, .14); }
+  html[data-theme="dark"] .xw-crow .t b.sum { color: #FF6B00; }
   html[data-theme="dark"] .xw-order.back { border-color: rgba(16, 185, 129, .5); }
   html[data-theme="dark"] .xw-order.back.new { border-color: rgba(255, 107, 0, .55); }
   html[data-theme="dark"] .xws.shipped { color: #7DD3FC; border-color: rgba(125, 211, 252, .6); background: rgba(125, 211, 252, .14); }
@@ -3604,7 +3620,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
 
   /* ---------- Admin room ---------- */
   const adminEl = $("#xwAdmin");
-  let adminTab = "orders", editing = null, formImgs = [], ordersCache = [], logFilter = "all";
+  let adminTab = "orders", editing = null, formImgs = [], ordersCache = [], logFilter = "all", statusFilter = "";
   /* out of the <template> the gear now lives in: not rendered, but still here */
   const GEAR_SVG = (($("#xwGearIcon").content.firstElementChild) || {}).outerHTML || "";
   const fmtDate = (iso) => { try { return new Date(iso).toLocaleString("ar-DZ-u-nu-latn", { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return iso; } };
@@ -3626,7 +3642,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -3640,7 +3656,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -3786,26 +3802,32 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     body.innerHTML = '<div class="xw-empty">جاري تحميل السجل...</div>';
     if (!await loadOrders(body)) return;
     const all = ordersCache.filter((o) => !isNewOrder(o) && !o.binned);
-    if (!all.length) { body.innerHTML = '<div class="xw-empty">السجل فارغ — كل طلب تؤكّده ينتقل تلقائياً إلى هنا.</div>'; return; }
+    /* شريط المتابعة يدور في كل الطلبات — حتى اللي لسا في تبويب «الطلبات»:
+       كي تعلّم زبون «لا يرد» أو «هاتف مغلق» وهو لسا جديد، النقرة على المربع
+       لازم تلقه بيها. حالة الطلب (جديد/مؤكد/...) تبان على كل بطاقة. */
+    const followPool = ordersCache.filter((o) => !o.binned);
     const cnt = (k) => all.filter((o) => o.status === k).length;
     const rev = all.filter((o) => o.status === "delivered").reduce((s, o) => s + (Number(o.total) || 0), 0);
-    const fcnt = (k) => all.filter((o) => (o.follow || "new") === k).length;
+    const fcnt = (k) => followPool.filter((o) => (o.follow || "new") === k).length;
     body.innerHTML =
-      '<div class="xw-stats"><div class="xw-stat"><b>' + all.length + '</b>طلب في السجل</div>' +
-      '<div class="xw-stat"><b>' + cnt("confirmed") + "</b>مؤكد</div>" +
-      '<div class="xw-stat"><b>' + cnt("shipped") + "</b>قيد التوصيل</div>" +
-      '<div class="xw-stat"><b>' + cnt("delivered") + '</b>مسلّم · ' + fmt(rev) + " دج</div>" +
-      '<div class="xw-stat"><b>' + cnt("cancelled") + "</b>ملغي</div></div>" +
+      '<div class="xw-stats" id="xwStats">' +
+      '<button type="button" class="xw-stat' + (statusFilter === "" ? "" : "") + '" data-sf=""><b>' + all.length + "</b>طلب في السجل</button>" +
+      '<button type="button" class="xw-stat' + (statusFilter === "confirmed" ? " on" : "") + '" data-sf="confirmed"><b>' + cnt("confirmed") + "</b>مؤكد</button>" +
+      '<button type="button" class="xw-stat' + (statusFilter === "shipped" ? " on" : "") + '" data-sf="shipped"><b>' + cnt("shipped") + "</b>قيد التوصيل</button>" +
+      '<button type="button" class="xw-stat' + (statusFilter === "delivered" ? " on" : "") + '" data-sf="delivered"><b>' + cnt("delivered") + "</b>مسلّم · " + fmt(rev) + " دج</button>" +
+      '<button type="button" class="xw-stat' + (statusFilter === "cancelled" ? " on" : "") + '" data-sf="cancelled"><b>' + cnt("cancelled") + "</b>ملغي</button></div>" +
       '<div class="xw-fo-bar" id="xwFoBar">' +
       '<button type="button" class="xw-fb' + (logFilter === "all" ? " on" : "") + '" data-fl="all">الكل · ' + all.length + "</button>" +
       Object.keys(XW_FOLLOW).map((k) => '<button type="button" class="xw-fb' + (logFilter === k ? " on" : "") + '" data-fl="' + k + '">' + XW_FOLLOW[k] + " · " + fcnt(k) + "</button>").join("") +
       "</div>" +
-      '<div class="xw-card"><div class="xw-field"><input id="xwLogQ" placeholder="🔍 ابحث في السجل بالاسم أو الهاتف أو رقم الطلب..."></div><div id="xwLogList"></div></div>';
+      '<div class="xw-card"><div class="xw-field"><input id="xwLogQ" placeholder="🔍 ابحث بالاسم أو الهاتف أو رقم الطلب..."></div><div id="xwLogList"></div></div>';
     const list = $("#xwLogList");
     const draw = () => {
       const q = ($("#xwLogQ").value || "").trim().toLowerCase();
-      const rows = all.filter((o) => { const c = o.customer || {}; return (logFilter === "all" || (o.follow || "new") === logFilter) && (!q || (o.id + " " + c.name + " " + c.phone + " " + c.wilaya + " " + c.commune).toLowerCase().indexOf(q) >= 0); });
-      list.innerHTML = rows.length ? rows.map((o) => orderCard(o, true)).join("") : '<div class="xw-empty">لا نتيجة.</div>';
+      const base = logFilter === "all" ? all : followPool.filter((o) => (o.follow || "new") === logFilter);
+      const rows = base.filter((o) => { const c = o.customer || {}; return (!statusFilter || o.status === statusFilter) && (!q || (o.id + " " + c.name + " " + c.phone + " " + c.wilaya + " " + c.commune).toLowerCase().indexOf(q) >= 0); });
+      list.innerHTML = rows.length ? rows.map((o) => orderCard(o, true)).join("") :
+        '<div class="xw-empty">' + (all.length || logFilter !== "all" ? "لا نتيجة." : "السجل فارغ — كل طلب تؤكّده ينتقل تلقائياً إلى هنا.") + "</div>";
     };
     draw();
     $("#xwLogQ").addEventListener("input", draw);
@@ -3815,6 +3837,17 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!b) return;
       logFilter = b.dataset.fl;
       Array.prototype.forEach.call(foBar.querySelectorAll(".xw-fb"), (x) => x.classList.toggle("on", x === b));
+      draw();
+    });
+    /* كل مربع في صف الحالات هو فلتر بحد ذاته: «مؤكد» يعرض المؤكدين،
+       «قيد التوصيل» إللي توصيلهم جاري، وهكذا — والنقرة على «طلب في السجل»
+       ترجع للعرض الكامل. */
+    const statsEl = $("#xwStats");
+    if (statsEl) statsEl.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-sf]");
+      if (!b) return;
+      statusFilter = b.dataset.sf;
+      Array.prototype.forEach.call(statsEl.querySelectorAll(".xw-stat"), (x) => x.classList.toggle("on", statusFilter !== "" && x.dataset.sf === statusFilter));
       draw();
     });
   };
@@ -3852,7 +3885,47 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     draw();
     $("#xwBinQ").addEventListener("input", draw);
   };
-  const redrawOrders = () => ({ log: tabLog, bin: tabBin }[adminTab] || tabOrders)();
+  /* كل الزبائن المؤكدين: جمع الطلبات المؤكدة (مؤكد/قيد التوصيل/مسلّم)
+     على كل زبون — الاسم، الهاتف، آخر تاريخ، عدد طلباته، ومجموعها كله.
+     الجديد والملغي ما يدخلوش: الزبون «المؤكد» هو إللي طلبه تعدّى الحالة. */
+  const tabCustomers = async () => {
+    const body = $("#xwBody");
+    body.innerHTML = '<div class="xw-empty">جاري تحميل الزبائن...</div>';
+    if (!await loadOrders(body)) return;
+    const pool = ordersCache.filter((o) => !o.binned && (o.status === "confirmed" || o.status === "shipped" || o.status === "delivered"));
+    if (!pool.length) { body.innerHTML = '<div class="xw-empty">ما كاينش زبون مؤكد بعد — كل طلب يتأكد يظهر هنا باسمه وتاريخه ومجموع كل طلباته.</div>'; return; }
+    const by = new Map();
+    pool.forEach((o) => {
+      const c = o.customer || {};
+      const key = String(c.phone || "").replace(/\D/g, "") || o.uid || o.id;
+      let r = by.get(key);
+      if (!r) { r = { name: String(c.name || "").trim() || "—", phone: c.phone || "", wilaya: c.wilaya || "", count: 0, total: 0, last: o.createdAt || "" }; by.set(key, r); }
+      r.count += 1;
+      r.total += Number(o.total) || 0;
+      if ((o.createdAt || "") > (r.last || "")) r.last = o.createdAt || "";
+    });
+    const rows = Array.from(by.values()).sort((a, b) => b.total - a.total || String(b.last).localeCompare(String(a.last)));
+    body.innerHTML =
+      '<div class="xw-stats"><div class="xw-stat"><b>' + rows.length + "</b>زبون مؤكد</div>" +
+      '<div class="xw-stat"><b>' + fmt(rows.reduce((s, r) => s + r.total, 0)) + "</b>دج مجموع كل الطلبات</div>" +
+      '<div class="xw-stat"><b>' + rows.reduce((s, r) => s + r.count, 0) + "</b>طلب مؤكد</div></div>" +
+      '<div class="xw-card"><div class="xw-field"><input id="xwCusQ" placeholder="🔍 ابحث بالاسم أو الهاتف أو الولاية..."></div><div id="xwCusList"></div></div>';
+    const list = $("#xwCusList");
+    const draw = () => {
+      const q = ($("#xwCusQ").value || "").trim().toLowerCase();
+      const vis = rows.filter((r) => !q || (r.name + " " + r.phone + " " + r.wilaya).toLowerCase().indexOf(q) >= 0);
+      list.innerHTML = vis.length ? vis.map((r, i) =>
+        '<div class="xw-crow"><div class="num"><b>' + (i + 1) + "</b></div>" +
+        '<div class="i"><b>' + esc(r.name) + '</b><span dir="ltr">' + esc(r.phone) + "</span><span>" + esc(r.wilaya) + "</span></div>" +
+        '<div class="d"><small>آخر تاريخ</small><span>' + esc(fmtDate(r.last)) + "</span></div>" +
+        '<div class="t"><small>عدد الطلبات</small><b>' + r.count + "</b></div>" +
+        '<div class="t"><small>مجموع كل الطلبات</small><b class="sum">' + fmt(r.total) + " دج</b></div></div>").join("")
+        : '<div class="xw-empty">لا نتيجة.</div>';
+    };
+    draw();
+    $("#xwCusQ").addEventListener("input", draw);
+  };
+  const redrawOrders = () => ({ log: tabLog, bin: tabBin, customers: tabCustomers }[adminTab] || tabOrders)();
 
   /* p53:BLOCK:BEGIN ═════════════════════════════════════════════════════
      الحظر بعد ثلاثة طلبات في 24 ساعة — بالجهاز وبالرقم تليفون
