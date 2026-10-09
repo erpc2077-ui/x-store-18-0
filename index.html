@@ -2715,7 +2715,7 @@ window.REVIEWS = [
     $$('a[href^="https://wa.me/"]:not(.fs-wa)').forEach((a) => { a.href = "https://wa.me/" + waNumber(); });
     $$(".foot-col a[href^='https://wa.me/']").forEach((a) => { if (/^\+?\d/.test(a.textContent.trim())) a.textContent = fmtPhone(INFO.phone); });
     const fol = $("#social .section-head p"); if (fol) fol.textContent = INFO.followers;
-    const sub = $("#shop .section-head p"); if (sub) sub.textContent = INFO.shopSub;
+    const sub = $("#shop .section-head p"); if (sub) sub.textContent = String(INFO.shopSub || "").replace(/\+100 منتج/g, "+" + (window.PRODUCTS ? window.PRODUCTS.length : 0) + " منتج");
     I18N.ar.heroBadge = INFO.heroBadge; I18N.ar.heroDesc = INFO.heroDesc; I18N.ar.footDesc = INFO.footDesc;
     applyLang(lang);
   };
@@ -3701,9 +3701,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const o = orderById(od.dataset.od);
       if (!o) return;
       /* From the bin there is nothing left but the permanent goodbye.
-         Everywhere else the rule stays: an order only reaches the bin after
-         it was cancelled — the cancellation is what returned the stock, and
-         the bin itself never touches stock. */
+         Outside the bin the delete moves the order straight to the bin: if it
+         was not cancelled yet, the same cancellation path returns the stock
+         first — the bin itself never touches stock. */
       if (adminTab === "bin") {
         if (!confirm("حذف الطلب " + o.id + " نهائياً من سلة المهملات؟ ما يرجعلش أبداً.")) return;
         try {
@@ -3714,15 +3714,26 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         } catch (err) { toast("تعذّر الحذف: " + (err.code || err.message)); }
         return;
       }
-      if (o.status !== "cancelled") {
-        toast("الحذف يكون بعد ما يلغى الطلب — الكمية ترجع للمخزون قبل الحذف.");
-        return;
-      }
-      if (!confirm("ينقل الطلب " + o.id + " إلى سلة المهملات؟ نقدر نحذفو نهائياً من هناك.")) return;
+      /* الحذف ينقل مباشرة من أي حالة: إذا الطلب ما كانش ملغي، الكمية ترجع
+         للمخزون في نفس الخطوة (نفس منطق الإلغاء) — الطلب يغيب من الطلبات
+         ويبان في سلة المهملات، والمخزون ما يضيعش ولا يترجع مرتين. */
+      const wasCancelled = o.status === "cancelled";
+      if (!confirm(wasCancelled
+        ? "ينقل الطلب " + o.id + " إلى سلة المهملات؟ نقدر نحذفو نهائياً من هناك."
+        : "حذف الطلب " + o.id + "؟ الكمية ترجع للمخزون وينقل إلى سلة المهملات.")) return;
       try {
-        await updateOrder(o.id, { binned: true });
+        let note = "";
+        if (!wasCancelled) {
+          const g = await giveStockBack(o);
+          o.status = "cancelled";
+          note = g.again ? " · الكمية رجعات من قبل" : g.n ? " · رجعت " + g.n + " قطعة للمخزون" : "";
+          if (g.unmarked && g.n) note += " · ⚠ ما تسجلش الرجوع — لا ترجع مرة أخرى";
+        }
+        const patch = { binned: true };
+        if (!wasCancelled) patch.status = "cancelled";
+        await updateOrder(o.id, patch);
         o.binned = true;
-        toast("انتقل إلى سلة المهملات", true);
+        toast("انتقل إلى سلة المهملات" + note, true);
         redrawOrders();
       } catch (err) { toast("تعذّر الحذف: " + (err.code || err.message)); }
     }
@@ -3766,7 +3777,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<a class="xw-btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/213' + esc(String(c.phone).replace(/^0/, "")) + '">واتساب</a>' +
       (logged && !cancelled ? '<button class="xw-btn ghost sm" data-ob="' + esc(o.id) + '">↩ رجوع للطلبات</button>' : "") +
       (logged && !cancelled ? '<button class="xw-btn ghost sm" data-rate="' + esc(o.id) + '">⭐ اسمح للتقييم</button>' : "") +
-      (cancelled ? '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف</button>' : "") + "</div></div>";
+      (cancelled ? '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف</button>' : '<button class="xw-btn danger sm" data-od="' + esc(o.id) + '">حذف (ترجع الكمية)</button>') + "</div></div>";
   };
   /* pulls the orders once and refreshes both tab labels */
   const loadOrders = async (body) => {
@@ -4314,14 +4325,16 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (!o) { toast("ما لقيتش هذا الطلب."); return; }
     const was = o.status || "new";
     if (was === next) return;
-    /* saying it saved when it did not is the one thing worth spending lines
-       on here: updateOrder keeps its patch in localStorage when the cloud is
-       gone, and silently does nothing if the order is not in that list. A
-       change the owner cannot keep is worse than a refusal. */
-    if (!(db && online)) { toast("ما كاينش اتصال بالقاعدة — ما تحفظتش. عاود التحديث ملي يربط."); redrawOrders(); return; }
+    /* الحالة تُحفظ فوراً مثل المتابعة: سحابة أولاً، وإن ما استجابتش يُحفظ على
+       الهاتف مع تنبيه صريح. «مؤكد» ينقل الطلب إلى سجل الطلبات، و«ملغي» يرجّع
+       الكمية للمخزون — وحتى لو السحابة غايبة، الطلب ما يبقاش معلّق في الطلبات. */
     o.status = next;
+    let localOnly = !(db && online);
     try { await updateOrder(id, { status: next }); }
-    catch (e) { o.status = was; toast("ما نجّمتش نحفظ الحالة: " + (e && (e.message || e.code) || e)); redrawOrders(); return; }
+    catch (e) {
+      localOnly = true;
+      try { const l = lsGet("xw-orders", []); const lo = l.find((x) => x.id === id); if (lo) lo.status = next; lsSet("xw-orders", l); } catch (e2) {}
+    }
     let note = "";
     if (next === "cancelled" && was !== "cancelled") {
       try {
@@ -4336,7 +4349,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         redrawOrders(); return;
       }
     }
-    toast((XW_STATUS[next] || next) + note + (next !== "new" ? " — انتقل إلى سجل الطلبات" : ""), next === "cancelled");
+    toast((XW_STATUS[next] || next) + note + (next !== "new" ? " — انتقل إلى سجل الطلبات" : "") + (localOnly ? " — حُفظت على هذا الهاتف فقط (السحابة ما استجابتش)." : ""), next === "cancelled" || localOnly);
     redrawOrders();
   };
   /* حالة المتابعة: النقر على مربع يسجل كيف كان الاتصال بالزبون — مصير الطلب
