@@ -3671,7 +3671,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (fv) {
       const card = fv.closest("[data-oid]");
       if (!card) return;
-      await setOrderFollow(card.dataset.oid, fv.dataset.fv);
+      await setOrderFollow(card.dataset.oid, fv.dataset.fv, card);
       return;
     }
     const rta = e.target.closest("[data-rate]");
@@ -4341,19 +4341,24 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   };
   /* حالة المتابعة: النقر على مربع يسجل كيف كان الاتصال بالزبون — مصير الطلب
      يبقى بيد قائمة الحالة فوق، وهذا المحور ما يحوّلش طلب ولا يمس المخزون.
-     نفس بوّابة الحفظ مثل حالة الطلب: بدون قاعدة بيانات متصلة يكون الرفض
-     صريح، لأن حفظ ما يوصلكش للسحابة كذب صامت. */
-  const setOrderFollow = async (id, next) => {
+     الحفظ يتّم فوراً حتى لو السحابة غير متصلة (يُخزَّن على الهاتف ويُقال بصراحة)،
+     والوسم يتحدث في مكانه دون إعادة رسم — النقر ما يرجّعكش لأول اللائحة،
+     والطلب يلقاه فلتر المتابعة في سجل الطلبات مهما كانت حالته. */
+  const setOrderFollow = async (id, next, card) => {
     const o = orderById(id);
     if (!o) return;
     const was = o.follow || "new";
     if (was === next) return;
-    if (!(db && online)) { toast("ما كاينش اتصال بالقاعدة — ما تحفظتش حالة المتابعة. عاود التحديث ملي يربط."); redrawOrders(); return; }
+    const w = XW_FOLLOW[next] || next;
     o.follow = next;
+    let localOnly = !(db && online);
     try { await updateOrder(id, { follow: next }); }
-    catch (e) { o.follow = was; toast("ما نجّمتش نحفظ حالة المتابعة: " + (e && (e.message || e.code) || e)); redrawOrders(); return; }
-    toast("حالة المتابعة: " + (XW_FOLLOW[next] || next), true);
-    redrawOrders();
+    catch (e) {
+      localOnly = true;
+      try { const l = lsGet("xw-orders", []); const lo = l.find((x) => x.id === id); if (lo) lo.follow = next; lsSet("xw-orders", l); } catch (e2) {}
+    }
+    toast(localOnly ? w + " — حُفظت على هذا الهاتف فقط (السحابة ما استجابتش)." : "حالة المتابعة: " + w, localOnly);
+    if (card && card.querySelectorAll) card.querySelectorAll(".xw-fb").forEach((p) => p.classList.toggle("on", p.dataset.fv === next));
   };
   /* the select the card already drew, now with somebody listening */
   adminEl.addEventListener("change", async (e) => {
