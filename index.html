@@ -521,6 +521,9 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .cart-total span { color: var(--muted); font-size: 15px; }
 .cart-total b { font-family: var(--what-font); font-size: 20px; color: var(--accent); }
+.cart-disc { display: flex; justify-content: space-between; align-items: center; margin: -4px 0 14px; }
+.cart-disc span { color: var(--muted); font-size: 13px; }
+.cart-disc b { font-family: var(--what-font); font-size: 15px; color: var(--success); }
 
 /* ============ Search ============ */
 .search-overlay { position: fixed; inset: 0; z-index: 175; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); display: flex; align-items: flex-start; justify-content: center; padding: 12vh 20px 20px; opacity: 0; visibility: hidden; transition: all .3s ease; }
@@ -2047,6 +2050,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
       </div>
     </div>
     <div class="cd-foot" id="cartFoot">
+      <div class="cart-disc" id="cartDisc" hidden><span>خصم العرض 🔥</span><b id="cartDiscV">0 دج</b></div>
       <div class="cart-total"><span>المجموع</span><b id="cartTotal">0 دج</b></div>
       <button class="btn btn-primary w100" id="checkoutBtn">إتمام الطلب</button>
     </div>
@@ -2303,7 +2307,7 @@ window.REVIEWS = [
   /* ---------- Cart ---------- */
   let cart = JSON.parse(localStorage.getItem("w16-cart") || "[]");
   const drawer = $("#cartDrawer"), drawerOverlay = $("#drawerOverlay");
-  const cartBody = $("#cartBody"), cartFoot = $("#cartFoot"), cartTotal = $("#cartTotal");
+  const cartBody = $("#cartBody"), cartFoot = $("#cartFoot"), cartTotal = $("#cartTotal"), cartDisc = $("#cartDisc"), cartDiscV = $("#cartDiscV");
 
   const saveCart = () => {
     localStorage.setItem("w16-cart", JSON.stringify(cart));
@@ -2374,15 +2378,26 @@ window.REVIEWS = [
       return;
     }
     cartFoot.style.display = "block";
+    let xwSub = 0, xwSaved = 0;
     cart.forEach((ci, idx) => {
       const p = findProduct(ci.id);
       if (!p) return;
+      /* نفس قاعدة عروض الكميات في شاشة الدفع: قطعتان تأخذان «سعر شراء 2»،
+         و3 أو أكثر تأخذ «سعر شراء 3» — كي السلة تعرض نفس السعر اللي يخلصه الزبون */
+      const pr = Math.max(0, Number(p.price) || 0), q2 = Math.max(0, Number(p.price2) || 0), q3 = Math.max(0, Number(p.price3) || 0);
+      const base = sellPrice(p);
+      let unit = base, lineSave = 0;
+      if (ci.qty >= 3) { const u = q3 > 0 ? q3 : q2; if (u > 0 && u < pr) { lineSave = (pr - u) * ci.qty; unit = Math.max(0, base - (pr - u)); } }
+      else if (ci.qty === 2) { if (q2 > 0 && q2 < pr) { lineSave = (pr - q2) * ci.qty; unit = Math.max(0, base - (pr - q2)); } }
+      const strike = discOn(p) ? listPrice(p) : base;
+      xwSub += base * ci.qty;
+      xwSaved += lineSave;
       const row = document.createElement("div");
       row.className = "cart-item";
       row.innerHTML =
         '<img class="ci-img" src="' + esc(cld(p.img, 260)) + '" alt=""' + IMG_ATTR + ' width="260" height="260" loading="lazy">' +
         '<div class="ci-info"><div class="ci-name">' + esc(p.name) + '</div>' +
-        '<div class="ci-price">' + fmt(sellPrice(p)) + (discOn(p) ? ' <s>' + fmt(listPrice(p)) + "</s>" : "") + ' دج</div>' +
+        '<div class="ci-price">' + fmt(unit) + (unit < strike ? ' <s>' + fmt(strike) + "</s>" : "") + ' دج</div>' +
         '<div class="ci-qty"><button data-act="minus" data-i="' + idx + '">−</button><b>' + ci.qty + '</b><button data-act="plus" data-i="' + idx + '">+</button></div></div>' +
         '<button class="ci-del" data-act="del" data-i="' + idx + '" aria-label="حذف"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>';
       row.querySelectorAll("[data-act]").forEach((btn) => {
@@ -2402,8 +2417,10 @@ window.REVIEWS = [
       });
       cartBody.appendChild(row);
     });
-    const total = cart.reduce((a, i) => a + (findProduct(i.id)?.price || 0) * i.qty, 0);
-    cartTotal.textContent = fmt(total) + " دج";
+    xwSaved = Math.min(xwSaved, xwSub);
+    cartTotal.textContent = fmt(xwSub - xwSaved) + " دج";
+    cartDisc.hidden = !(xwSaved > 0);
+    if (xwSaved > 0) cartDiscV.textContent = "−" + fmt(xwSaved) + " دج";
   };
 
   const openDrawer = () => { document.body.classList.add("cart-open"); renderCart(); };
