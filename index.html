@@ -772,6 +772,21 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 }
 @keyframes xwDrop { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.09); } }
 .xw-desc { margin: 14px 0; color: var(--muted); line-height: 1.9; font-size: 15px; white-space: pre-line; }
+/* وصف مختصر تحت السعر مباشرة، والوصف الكامل ينزل تحت عند الطلب */
+.xw-bun { margin: 16px 0 0; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: 14px; }
+.xw-bun h4 { margin: 0 0 8px; font-size: 14px; }
+.xw-bun ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.xw-bun li { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+.xw-bun li img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1px solid var(--line); }
+.xw-bun li span { flex: 1; min-width: 0; }
+.xw-bun li b { color: #FF6B00; font-family: var(--what-font); }
+.pbun { display: inline-block; margin: 2px 0 0 6px; font-size: 11px; font-weight: 700; color: #FF6B00; }
+.xw-short { margin: 10px 0 0; color: var(--ink); opacity: .85; font-size: 14px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.xw-more { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; border: 1px dashed var(--line-2); background: transparent; color: #FF6B00; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+.xw-more i { font-style: normal; display: inline-block; transition: transform .25s ease; }
+.xw-more[aria-expanded="true"] i { transform: rotate(180deg); }
+.xw-descwrap { overflow: hidden; max-height: 0; opacity: 0; transition: max-height .35s ease, opacity .25s ease; }
+.xw-descwrap.open { max-height: 4000px; opacity: 1; }
 .xw-pbtns { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; position: sticky; bottom: 0; z-index: 6; background: var(--card); padding-top: 8px; }
 .xw-pbtns .xw-btn { flex: 1; min-width: 130px; }
 
@@ -1713,7 +1728,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
         <ul class="nav-menu">
           <li><a href="#home" class="nav-link active">الرئيسية</a></li>
           <li><a href="#shop" class="nav-link">المتجر</a></li>
-          <li><a href="#categories" class="nav-link">الفئات</a></li>
+          <li><a href="#products" class="nav-link">العروض المجمعة</a></li>
           <li><a href="#reviews" class="nav-link">آراء الزبائن</a></li>
         </ul>
       </div>
@@ -1769,7 +1784,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
     <div class="mm-logo"><img data-logo src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="X Store" /><span class="nav-word">X<b> STORE</b></span></div>
     <a href="#home" class="mm-link">الرئيسية</a>
     <a href="#shop" class="mm-link">المتجر</a>
-    <div class="mm-cat-row"><a href="#categories" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▼</button></div>
+    <div class="mm-cat-row"><a href="#shop" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▼</button></div>
     <ul class="mm-cats" id="mmCats" hidden></ul>
     <a href="#reviews" class="mm-link">آراء الزبائن</a>
     <div class="mm-lang"><a href="#" data-lang="en">English</a><a href="#" class="active" data-lang="ar">العربية</a></div>
@@ -1802,28 +1817,28 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
           <p class="hero-desc" data-i18n="heroDesc">مراوح تبريد، سماعات قيمنغ، قفازات أصابع وشواحن مصممة للاعبي الموبايل. توصيل سريع لكل الجزائر.</p>
           <div class="hero-ctas">
             <a href="#shop" class="btn btn-primary" data-i18n="explore">استكشف المتجر</a>
-            <a href="#products" class="btn btn-ghost" data-i18n="dealsBtn">عرض العروض</a>
+            <a href="#products" class="btn btn-ghost" data-i18n="dealsBtn">العروض المجمعة</a>
           </div>
         </div>
 
         <div class="hero-visual" id="heroVis">
           <span class="disc"></span>
-          <a href="#categories" class="hcard hcard-1">
+          <a href="#products" class="hcard hcard-1">
             <img src="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_500,h_300/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778504512712-ff9r97z4.jpg" alt="مروحة تبريد" />
             <h3>مراوح تبريد</h3>
           </a>
-          <a href="#categories" class="hcard hcard-2">
+          <a href="#products" class="hcard hcard-2">
             <img src="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_500,h_300/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778755553695-q4zwo34s.webp" alt="قفازات أصابع" />
             <h3>قفازات أصابع</h3>
           </a>
-          <a href="#categories" class="hcard hcard-3">
+          <a href="#products" class="hcard hcard-3">
             <img src="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_500,h_300/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1779042446139-2ok8djht.jpg" alt="سماعات قيمنغ" />
             <h3>سماعات قيمنغ</h3>
           </a>
         </div>
       </div>
 
-      <a href="#categories" class="scroll-hint">
+      <a href="#shop" class="scroll-hint">
         <span data-i18n="exploreGear">اكتشف المعدات</span>
         <span class="scroll-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
       </a>
@@ -1860,13 +1875,12 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
       <div class="more-wrap" id="moreWrap"></div>
     </section>
 
-    <!-- p59 - ماذا نقدم: أول قسم تحت المنتجات مباشرة -->
-    <section id="categories" class="section cats">
+    <!-- العروض المجمعة: الباقات التي تُنشأ من تبويب «إنشاء باقة» في الإدارة (مكان قسم «ماذا نقدم» سابقاً) -->
+    <section id="products" class="section deals">
       <div class="section-head">
-        <h2 data-i18n="whatWeOffer">ماذا نقدم</h2>
-        <p class="faint">اختر فئتك المفضلة وارتقِ بمستوى لعبك</p>
+        <h2 data-i18n="hotDeals">العروض المجمعة</h2>
       </div>
-      <div class="cats-grid" id="catsGrid"></div>
+      <div class="deal-grid" id="dealGrid"></div>
     </section>
 
     <!-- p54 - أضف تقييمك بعد الشراء (مع عدد التقييمات): القسم اللي يجي مباشرة بعد ماذا نقدم -->
@@ -1900,14 +1914,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
         </form>
         <p class="rate-err" id="rateErr"></p>
       </div>
-    </section>
-
-    <!-- Hot deals -->
-    <section id="products" class="section deals">
-      <div class="section-head">
-        <h2 data-i18n="hotDeals">عروض ساخنة</h2>
-      </div>
-      <div class="deal-grid" id="dealGrid"></div>
     </section>
 
     <!-- Reviews -->
@@ -2027,7 +2033,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
         <h4 data-i18n="shopCol">المتجر</h4>
         <ul>
           <li><a href="#shop">المتجر</a></li>
-          <li><a href="#categories">الفئات</a></li>
+          <li><a href="#products">العروض المجمعة</a></li>
           <li><a href="#products">العروض الحصرية</a></li>
         </ul>
       </div>
@@ -2215,14 +2221,14 @@ window.REVIEWS = [
       orders: "سجل الطلبات", cart: "السلة", shopNow: "تسوق الآن",
       heroBadge: "متخصصون في قيمنغ الموبايل · الجزائر",
       heroDesc: "مراوح تبريد، سماعات قيمنغ، قفازات أصابع وشواحن مصممة للاعبي الموبايل. توصيل سريع لكل الجزائر.",
-      explore: "استكشف المتجر", dealsBtn: "عرض العروض",
+      explore: "استكشف المتجر", dealsBtn: "العروض المجمعة",
       allProducts: "عرض كل المنتجات",
       f1: "توصيل سريع", f1d: "شحن ZR Xpress لكل ولاية — معداتك تصل إلى باب بيتك خلال أيام.",
       f2: "معاملات آمنة", f2d: "مدفوعات آمنة 100% مشفرة لراحة بالك.",
       f3: "منتجات أصيلة", f3d: "نحن موزعون معتمدون لجميع ماركات الألعاب الكبرى.",
       f4: "دعم على مدار الساعة", f4d: "فريقنا دائماً هنا لمساعدتك، ليلاً ونهاراً.",
       whatWeOffer: "ماذا نقدم", featured: "المنتجات المميزة",
-      hotDeals: "عروض ساخنة", whatGamersSay: "آراء الزبائن", rateTitle: "أضف تقييمك بعد الشراء", polTitle: "سياسات المتجر",
+      hotDeals: "العروض المجمعة", whatGamersSay: "آراء الزبائن", rateTitle: "أضف تقييمك بعد الشراء", polTitle: "سياسات المتجر",
       footDesc: "معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.",
       shopCol: "المتجر", supportCol: "الدعم", exploreGear: "اكتشف المعدات"
     },
@@ -2230,14 +2236,14 @@ window.REVIEWS = [
       orders: "Order History", cart: "Cart", shopNow: "Shop Now",
       heroBadge: "Mobile gaming experts · Algeria",
       heroDesc: "Cooling fans, gaming earphones, finger sleeves and chargers built for mobile players. Fast delivery across Algeria.",
-      explore: "Explore the store", dealsBtn: "View deals",
+      explore: "Explore the store", dealsBtn: "Bundle deals",
       allProducts: "View all products",
       f1: "Fast Delivery", f1d: "ZR Xpress shipping to every wilaya — your gear arrives at your door in days.",
       f2: "Secure Payments", f2d: "100% encrypted secure payments for peace of mind.",
       f3: "Authentic Products", f3d: "Authorized distributors for all major gaming brands.",
       f4: "24/7 Support", f4d: "Our team is always here to help, day and night.",
       whatWeOffer: "What we offer", featured: "Featured Products",
-      hotDeals: "Hot Deals", whatGamersSay: "What gamers say", rateTitle: "Rate us after your purchase", polTitle: "Store policies",
+      hotDeals: "Bundle Deals", whatGamersSay: "What gamers say", rateTitle: "Rate us after your purchase", polTitle: "Store policies",
       footDesc: "Mobile gaming gear in Algeria. Cooling fans, earphones, finger sleeves and chargers — fast delivery, prices in Dinar.",
       shopCol: "Shop", supportCol: "Support", exploreGear: "Discover the gear"
     }
@@ -2754,7 +2760,9 @@ window.REVIEWS = [
   let HERO_ORIG = "";
   const grabHero = () => { const b = document.getElementById("heroVis"); if (b && !HERO_ORIG) HERO_ORIG = b.innerHTML; };
   const heroCard = (c, i) =>
-    '<a href="' + esc(c.href || "#categories") + '" class="hcard hcard-' + (i + 1) + '">' +
+    (c.href && c.href !== "#categories"
+      ? '<a href="' + esc(c.href) + '" class="hcard hcard-' + (i + 1) + '">'
+      : '<a href="#products" class="hcard hcard-' + (i + 1) + '">') +
     '<img src="' + esc(cld(c.img, 500, 300)) + '" alt="' + esc(c.title || "") + '" width="500" height="300"' +
     (i ? ' loading="lazy"' : ' fetchpriority="high"') + ' decoding="async">' +
     (c.title ? "<h3>" + esc(c.title) + "</h3>" : "") + "</a>";
@@ -2993,14 +3001,43 @@ window.REVIEWS = [
   /* منتج واحد يوقف على أكثر من رف: p.cat صار مصفوفة لكل ما يُحفظ من الآن،
      واسم وحيد لكل ما حُفظ قبل هذه السطرة — وكل قائمة تحت تسأل هاذين الاثنتين،
      ما تسألش الحقل بوحدو. هكذا يدخل الزبون للمنتج من أي فئة هو فيها. */
-  const pCats = (p) => (Array.isArray(p.cat) ? p.cat : p.cat ? [p.cat] : []);
+  const pCats = (p) => (Array.isArray(p.cat) ? p.cat : p.cat ? [p.cat] : []).filter((n) => n !== "الباكات");
   const hasCat = (p, name) => !!name && pCats(p).indexOf(name) >= 0;
+  /* العرض: الفئة الأولى فقط (اللي اختارها الأدمن أولاً) تظهر على بطاقة المنتج وصفحته.
+     أما الدخول للمنتج من أي فئة من فئاته فيبقى يخدم عبر hasCat. */
+  const mainCat = (p) => pCats(p)[0] || "";
+  const catLabel = (p) => (isBundle(p) ? "🎁 باقة من " + p.bundle.length + " منتجات" : mainCat(p));
+  /* الوصف المختصر: اللي كتبه الأدمن في خانة «وصف مختصر»، وإلا نقتطع تلقائياً أول جملة من الوصف */
+  const bundleHTML = (p) => {
+    const rows = p.bundle.map((b) => { const x = findProduct(b.id); return x ? '<li><img src="' + esc(cld(x.img, 120, 120)) + '" width="44" height="44" loading="lazy" alt=""><span>' + esc(x.name) + "</span>" + (b.qty > 1 ? "<b>× " + b.qty + "</b>" : "") + "</li>" : ""; }).join("");
+    return rows ? '<div class="xw-bun"><h4>🎁 محتويات الباقة</h4><ul>' + rows + "</ul></div>" : "";
+  };
+  const shortDesc = (p) => {
+    const own = String(p.short || "").trim();
+    if (own) return own;
+    const d = String(p.desc || "").replace(/\s+/g, " ").trim();
+    if (!d) return "";
+    if (d.length <= 110) return d;
+    const m = d.slice(0, 130).match(/^(.{40,120}?[.!؟?،،])(\s|$)/);
+    if (m) return m[1];
+    const cut = d.slice(0, 110), sp = cut.lastIndexOf(" ");
+    return (sp > 60 ? cut.slice(0, sp) : cut) + "…";
+  };
   /* p56 - a category is a category the moment the owner writes it down.
      This used to end with a filter that kept only the names some product
      already used, so a new category stayed invisible exactly until the
      moment it stopped mattering. The three lists below now show every
      name, and the shop says so plainly when one of them is still empty. */
+  /* ---------- العروض المجمعة: الباقة منتج له bundle (قائمة منتجات)، وتظهر في قسمها لا في فئة ---------- */
+  const isBundle = (p) => !!(p && Array.isArray(p.bundle) && p.bundle.length);
+  /* فئة «الباكات» ألغيت: أي أثر لها قديم يُحذف من القائمة ومن فئات المنتجات */
+  const OLD_BUNDLE_CAT = "الباكات";
+  const dropBundleCat = () => {
+    if (Array.isArray(window.CATEGORIES) && window.CATEGORIES.some((c) => c && (c.id === "bundles" || c.name === OLD_BUNDLE_CAT)))
+      window.CATEGORIES = window.CATEGORIES.filter((c) => !(c && (c.id === "bundles" || c.name === OLD_BUNDLE_CAT)));
+  };
   const tabCats = () => {
+    dropBundleCat();
     const names = window.CATEGORIES.map((c) => c.name);
     window.PRODUCTS.forEach((p) => pCats(p).forEach((n) => { if (names.indexOf(n) < 0) names.push(n); }));
     return names.filter((n) => !!n);
@@ -3111,7 +3148,7 @@ window.REVIEWS = [
     return (
       '<article class="pcard' + (out ? " out" : "") + '" data-reveal="zoom" data-id="' + esc(p.id) + '">' +
       '<div class="pimg"' + open + '>' + tmr + tag + imgTag(p.img, 640, [320, 640, 960], ' loading="lazy" alt="' + esc(p.name) + '" width="600" height="600"', { h: 600, sizes: CARD_SIZES, hi: i === 0 }) + "</div>" +
-      '<div class="pbody"><span class="pcat">' + esc(pCats(p).join(" · ")) + "</span>" +
+      '<div class="pbody"><span class="pcat">' + esc(catLabel(p)) + "</span>" +
       '<h3 class="pname"' + open + '>' + esc(p.name) + "</h3>" + rate + stock +
       '<div class="pbottom"><div class="pprice"><span class="pnow' + (lp ? " fire" : "") + '">' + fmt(sp) + "</span>" + old + "</div>" +
       '<div class="pacts"><button class="add-btn" data-add="' + esc(p.id) + '"' + dis + ">" + CART_SVG + '<span class="txt">أضف للسلة</span></button>' +
@@ -3128,7 +3165,8 @@ window.REVIEWS = [
     $("#shopTabs").innerHTML = ["all"].concat(cats).map((c) => '<button class="tab' + (c === shopFilter ? " active" : "") + '" data-tab="' + esc(c) + '">' + (c === "all" ? "الكل" : esc(c)) + "</button>").join("");
   };
   const renderProducts = () => {
-    const list = shopFilter === "all" ? window.PRODUCTS : window.PRODUCTS.filter((p) => hasCat(p, shopFilter));
+    const shopAll = window.PRODUCTS.filter((p) => !isBundle(p));
+    const list = shopFilter === "all" ? shopAll : shopAll.filter((p) => hasCat(p, shopFilter));
     /* p56 - an empty category used to leave a bare grid, which reads as a
        broken page. It says what is true, and offers the way back. */
     prodGrid.innerHTML = list.length
@@ -3139,15 +3177,18 @@ window.REVIEWS = [
     $("#moreWrap").innerHTML = rest > 0 ? '<button class="btn btn-ghost" id="moreBtn">عرض المزيد (' + rest + ")</button>" : "";
   };
   const renderDeals = () => {
-    const deals = window.PRODUCTS.filter(discOn).slice(0, 3);
+    const deals = window.PRODUCTS.filter(isBundle);
     dealGrid.innerHTML = deals.map((p) => cardHTML(p, -1).replace('class="ptag hot"', 'class="ptag hot-live"')).join("");
     $("#products").style.display = deals.length ? "" : "none";
+    /* لا باقات = لا زر «العروض المجمعة» في الواجهة */
+    $$('[data-i18n="dealsBtn"]').forEach((b) => { b.style.display = deals.length ? "" : "none"; });
   };
   const renderCats = () => {
     const base = window.CATEGORIES.slice();
     tabCats().forEach((n) => { if (!base.some((c) => c.name === n)) base.push({ name: n, desc: "", icon: "🏷️" }); });
     const catN = (name) => window.PRODUCTS.filter((p) => hasCat(p, name)).length;
-    $("#catsGrid").innerHTML = base.map((c) =>
+    const cg = $("#catsGrid");
+    if (cg) cg.innerHTML = base.map((c) =>
       '<a href="#shop" class="cat-card" data-cat="' + esc(c.name) + '" data-reveal>' +
       '<div class="cat-ico">' + c.icon + "</div>" +
       '<div class="cat-body"><h3>' + esc(c.name) + "</h3><p>" + esc(c.desc) + "</p>" +
@@ -3248,15 +3289,17 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       (imgs.length > 1 ? '<button class="xw-gal-nav prev" id="xwGalPrev" aria-label="السابق">‹</button><button class="xw-gal-nav next" id="xwGalNext" aria-label="التالي">›</button>' : "") +
       (imgs.length > 1 ? '<span class="xw-gal-dots" id="xwGalDots">' + imgs.map((_, i) => '<i class="' + (i ? "" : "on") + '"></i>').join("") + "</span>" : "") + "</div>" +
       (imgs.length > 1 ? '<div class="xw-thumbs">' + imgs.map((u, i) => '<img data-gi="' + i + '" class="' + (i ? "" : "on") + '" src="' + esc(cld(u, 180, 180)) + '" alt=""' + IMG_ATTR + ' width="180" height="180" loading="lazy">').join("") + "</div>" : "") + "</div>" +
-      '<div class="xw-pinfo">' + tagsHTML(p) + '<span class="pcat">' + esc(pCats(p).join(" · ")) + "</span><h2>" + esc(p.name) + "</h2>" +
+      '<div class="xw-pinfo">' + tagsHTML(p) + '<span class="pcat">' + esc(catLabel(p)) + "</span><h2>" + esc(p.name) + "</h2>" +
       '<div class="xw-price' + (lp ? " fire" : "") + '">' + fmt(sp) + " دج" + (lp ? "<s>" + fmt(lp) + " دج</s>" : "") + (lp ? '<em class="pdrop">-' + discPct(p) + "%</em>" : "") + "</div>" +
       (discTagged(p) ? '<div class="ptimer line" data-cd="' + esc(p.id) + '">⏳ ينتهي الخصم بعد <b>' + fmtLeft(discLeft(p)) + "</b></div>" : "") +
       (typeof p.stock === "number" ? '<div class="pstock ' + (p.stock <= 0 ? "out" : p.stock <= 5 ? "low" : "") + '" style="margin-top:8px">' + (p.stock <= 0 ? "نفد المخزون" : "الكمية المتوفرة: " + p.stock) + "</div>" : "") +
+      (shortDesc(p) ? '<p class="xw-short">' + esc(shortDesc(p)) + "</p>" : "") +
       /* الزرين يوقفو مباشرة تحت السعر: الزبون يشوف «اشترِ الآن» أول ما يدخل،
          والوصف (المواصفات) يبقى تحتهم فيقرأ من أراد بعد ما شاف الثمن */
       '<div class="xw-pbtns"><button class="xw-btn ghost" data-add="' + esc(p.id) + '"' + dis + ">" + CART_SVG.replace("<svg ", '<svg width="18" height="18" ') + " أضف للسلة</button>" +
       '<button class="xw-btn" data-buy="' + esc(p.id) + '"' + dis + ">اشترِ الآن</button></div>" +
-      (p.desc ? '<p class="xw-desc">' + esc(p.desc) + "</p>" : '<div style="height:14px"></div>') + "</div></div>";
+      (isBundle(p) ? bundleHTML(p) : "") +
+      (p.desc ? '<button type="button" class="xw-more" data-more aria-expanded="false" aria-controls="xwDescFull"><span>عرض الوصف الكامل</span><i>▾</i></button><div class="xw-descwrap" id="xwDescFull"><p class="xw-desc">' + esc(p.desc) + "</p></div>" : '<div style="height:14px"></div>') + "</div></div>";
     const show = (i) => {
       i = (i + imgs.length) % imgs.length;
       $("#xwGMain").src = cld(imgs[i], 960);
@@ -3270,6 +3313,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const start = () => { stop(); if (imgs.length > 4) galTimer = setInterval(() => { cur = show(cur + 1); }, 2600); };
     stop();
     $("#xwProductBox").onclick = (e) => {
+      const mb = e.target.closest("[data-more]");
+      if (mb) {
+        const w = $("#xwDescFull"), on = !w.classList.contains("open");
+        w.classList.toggle("open", on); mb.setAttribute("aria-expanded", on ? "true" : "false");
+        mb.firstElementChild.textContent = on ? "إخفاء الوصف" : "عرض الوصف الكامل";
+        if (on) setTimeout(() => { try { w.scrollIntoView({ behavior: "smooth", block: "nearest" }); } catch (x) {} }, 120);
+        return;
+      }
       const t = e.target.closest("[data-gi]");
       if (t) { stop(); cur = show(+t.dataset.gi); start(); return; }
       if (e.target.closest("#xwGalPrev")) { stop(); cur = show(cur - 1); start(); return; }
@@ -3731,7 +3782,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing && !isBundle(findProduct(editing)) ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundle", editing && isBundle(findProduct(editing)) ? "✏️ تعديل باقة" : "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -3745,11 +3796,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, bundle: tabBundle, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
-    if (at) { if (at.dataset.at === "form" && adminTab !== "form") { editing = null; formImgs = []; } if (at.dataset.at !== "form") editing = null; adminTab = at.dataset.at; renderAdmin(); return; }
+    if (at) { if ((at.dataset.at === "form" || at.dataset.at === "bundle") && adminTab !== at.dataset.at) { editing = null; formImgs = []; } if (at.dataset.at !== "form" && at.dataset.at !== "bundle") editing = null; adminTab = at.dataset.at; renderAdmin(); return; }
     if (e.target.closest("#xwExit")) { closeAdmin(); return; }
     if (e.target.closest("#xwRefresh")) { toast("جاري التحديث..."); await loadRemote(); renderAdmin(); return; }
     const gol = e.target.closest("[data-golog]");
@@ -4470,6 +4521,135 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     await setOrderStatus(s.dataset.os, s.value);
   });
   /* ----- Products list ----- */
+  /* ---------- إنشاء باقة: منتج واحد يجمع عدة منتجات بسعر واحد، ويظهر في فئة «الباكات» ---------- */
+  const tabBundle = () => {
+    const p = editing ? findProduct(editing) : null;
+    if (editing && !p) { editing = null; }
+    const sel = {};
+    if (p && isBundle(p)) p.bundle.forEach((b) => { if (b && b.id) sel[b.id] = Math.max(1, Math.floor(Number(b.qty) || 1)); });
+    const pool = () => window.PRODUCTS.filter((x) => !isBundle(x) && (!p || x.id !== p.id));
+    $("#xwBody").innerHTML =
+      '<form class="xw-card" id="xwBForm" novalidate style="max-width:760px">' +
+      "<h3>" + (p ? "تعديل الباقة" : "إنشاء باقة جديدة") + "</h3>" +
+      '<p class="xw-note" style="margin:-6px 0 14px">الباقة تظهر في قسم «العروض المجمعة» بالصفحة الرئيسية، وهو الذي يفتحه زر «العروض المجمعة» وبطاقات الواجهة.</p>' +
+      '<div class="xw-field"><label>اسم الباقة <i>*</i></label><input id="bName" value="' + esc(p ? p.name : "") + '" placeholder="مثال: باقة اللاعب المحترف"></div>' +
+      '<div class="xw-field"><label>منتجات الباقة <i>*</i> <small>(اختر منتجين على الأقل من منتجات الموقع، وحدّد كمية كل منتج)</small></label>' +
+      '<input id="bSearch" placeholder="🔍 ابحث عن منتج..." style="margin-bottom:8px">' +
+      '<div id="bList" style="max-height:340px;overflow:auto;border:1px solid var(--line-2);border-radius:12px;padding:0 12px"></div>' +
+      '<div class="xw-note" id="bSum" style="margin-top:8px"></div></div>' +
+      '<div class="xw-row"><div class="xw-field"><label>سعر الباقة (دج) <i>*</i> <small>(السعر الذي يدفعه الزبون)</small></label><input id="bPrice" type="number" min="0" value="' + (p ? (Number(p.price) || "") : "") + '"></div>' +
+      '<div class="xw-field"><label>عدد الباقات المتوفرة <i>*</i></label><input id="bStock" type="number" min="0" value="' + (p && typeof p.stock === "number" ? p.stock : "") + '" placeholder="مثال: 10"></div></div>' +
+      '<div class="xw-note" id="bPriceNote" style="margin:-4px 0 14px"></div>' +
+      '<div class="xw-field"><label>وصف مختصر <small>(سطر أو سطرين تحت السعر — اختياري)</small></label><input id="pShort" maxlength="140" value="' + esc(p ? p.short || "" : "") + '"></div>' +
+      '<div class="xw-field"><label>الوصف الكامل <small>(اتركه فارغاً ويكتب الموقع قائمة محتويات الباقة تلقائياً)</small></label><textarea id="pDesc">' + esc(p ? p.desc || "" : "") + "</textarea></div>" +
+      '<div class="xw-field"><label>صور الباقة <i>*</i> <small>(الأولى هي الرئيسية — حتى 10 صور)</small></label><div class="xw-imgs" id="xwImgs"></div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap"><label class="xw-btn ghost sm" style="cursor:pointer">📷 رفع صور<input type="file" id="pFiles" accept="image/*" multiple hidden></label>' +
+      '<button type="button" class="xw-btn ghost sm" id="bUseImgs">🖼️ استعمل صور المنتجات المختارة</button>' +
+      '<input id="pUrl" placeholder="أو الصق رابط صورة" style="flex:1;min-width:160px;padding:8px 12px;border-radius:10px;border:1px solid var(--line-2);background:var(--fill)"><button type="button" class="xw-btn ghost sm" id="pUrlAdd">إضافة الرابط</button></div>' +
+      '<div class="xw-note" id="pImgNote"></div></div>' +
+      '<div class="xw-err" id="pErr"></div>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="xw-btn" type="submit" id="pSave">' + (p ? "حفظ التعديلات" : "إنشاء الباقة") + "</button>" +
+      (p ? '<button type="button" class="xw-btn ghost" id="pCancel">إلغاء</button>' : "") + "</div></form>";
+    drawImgs();
+    const chosen = () => pool().filter((x) => sel[x.id]);
+    const sumOf = () => chosen().reduce((s, x) => s + sellPrice(x) * sel[x.id], 0);
+    const note = () => {
+      const c = chosen(), sum = sumOf(), price = Number($("#bPrice").value);
+      $("#bSum").textContent = c.length ? "المختار: " + c.length + " منتج · مجموع أسعارها منفردة: " + fmt(sum) + " دج" : "لم تختر أي منتج بعد.";
+      $("#bPriceNote").textContent = price > 0 && sum > 0
+        ? (price < sum ? "الزبون يوفّر " + fmt(sum - price) + " دج (-" + Math.round((1 - price / sum) * 100) + "%) — يظهر كخصم على الباقة." : "سعر الباقة ليس أقل من مجموع المنتجات، فلن يظهر خصم.")
+        : "";
+    };
+    const draw = () => {
+      const q = $("#bSearch").value.trim().toLowerCase();
+      const list = pool().filter((x) => !q || (x.name + " " + pCats(x).join(" ")).toLowerCase().indexOf(q) >= 0);
+      $("#bList").innerHTML = list.length ? list.map((x) =>
+        '<div class="xw-prow"><input type="checkbox" data-bk="' + esc(x.id) + '"' + (sel[x.id] ? " checked" : "") + ' style="width:18px;height:18px;accent-color:#FF6B00">' +
+        '<img src="' + esc(cld(x.img, 120, 120)) + '" width="60" height="60" loading="lazy" decoding="async" alt="">' +
+        '<div class="i"><b>' + esc(x.name) + "</b><span>" + fmt(sellPrice(x)) + " دج" + (typeof x.stock === "number" ? " · المخزون: " + x.stock : "") + "</span></div>" +
+        '<input type="number" min="1" max="99" data-bq="' + esc(x.id) + '" value="' + (sel[x.id] || 1) + '" style="width:64px"' + (sel[x.id] ? "" : " disabled") + ' title="الكمية"></div>').join("") : '<div class="xw-empty">لا توجد منتجات.</div>';
+    };
+    draw(); note();
+    $("#bSearch").addEventListener("input", draw);
+    $("#bPrice").addEventListener("input", note);
+    $("#bList").addEventListener("change", (e) => {
+      const k = e.target.dataset.bk, qk = e.target.dataset.bq;
+      if (k) {
+        if (e.target.checked) sel[k] = 1; else delete sel[k];
+        const qi = $("#bList").querySelector('[data-bq="' + k.replace(/"/g, '\\"') + '"]');
+        if (qi) { qi.disabled = !e.target.checked; qi.value = sel[k] || 1; }
+      } else if (qk) {
+        sel[qk] = Math.min(99, Math.max(1, Math.floor(Number(e.target.value) || 1))); e.target.value = sel[qk];
+      }
+      note();
+    });
+    $("#bUseImgs").addEventListener("click", () => {
+      const nt = $("#pImgNote"); let added = 0;
+      chosen().forEach((x) => {
+        const imgs = (x.images && x.images.length ? x.images : [x.img]).filter(Boolean);
+        if (imgs[0] && formImgs.indexOf(imgs[0]) < 0 && formImgs.length < 10) { formImgs.push(imgs[0]); added++; }
+      });
+      drawImgs(); nt.textContent = added ? "أُضيفت " + added + " صورة من المنتجات المختارة." : "اختر منتجات أولاً (أو أن صورها مضافة من قبل).";
+    });
+    $("#pFiles").addEventListener("change", async (e) => {
+      const files = Array.from(e.target.files); e.target.value = "";
+      const nt = $("#pImgNote");
+      for (const f of files) {
+        if (formImgs.length >= 10) { nt.textContent = "الحد الأقصى 10 صور."; break; }
+        nt.textContent = "جاري رفع الصورة...";
+        try { formImgs.push(await uploadImage(f)); drawImgs(); nt.textContent = ""; } catch (err) { nt.textContent = err.message; }
+      }
+    });
+    $("#pUrlAdd").addEventListener("click", () => {
+      const u = $("#pUrl").value.trim();
+      if (!/^https?:\/\//i.test(u)) { $("#pImgNote").textContent = "الرابط يجب أن يبدأ بـ http"; return; }
+      if (formImgs.length >= 10) { $("#pImgNote").textContent = "الحد الأقصى 10 صور."; return; }
+      formImgs.push(u); $("#pUrl").value = ""; $("#pImgNote").textContent = ""; drawImgs();
+    });
+    $("#xwImgs").addEventListener("click", (e) => {
+      const r = e.target.closest("[data-ir]"), m = e.target.closest("[data-im]");
+      if (r) formImgs.splice(+r.dataset.ir, 1);
+      if (m) formImgs.unshift(formImgs.splice(+m.dataset.im, 1)[0]);
+      drawImgs();
+    });
+    const cancel = $("#pCancel"); if (cancel) cancel.addEventListener("click", () => { editing = null; adminTab = "products"; renderAdmin(); });
+    $("#xwBForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const err = (m) => { const b = $("#pErr"); if (b) b.textContent = m; };
+      const name = $("#bName").value.trim();
+      const items = chosen().map((x) => ({ id: x.id, qty: sel[x.id] }));
+      const price = Number($("#bPrice").value);
+      const stockRaw = $("#bStock").value.trim();
+      if (!name) return err("اكتب اسم الباقة.");
+      if (items.length < 2) return err("اختر منتجين على الأقل لتكوين الباقة.");
+      if (!(price > 0)) return err("اكتب سعر الباقة.");
+      if (stockRaw === "" || Number(stockRaw) < 0) return err("اكتب عدد الباقات المتوفرة.");
+      if (!formImgs.length) return err("أضف صورة واحدة على الأقل.");
+      const sum = sumOf();
+      const old = price < sum ? Math.round(sum * 100) / 100 : undefined;
+      const tagIds = old ? ["discount"] : [];
+      const tag = pTags({ tagIds, old, price, tags: [] }).join("، ");
+      const names = chosen().map((x) => "• " + x.name + (sel[x.id] > 1 ? " × " + sel[x.id] : ""));
+      const desc = $("#pDesc").value.trim() || ("تحتوي الباقة على:\n" + names.join("\n"));
+      const data = { name, cat: [], price, old, tagIds, tags: [], tag, stock: Math.floor(Number(stockRaw)), desc, short: $("#pShort").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: uniqueSlug(name, p ? p.id : null), bundle: items };
+      const btn = $("#pSave"); btn.disabled = true; err("");
+      try {
+        if (p) {
+          const upd = Object.assign({}, p, data);
+          if (!data.old) { delete upd.old; delete upd.discUntil; }
+          if (!data.tag) delete upd.tag;
+          await commitProducts(window.PRODUCTS.map((x) => (x.id === p.id ? upd : x)), upd, null);
+          toast("تم حفظ الباقة", true);
+        } else {
+          const minOrder = window.PRODUCTS.reduce((m, x) => Math.min(m, x.order == null ? 0 : x.order), 0);
+          const np = Object.assign({ id: "p-" + Date.now().toString(36), order: minOrder - 1 }, data);
+          await commitProducts([np].concat(window.PRODUCTS), np, null);
+          toast("تم إنشاء الباقة", true);
+        }
+        editing = null; formImgs = []; renderStore(); adminTab = "products"; renderAdmin();
+      } catch (ex) { btn.disabled = false; err("تعذّر الحفظ: " + (ex.code || ex.message)); }
+    });
+  };
   const tabProducts = () => {
     const body = $("#xwBody");
     body.innerHTML = '<div class="xw-card"><div class="xw-field"><input id="xwPSearch" placeholder="🔍 ابحث عن منتج..."></div>' +
@@ -4481,7 +4661,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const q = $("#xwPSearch").value.trim().toLowerCase();
       const list = window.PRODUCTS.filter((p) => !q || (p.name + " " + pCats(p).join(" ")).toLowerCase().indexOf(q) >= 0);
       $("#xwPList").innerHTML = list.length ? list.map((p) =>
-        '<div class="xw-prow"><img src="' + esc(cld(p.img, 180, 180)) + '" width="90" height="90" loading="lazy" decoding="async" alt=""><div class="i"><b>' + esc(p.name) + "</b><span>" + esc(pCats(p).join(" · ")) + " · " + fmt(sellPrice(p)) + " دج" + (discTagged(p) ? " · ⏳ " + fmtLeft(discLeft(p)) : "") + " · المخزون: " + (typeof p.stock === "number" ? p.stock : "غير محدد") + "</span>" +
+        '<div class="xw-prow"><img src="' + esc(cld(p.img, 180, 180)) + '" width="90" height="90" loading="lazy" decoding="async" alt=""><div class="i"><b>' + esc(p.name) + "</b><span>" + esc(isBundle(p) ? "🎁 باقة" : pCats(p).join(" · ")) + " · " + fmt(sellPrice(p)) + " دج" + (discTagged(p) ? " · ⏳ " + fmtLeft(discLeft(p)) : "") + " · المخزون: " + (typeof p.stock === "number" ? p.stock : "غير محدد") + "</span>" +
         (pTags(p).length ? '<span class="xw-prow-tags">' + pTags(p).map((t) => '<i class="' + (/^خصم/.test(t) ? "hot" : (/مبيع/.test(t) ? "fire" : (/طلباً|طلبا/.test(t) ? "fire2" : (/جديد/.test(t) ? "new" : (/مميز/.test(t) ? "top" : ""))))) + '">' + esc(t) + "</i>").join("") + "</span>" : "") +
         '</div>' +
         '<button class="xw-btn ghost sm" data-pe="' + esc(p.id) + '">تعديل</button><button class="xw-btn danger sm" data-pd="' + esc(p.id) + '">حذف</button></div>').join("") : '<div class="xw-empty">لا توجد منتجات.</div>';
@@ -4496,7 +4676,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   };
   adminEl.addEventListener("click", async (e) => {
     const pe = e.target.closest("[data-pe]");
-    if (pe) { editing = pe.dataset.pe; const p = findProduct(editing); formImgs = (p.images && p.images.length ? p.images : [p.img]).filter(Boolean); adminTab = "form"; renderAdmin(); return; }
+    if (pe) { editing = pe.dataset.pe; const p = findProduct(editing); formImgs = (p.images && p.images.length ? p.images : [p.img]).filter(Boolean); adminTab = isBundle(p) ? "bundle" : "form"; renderAdmin(); return; }
     const pd = e.target.closest("[data-pd]");
     if (pd) {
       const p = findProduct(pd.dataset.pd);
@@ -4518,6 +4698,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     return list;
   };
   const tabCategories = () => {
+    dropBundleCat();
     const body = $("#xwBody");
     const list = currentCatList();
     body.innerHTML =
@@ -4694,7 +4875,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       [1, 3, 6, 12, 24, 72, 168].map((h) => '<button type="button" class="xw-btn ghost sm" data-qh="' + h + '">' + (h >= 24 && h % 24 === 0 ? h / 24 + " يوم" : h + " ساعة") + "</button>").join("") +
       '</span></div><div class="xw-note" id="pDiscDurNote" style="margin-top:8px"></div><input type="hidden" id="pDiscEnd" value="' + pastEnd + '"></div></div>' +
       '<div class="xw-note" id="pDiscPreview" style="margin:-6px 0 14px"></div></div>' +
-      '<div class="xw-field"><label>وصف المنتج</label><textarea id="pDesc">' + esc(p ? p.desc || "" : "") + "</textarea></div>" +
+      '<div class="xw-field"><label>وصف مختصر <small>(سطر أو سطرين يظهرون تحت السعر — اتركه فارغاً ويؤخذ تلقائياً من بداية الوصف)</small></label><input id="pShort" maxlength="140" value="' + esc(p ? p.short || "" : "") + '" placeholder="مثال: مشتت حراري يبرّد الهاتف بسرعة أثناء اللعب"></div>' +
+      '<div class="xw-field"><label>وصف المنتج <small>(الوصف الكامل — يظهر عند الضغط على «عرض الوصف الكامل»)</small></label><textarea id="pDesc">' + esc(p ? p.desc || "" : "") + "</textarea></div>" +
       '<div class="xw-note" style="margin:20px 0 12px;font-weight:600;color:var(--ink)">خانة جوجل <small style="font-weight:400">— سيبهم فارغين والموقع يملاهم لوحدو</small></div>' +
       '<div class="xw-field"><label>الرابط في شريط العنوان <small>(حروف وأرقام و - فقط)</small></label>' +
       '<input id="pSlug" value="' + esc(p ? p.slug || "" : "") + '" placeholder="سيبو فارغ — يولّد من اسم المنتج" spellcheck="false" dir="rtl" style="text-align:right">' +
@@ -4718,6 +4900,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const form = $("#xwPForm");
     const syncNewCat = () => { const n = document.querySelector('[data-cpick="__new"]'); $("#pCatNewWrap").style.display = n && n.checked ? "" : "none"; };
     $$("[data-cpick]").forEach((cb) => cb.addEventListener("change", syncNewCat));
+    /* ترتيب النقر: أول فئة يختارها الأدمن هي الفئة الرئيسية المعروضة على المنتج */
+    const catOrder = cur.slice();
+    $$("[data-cpick]").forEach((cb) => cb.addEventListener("change", () => {
+      const k = cb.dataset.cpick, i = catOrder.indexOf(k);
+      if (cb.checked && i < 0) catOrder.push(k);
+      else if (!cb.checked && i >= 0) catOrder.splice(i, 1);
+    }));
+    form.__catOrder = catOrder;
     /* the admin writes the price after the discount + the original price; the site computes the percentage */
     const calcDisc = () => {
       const price = Number($("#pPrice").value), old = Number($("#pOld").value);
@@ -4787,9 +4977,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const err = (m) => { const b = $("#pErr"); if (b) b.textContent = m; };
       window.addEventListener("error", (ev) => { err("تعذّر الحفظ: " + (ev.message || "خطأ غير معروف")); }, { once: true });
       const name = $("#pName").value.trim();
-      const cat = $$("[data-cpick]").filter((c) => c.checked && c.dataset.cpick !== "__new").map((c) => c.dataset.cpick);
+      const checkedCats = $$("[data-cpick]").filter((c) => c.checked).map((c) => c.dataset.cpick);
       const newChk = $$("[data-cpick]").filter((c) => c.dataset.cpick === "__new")[0];
-      if (newChk && newChk.checked) { const nn = $("#pCatNew").value.trim(); if (!nn) return err("اكتب اسم الفئة الجديدة أو ألغِ اختيار «➕ فئة جديدة»."); if (cat.indexOf(nn) < 0) cat.push(nn); }
+      let nn = "";
+      if (newChk && newChk.checked) { nn = $("#pCatNew").value.trim(); if (!nn) return err("اكتب اسم الفئة الجديدة أو ألغِ اختيار «➕ فئة جديدة»."); }
+      /* نحافظ على ترتيب الاختيار: الأولى = الفئة الرئيسية */
+      const order = (form.__catOrder || []).filter((k) => checkedCats.indexOf(k) >= 0);
+      checkedCats.forEach((k) => { if (order.indexOf(k) < 0) order.push(k); });
+      const cat = [];
+      order.forEach((k) => { const v = k === "__new" ? nn : k; if (v && cat.indexOf(v) < 0) cat.push(v); });
       const price = Number($("#pPrice").value);
       const stockRaw = $("#pStock").value.trim();
       if (!name) return err("اكتب اسم المنتج.");
@@ -4832,7 +5028,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const seoTitle = String(($("#pSeoT") || {}).value || "").trim();
       const seoDesc = String(($("#pSeoD") || {}).value || "").trim();
       const seoKeys = String(($("#pSeoK") || {}).value || "").trim();
-      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), short: ($("#pShort") ? $("#pShort").value.trim() : ""), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
       if (JSON.stringify(data).length > 900000) return err("حجم الصور كبير جداً، استخدم روابط صور أو صوراً أصغر.");
       const btn = $("#pSave"); btn.disabled = true; err("");
@@ -4880,7 +5076,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           '<div class="he-fields">' +
           '<div class="xw-field"><label>رابط الصورة</label><input data-hs="' + i + '" data-hk="img" value="' + esc(c && c.img ? c.img : "") + '" placeholder="https://… أو ارفعها من تحت" spellcheck="false"></div>' +
           '<div class="xw-row"><div class="xw-field"><label>الاسم اللي يبان تحت الصورة</label><input data-hs="' + i + '" data-hk="title" value="' + esc(c && c.title ? c.title : "") + '" placeholder="مثال: مراوح تبريد"></div>' +
-          '<div class="xw-field"><label>وين يروح الضغط عليها</label><input data-hs="' + i + '" data-hk="href" value="' + esc(c && c.href ? c.href : "") + '" placeholder="#categories"></div></div>' +
+          '<div class="xw-field"><label>وين يروح الضغط عليها</label><input data-hs="' + i + '" data-hk="href" value="' + esc(c && c.href ? c.href : "") + '" placeholder="اتركه فارغاً = يفتح قسم العروض المجمعة"></div></div>' +
           '<label class="xw-btn ghost sm he-up" style="cursor:pointer">📷 ارفع صورة' +
           '<input type="file" accept="image/*" data-hs="' + i + '" data-hk="file" hidden></label>' +
           "</div></div>";
@@ -4899,7 +5095,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       for (let i = 0; i < 3; i++) {
         const u = val(i, "img");
         if (!u) continue;
-        list.push({ img: u, title: val(i, "title"), href: val(i, "href") || "#categories" });
+        list.push({ img: u, title: val(i, "title"), href: val(i, "href") });
       }
       return list;
     };
@@ -5552,7 +5748,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   });
 
 
-  const sections = ["home", "shop", "reviews", "categories"];
+  const sections = ["home", "shop", "products", "reviews"];
   const navLinks = $$(".nav-link");
   const spy = () => {
     let cur = "home";
