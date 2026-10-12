@@ -781,6 +781,8 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-bun li span { flex: 1; min-width: 0; }
 .xw-bun li b { color: #FF6B00; font-family: var(--what-font); }
 .pbun { display: inline-block; margin: 2px 0 0 6px; font-size: 11px; font-weight: 700; color: #FF6B00; }
+.cart-nudge { margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: rgba(255,107,0,.1); color: #FF6B00; font-size: 13px; font-weight: 700; line-height: 1.6; }
+.xw-combo { margin: 10px 0 0; padding: 9px 12px; border-radius: 12px; background: rgba(255,107,0,.1); color: #FF6B00; font-size: 13px; font-weight: 700; }
 .xw-short { margin: 10px 0 0; color: var(--ink); opacity: .85; font-size: 14px; line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .xw-more { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin: 14px 0 0; padding: 11px 14px; border-radius: 12px; border: 1px dashed var(--line-2); background: transparent; color: #FF6B00; font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
 .xw-more i { font-style: normal; display: inline-block; transition: transform .25s ease; }
@@ -2355,15 +2357,22 @@ window.REVIEWS = [
      فمنتج ثمنه 2000 و«سعر شراء 3» = 5000: أربع قطع = 7000، وخمس = 9000، وهكذا.
      نطبّقه فقط إذا كان فعلاً أرخص؛ منتج بلا قيمة يبقى بلا عرض. هذه دالة واحدة
      تشترك فيها السلة وشاشة الدفع كي لا يختلف الرقمان أبداً. */
-  const xwTier = (p, q) => {
+  /* خصم السلة (الباقة التي ينشئها الزبون بنفسه): إذا عيّن المالك لمنتج «سعر الشراء مع منتج آخر»
+     وكان في السلة منتجان مختلفان أو أكثر، تُحسب القطعة بهذا السعر؛ وإذا بقي المنتج وحده فالسعر
+     الأصلي. نطبّقه فقط إذا كان أرخص فعلاً، وإذا كان عرض الكميات أرخص منه يبقى عرض الكميات.
+     نفس الدالة تستعملها السلة وشاشة الدفع كي لا يختلف الرقمان أبداً. */
+  const xwTier = (p, q, combo) => {
     const base = sellPrice(p), normal = base * q;
     const q2 = Math.max(0, Number(p && p.price2) || 0), q3 = Math.max(0, Number(p && p.price3) || 0);
-    let total = normal;
+    let total = normal, byCombo = false;
     if (q === 2) { if (q2 > 0 && q2 < normal) total = q2; }
     else if (q >= 3) { if (q3 > 0 && q3 < base * 3) total = q3 + (q - 3) * base; }
+    const cp = Math.max(0, Number(p && p.cartPrice) || 0);
+    if (combo && cp > 0 && cp < base && cp * q < total) { total = cp * q; byCombo = true; }
     if (total > normal) total = normal;
-    return { base, normal, total, saved: Math.max(0, normal - total) };
+    return { base, normal, total, saved: Math.max(0, normal - total), combo: byCombo };
   };
+  const comboHint = (p) => { const cp = Math.max(0, Number(p && p.cartPrice) || 0); return cp > 0 && cp < sellPrice(p) ? cp : 0; };
   /* the struck-through price — 0 means "show no old price" */
   const listPrice = (p) => (discOn(p) ? Number(p.old) : 0);
   const discPct = (p) => { const l = listPrice(p), s = sellPrice(p); return l > s ? Math.round((1 - s / l) * 100) : 0; };
@@ -2405,6 +2414,16 @@ window.REVIEWS = [
     }
     cartFoot.style.display = "block";
     let xwSub = 0, xwSaved = 0;
+    const xwCombo = cart.filter((ci) => findProduct(ci.id)).length >= 2;
+    if (!xwCombo) {
+      const hp = cart.map((ci) => findProduct(ci.id)).filter((p) => p && comboHint(p))[0];
+      if (hp) {
+        const nd = document.createElement("div");
+        nd.className = "cart-nudge";
+        nd.innerHTML = "🎁 أضف منتجاً آخر لسلتك وخذ «" + esc(hp.name) + "» بـ <b>" + fmt(comboHint(hp)) + "</b> دج بدل " + fmt(sellPrice(hp)) + " دج";
+        cartBody.appendChild(nd);
+      }
+    }
     cart.forEach((ci, idx) => {
       const p = findProduct(ci.id);
       if (!p) return;
@@ -2412,7 +2431,7 @@ window.REVIEWS = [
          xwTier — قطعتان بـ«سعر شراء 2»، و3 ثلاث قطع بـ«سعر شراء 3» وكل قطعة
          زائدة بالسعر الأصلي، وإلا الثمن العادي. هكذا سلة واحدة وشاشة دفع واحدة
          يقولان نفس المبلغ دائماً. */
-      const t = xwTier(p, ci.qty);
+      const t = xwTier(p, ci.qty, xwCombo);
       const strike = discOn(p) ? listPrice(p) * ci.qty : t.normal;
       xwSub += t.normal;
       xwSaved += t.saved;
@@ -3293,6 +3312,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-price' + (lp ? " fire" : "") + '">' + fmt(sp) + " دج" + (lp ? "<s>" + fmt(lp) + " دج</s>" : "") + (lp ? '<em class="pdrop">-' + discPct(p) + "%</em>" : "") + "</div>" +
       (discTagged(p) ? '<div class="ptimer line" data-cd="' + esc(p.id) + '">⏳ ينتهي الخصم بعد <b>' + fmtLeft(discLeft(p)) + "</b></div>" : "") +
       (typeof p.stock === "number" ? '<div class="pstock ' + (p.stock <= 0 ? "out" : p.stock <= 5 ? "low" : "") + '" style="margin-top:8px">' + (p.stock <= 0 ? "نفد المخزون" : "الكمية المتوفرة: " + p.stock) + "</div>" : "") +
+      (comboHint(p) ? '<div class="xw-combo">🛒 اشتريه مع أي منتج آخر بـ <b>' + fmt(comboHint(p)) + "</b> دج بدل " + fmt(sellPrice(p)) + " دج</div>" : "") +
       (shortDesc(p) ? '<p class="xw-short">' + esc(shortDesc(p)) + "</p>" : "") +
       /* الزرين يوقفو مباشرة تحت السعر: الزبون يشوف «اشترِ الآن» أول ما يدخل،
          والوصف (المواصفات) يبقى تحتهم فيقرأ من أراد بعد ما شاف الثمن */
@@ -3416,12 +3436,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
        total - tier total, summed, capped at the payable total. has3 wins the message
        when any 3+ line saved; otherwise has2. */
     const tiers = (ls, sub, sh) => {
-      let saved = 0, has3 = false, has2 = false;
+      let saved = 0, has3 = false, has2 = false, hasCombo = false;
+      const combo = ls.length >= 2;
       for (const x of ls) {
-        const q = x.it.qty, r = xwTier(x.p, q);
-        if (r.saved > 0) { saved += r.saved; if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
+        const q = x.it.qty, r = xwTier(x.p, q, combo);
+        if (r.saved > 0) { saved += r.saved; if (r.combo) hasCombo = true; else if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
       }
-      return { saved: Math.min(saved, sub + (sh || 0)), has3, has2 };
+      return { saved: Math.min(saved, sub + (sh || 0)), has3, has2, hasCombo };
     };
 
     const render = () => {
@@ -3473,8 +3494,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<div class="xw-field"><label>ملاحظات <small>(اختياري)</small></label><textarea id="fNotes" style="min-height:64px">' + esc(st.notes) + "</textarea></div>" +
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
-        (saved > 0 ? '<div class="xw-save">' + (t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
-        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
+        (saved > 0 ? '<div class="xw-save">' + (t.hasCombo ? '🎁 باقتك الخاصة جاهزة — ووفرت ' + fmt(saved) + ' دج على طلبك' : t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
+        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty, ls.length >= 2); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
         (saved > 0 ? '<div class="xw-tot off"><span>خصم العرض</span><span>−' + fmt(saved) + " دج</span></div>" : "") +
@@ -4864,6 +4885,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field"><label>الكمية المتوفرة <i>*</i></label><input id="pStock" type="number" min="0" value="' + (p && typeof p.stock === "number" ? p.stock : "") + '" placeholder="مثال: 20"></div></div>' +
       '<div class="xw-row"><div class="xw-field"><label>السعر إذا طلب 2 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل قطعتين كاملتين، وليس سعر القطعة. اتركه فارغاً لإيقاف العرض)</small></label><input id="pQ2" type="number" min="0" step="1" value="' + (p && Number(p.price2) > 0 ? Number(p.price2) : "") + '" placeholder="مثال: 2400"></div>' +
 '<div class="xw-field"><label>السعر الجديد إذا طلب 3 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل 3 قطع بالضبط، وكل قطعة زائدة عن الثلاثة تُحسب بالسعر الأصلي، وليس سعر القطعة)</small></label><input id="pQ3" type="number" min="0" step="1" value="' + (p && Number(p.price3) > 0 ? Number(p.price3) : "") + '" placeholder="مثال: 3600"></div></div>' +
+      '<div class="xw-field"><label>🎁 سعر القطعة عند شرائها مع منتج آخر (دج) <small>(خصم السلة — إذا وضع الزبون هذا المنتج في سلته مع أي منتج آخر يصير سعره هذا، وإذا كان وحده يبقى السعر الأصلي. مثال: السعر 2000 والخيار 1800. اتركه فارغاً لإيقاف الخيار)</small></label><input id="pCombo" type="number" min="0" step="1" value="' + (p && Number(p.cartPrice) > 0 ? Number(p.cartPrice) : "") + '" placeholder="مثال: 1800"></div>' +
       '<div class="xw-field"><label>الوسوم <small>(اختياري — يمكن اختيار أكثر من وسم)</small></label><div class="xw-tags">' +
       XW_TAGS.map((t) => '<label class="xw-tagchk"><input type="checkbox" data-tid="' + t.id + '"' + (initIds.indexOf(t.id) >= 0 ? " checked" : "") + "><span>" + t.label + "</span></label>").join("") +
       '<label class="xw-tagchk"><input type="checkbox" data-tid="__custom"' + (customTags.length ? " checked" : "") + '><span>وسم آخر…</span></label></div>' +
@@ -5028,7 +5050,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const seoTitle = String(($("#pSeoT") || {}).value || "").trim();
       const seoDesc = String(($("#pSeoD") || {}).value || "").trim();
       const seoKeys = String(($("#pSeoK") || {}).value || "").trim();
-      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), short: ($("#pShort") ? $("#pShort").value.trim() : ""), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const comboVal = Math.max(0, Math.floor(Number(($("#pCombo") || {}).value) || 0));
+      if (comboVal > 0 && comboVal >= price) return err("سعر خصم السلة يجب أن يكون أقل من سعر المنتج.");
+      const data = { name, cat, price, old, disc, cartPrice: comboVal, stock: Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), short: ($("#pShort") ? $("#pShort").value.trim() : ""), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
       if (JSON.stringify(data).length > 900000) return err("حجم الصور كبير جداً، استخدم روابط صور أو صوراً أصغر.");
       const btn = $("#pSave"); btn.disabled = true; err("");
@@ -5048,6 +5072,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           /* the two tier prices: taken out too when emptied (0 = off) */
           if (!(data.price2 > 0)) delete upd.price2;
           if (!(data.price3 > 0)) delete upd.price3;
+          if (!(data.cartPrice > 0)) delete upd.cartPrice;
           await commitProducts(window.PRODUCTS.map((x) => (x.id === p.id ? upd : x)), upd, null);
           toast("تم حفظ التعديلات", true);
         } else {
