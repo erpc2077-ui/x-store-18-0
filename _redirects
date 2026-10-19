@@ -1,1 +1,6 @@
+
+/api/cloudinary-sign  /.netlify/functions/cloudinary-sign  200
+/firebase.json  /404.html  404!
+/_headers  /404.html  404!
+/_redirects  /404.html  404!
 /*    /index.html   200
