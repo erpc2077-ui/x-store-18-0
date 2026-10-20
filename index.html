@@ -315,18 +315,6 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .feat-card p { color: var(--muted); font-size: 14px; line-height: 1.8; max-width: 240px; margin-top: 12px; }
 
 /* ============ Categories ============ */
-.cats { background: var(--bg); --accent: #FF6B00; --glow: rgba(255, 107, 0, 0.35); }
-.cats-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.cat-card {
-  background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 30px;
-  display: flex; gap: 20px; align-items: flex-start; transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
-}
-.cat-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--accent); }
-.cat-ico { width: 56px; height: 56px; border-radius: 16px; background: var(--bg-3); display: flex; align-items: center; justify-content: center; font-size: 26px; transition: background .3s ease; }
-.cat-card:hover .cat-ico { background: var(--accent); }
-.cat-body h3 { font-family: var(--what-font); font-weight: 800; font-size: 17px; margin-bottom: 8px; }
-.cat-body p { color: var(--muted); font-size: 14px; line-height: 1.7; }
-.cat-count { display: inline-block; margin-top: 12px; font-family: var(--what-font); font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--accent); text-transform: uppercase; }
 /* p56 - the one honest hole in the page: a category with nothing in it yet */
 .no-prod { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px; padding: 40px 20px; border: 1px dashed var(--line-2); border-radius: 20px; background: var(--card); color: var(--muted); font-size: 14px; text-align: center; }
 
@@ -484,22 +472,16 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .foot-bottom { text-align: center; padding-top: 30px; border-top: 1px solid var(--line); color: var(--faint); font-family: var(--what-font); font-size: 13px; letter-spacing: .05em; }
 
 /* ============ WhatsApp ============ */
-.whatsapp { position: fixed; bottom: 94px; right: 26px; z-index: 90; width: 56px; height: 56px; border-radius: 50%; background: var(--wa); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px -8px rgba(37,211,102,.6); transform: scale(0); transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+.whatsapp { position: fixed; bottom: 26px; right: 26px; z-index: 90; width: 56px; height: 56px; border-radius: 50%; background: var(--wa); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 30px -8px rgba(37,211,102,.6); transform: scale(0); transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
 .whatsapp.show { transform: scale(1); }
 .whatsapp:hover { animation: waPulse 1.5s infinite; }
 .whatsapp svg { width: 30px; height: 30px; }
-.wa-help { position: fixed; bottom: 160px; right: 26px; z-index: 90; display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; background: #fff; color: #111; font-family: var(--body-font); font-weight: 700; font-size: 12px; line-height: 1.2; white-space: nowrap; direction: rtl; box-shadow: 0 6px 18px -6px rgba(0,0,0,.35); border: 1px solid rgba(37,211,102,.45); opacity: 0; transform: translateY(8px) scale(.9); pointer-events: none; transition: opacity .35s ease .15s, transform .45s cubic-bezier(.34,1.56,.64,1) .15s; }
+.wa-help { position: fixed; bottom: 92px; right: 26px; z-index: 90; display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px; background: #fff; color: #111; font-family: var(--body-font); font-weight: 700; font-size: 12px; line-height: 1.2; white-space: nowrap; direction: rtl; box-shadow: 0 6px 18px -6px rgba(0,0,0,.35); border: 1px solid rgba(37,211,102,.45); opacity: 0; transform: translateY(8px) scale(.9); pointer-events: none; transition: opacity .35s ease .15s, transform .45s cubic-bezier(.34,1.56,.64,1) .15s; }
 .wa-help::after { content: ""; position: absolute; bottom: -5px; right: 22px; width: 9px; height: 9px; background: #fff; border-right: 1px solid rgba(37,211,102,.45); border-bottom: 1px solid rgba(37,211,102,.45); transform: rotate(45deg); }
 .whatsapp.show + .wa-help { opacity: 1; transform: none; pointer-events: auto; }
 .wa-help:hover { color: #128C4A; }
 html[data-theme="dark"] .wa-help { background: #1c1c1c; color: #f2f2f2; }
 html[data-theme="dark"] .wa-help::after { background: #1c1c1c; }
-.ig-float { position: fixed; bottom: 26px; right: 26px; z-index: 90; width: 56px; height: 56px; border-radius: 50%; background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: #fff; display: flex; align-items: center; justify-content: center; transform: scale(0); transition: transform .5s cubic-bezier(.34,1.56,.64,1) .1s; animation: igGlow 2.4s ease-in-out infinite; }
-.ig-float svg { width: 28px; height: 28px; filter: drop-shadow(0 0 4px rgba(255,255,255,.55)); }
-.whatsapp.show ~ .ig-float { transform: scale(1); }
-.ig-float:hover { transform: scale(1.08); }
-@keyframes igGlow { 0%,100% { box-shadow: 0 0 10px 2px rgba(225,48,108,.6), 0 0 24px 6px rgba(253,89,73,.35), 0 0 42px 10px rgba(40,90,235,.2); } 50% { box-shadow: 0 0 16px 4px rgba(225,48,108,.9), 0 0 36px 12px rgba(253,89,73,.55), 0 0 60px 18px rgba(40,90,235,.35); } }
-@media (prefers-reduced-motion: reduce) { .ig-float { animation: none; box-shadow: 0 0 18px 5px rgba(225,48,108,.7); } }
 @keyframes waPulse { 0%,100% { box-shadow: 0 12px 30px -8px rgba(37,211,102,.6); } 50% { box-shadow: 0 0 0 14px rgba(37,211,102,.15); } }
 
 /* ============ Cart drawer ============ */
@@ -610,7 +592,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
   .nav-icons .icon-label { display: none; }
   .feat-grid { grid-template-columns: repeat(2, 1fr); }
   .prod-grid, .deal-grid { grid-template-columns: repeat(3, 1fr); }
-  .cats-grid { grid-template-columns: repeat(2, 1fr); }
   .foot-grid { grid-template-columns: repeat(3, 1fr); }
   .foot-brand { grid-column: 1 / -1; }
 }
@@ -629,7 +610,6 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 @media (max-width: 720px) {
   .nav-icons .cta-btn { display: none; }
   .prod-grid, .deal-grid { grid-template-columns: repeat(2, 1fr); }
-  .cats-grid { grid-template-columns: 1fr; }
   .feat-grid { grid-template-columns: 1fr; }
   .hero-visual { height: 260px; }
   .hcard { width: 130px; padding: 6px; }
@@ -792,6 +772,18 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-vplay:hover img { opacity: 1; }
 .xw-vplay span { position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%; background: #FF6B00; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; padding-left: 4px; box-shadow: 0 6px 20px rgba(0,0,0,.4); }
 .xw-desc { margin: 14px 0; color: var(--muted); line-height: 1.9; font-size: 15px; white-space: pre-line; }
+.xw-colors { margin-top: 14px; }
+.xw-clbl { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+.xw-clbl i { color: #ef4444; font-style: normal; }
+.xw-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.xw-chip { padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line-2); background: var(--card); color: inherit; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer; }
+.xw-chip small { color: var(--muted); font-weight: 600; }
+.xw-chip.on { border-color: #FF6B00; background: rgba(255,107,0,.12); color: #FF6B00; }
+.xw-chip.on small { color: inherit; }
+.xw-chip.off { opacity: .45; cursor: not-allowed; text-decoration: line-through; }
+.xw-crow { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+.xw-crow .cName { flex: 2; }
+.xw-crow .cStock { flex: 1; min-width: 70px; }
 .xw-pbtns { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; position: sticky; bottom: 0; z-index: 6; background: var(--card); padding-top: 8px; }
 .xw-pbtns .xw-btn { flex: 1; min-width: 130px; }
 
@@ -994,7 +986,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
        every picture square, undistorted, and clipped to its own frame.
        =================================================================== */
     img { max-width: 100%; display: block; }
-    .xw-pgrid > *, .prod-grid > *, .deal-grid > *, .cats-grid > *,
+    .xw-pgrid > *, .prod-grid > *, .deal-grid > *,
     .hcard, .xw-line, .xw-imgs > *, .sr-item, .feat, .hcard-wrap { min-width: 0; }
     /* every picture is square, fills its frame, and cannot overflow it */
     .pimg img, .hcard img, .ci-img, .sr-item img, .xw-thumbs img,
@@ -1202,7 +1194,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
   html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(255, 107, 0, .6); }
 
   /* sections stop painting their own slabs, so the page reads as one room */
-  html[data-theme="dark"] .cats,
   html[data-theme="dark"] .deals,
   html[data-theme="dark"] .social,
   html[data-theme="dark"] .cta-band { background: transparent; }
@@ -1366,7 +1357,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
 
   /* ---- cards: dark glass, quiet border, a small warm lift ---- */
   html[data-theme="dark"] .pcard,
-  html[data-theme="dark"] .cat-card,
   html[data-theme="dark"] .rev-card,
   html[data-theme="dark"] .xw-card,
   html[data-theme="dark"] .xw-stat,
@@ -1384,7 +1374,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
   html[data-theme="dark"] .pimg { background: #0B0705; }
   html[data-theme="dark"] .pname { color: #FFF0E6; }
   html[data-theme="dark"] .pcat,
-  html[data-theme="dark"] .cat-count,
   html[data-theme="dark"] .marquee-track span,
   html[data-theme="dark"] .rev-quote { color: #E8965C; }
   html[data-theme="dark"] .pold { color: var(--faint); }
@@ -1423,16 +1412,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
   }
   html[data-theme="dark"] .pcard .pacts .buy-btn:hover { box-shadow: 0 16px 38px -14px rgba(255, 90, 20, .95); }
 
-  html[data-theme="dark"] .cat-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 107, 0, .4);
-    box-shadow: 0 28px 60px -28px rgba(0, 0, 0, .88), 0 0 48px -26px rgba(255, 90, 20, .75);
-  }
-  html[data-theme="dark"] .cat-ico { background: rgba(255, 150, 80, .08); color: #E8D2C2; transition: all .3s ease; }
-  html[data-theme="dark"] .cat-card:hover .cat-ico {
-    background: linear-gradient(135deg, #C2410C, #FF6B00); color: #fff;
-    box-shadow: 0 10px 30px -12px rgba(255, 90, 20, .9);
-  }
 
   html[data-theme="dark"] .tab { background: rgba(255, 150, 80, .06); color: var(--muted); }
   html[data-theme="dark"] .tab:hover { border-color: rgba(255, 107, 0, .5); color: #FFA35C; }
@@ -1593,7 +1572,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
   html[data-theme="dark"] .search-box,
   html[data-theme="dark"] .cart-drawer { text-align: right; }
   .hero-inner { max-width: 1240px; }
-  .prod-grid, .deal-grid, .cats-grid, .foot-grid, .rev-grid, .feat-grid { max-width: 1240px; }
+  .prod-grid, .deal-grid, .foot-grid, .rev-grid, .feat-grid { max-width: 1240px; }
 
   /* ===================================================================
      MOBILE PHOTOS STAY 1:1
@@ -1731,7 +1710,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
         <ul class="nav-menu">
           <li><a href="#home" class="nav-link active">الرئيسية</a></li>
           <li><a href="#shop" class="nav-link">المتجر</a></li>
-          <li><a href="#categories" class="nav-link">الفئات</a></li>
           <li><a href="#reviews" class="nav-link">آراء الزبائن</a></li>
         </ul>
       </div>
@@ -1787,7 +1765,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
     <div class="mm-logo"><img data-logo src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="X Store" /><span class="nav-word">X<b> STORE</b></span></div>
     <a href="#home" class="mm-link">الرئيسية</a>
     <a href="#shop" class="mm-link">المتجر</a>
-    <div class="mm-cat-row"><a href="#categories" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▼</button></div>
+    <div class="mm-cat-row"><a href="#shop" class="mm-link">الفئات</a><button type="button" class="mm-caret" id="mmCaret" aria-expanded="false" aria-controls="mmCats" aria-label="كل الفئات">▼</button></div>
     <ul class="mm-cats" id="mmCats" hidden></ul>
     <a href="#reviews" class="mm-link">آراء الزبائن</a>
     <div class="mm-lang"><a href="#" data-lang="en">English</a><a href="#" class="active" data-lang="ar">العربية</a></div>
@@ -1820,28 +1798,28 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
           <p class="hero-desc" data-i18n="heroDesc">مراوح تبريد، سماعات قيمنغ، قفازات أصابع وشواحن مصممة للاعبي الموبايل. توصيل سريع لكل الجزائر.</p>
           <div class="hero-ctas">
             <a href="#shop" class="btn btn-primary" data-i18n="explore">استكشف المتجر</a>
-            <a href="#products" class="btn btn-ghost" data-i18n="dealsBtn">عرض العروض</a>
+            <a href="#products" class="btn btn-ghost" data-i18n="dealsBtn">العروض المجمّعة</a>
           </div>
         </div>
 
         <div class="hero-visual" id="heroVis">
           <span class="disc"></span>
-          <a href="#categories" class="hcard hcard-1">
+          <a href="#shop" class="hcard hcard-1">
             <img src="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_500,h_300/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778504512712-ff9r97z4.jpg" alt="مروحة تبريد" />
             <h3>مراوح تبريد</h3>
           </a>
-          <a href="#categories" class="hcard hcard-2">
+          <a href="#shop" class="hcard hcard-2">
             <img src="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_500,h_300/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1778755553695-q4zwo34s.webp" alt="قفازات أصابع" />
             <h3>قفازات أصابع</h3>
           </a>
-          <a href="#categories" class="hcard hcard-3">
+          <a href="#shop" class="hcard hcard-3">
             <img src="https://res.cloudinary.com/yc68mbzo/image/fetch/f_auto,q_auto:good,c_fill,w_500,h_300/https://ofigzvoxqhhxdlagclfm.supabase.co/storage/v1/object/public/product-images/products/1779042446139-2ok8djht.jpg" alt="سماعات قيمنغ" />
             <h3>سماعات قيمنغ</h3>
           </a>
         </div>
       </div>
 
-      <a href="#categories" class="scroll-hint">
+      <a href="#shop" class="scroll-hint">
         <span data-i18n="exploreGear">اكتشف المعدات</span>
         <span class="scroll-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span>
       </a>
@@ -1878,67 +1856,15 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
       <div class="more-wrap" id="moreWrap"></div>
     </section>
 
-    <!-- p59 - ماذا نقدم: أول قسم تحت المنتجات مباشرة -->
-    <section id="categories" class="section cats">
-      <div class="section-head">
-        <h2 data-i18n="whatWeOffer">ماذا نقدم</h2>
-        <p class="faint">اختر فئتك المفضلة وارتقِ بمستوى لعبك</p>
-      </div>
-      <div class="cats-grid" id="catsGrid"></div>
-    </section>
-
-    <!-- p54 - أضف تقييمك بعد الشراء (مع عدد التقييمات): القسم اللي يجي مباشرة بعد ماذا نقدم -->
-    <section id="rate" class="section rate">
-      <div class="section-head">
-        <h2 data-i18n="rateTitle">أضف تقييمك بعد الشراء</h2>
-        <p class="faint">عدد التقييمات: <b id="rateCount">0</b> · متوسط التقييم: <b id="rateAvg">—</b></p>
-      </div>
-      <div class="rate-box" id="rateBox">
-        <div id="rateStep1">
-          <p class="rate-lead">دخّل رقم الهاتف اللي طلبت بيه، ونفتحلك الاستبيان. ولاّ ما طلبتيش من عندنا؟ راسلنا على واتساب.</p>
-          <div class="rate-row">
-            <div class="xw-field"><label>رقم الهاتف</label><input id="ratePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="0555 00 00 00" autocomplete="tel"></div>
-            <button class="btn btn-primary" id="rateGo" type="button">تابع</button>
-          </div>
-        </div>
-        <form id="rateForm" style="display:none">
-          <p class="rate-lead" id="rateWho"></p>
-          <div class="rate-row">
-            <div class="xw-field"><label>المنتج</label><select id="rateProd"></select></div>
-            <div class="rate-stars" id="rateStars">
-              <button type="button" data-n="1" aria-label="نجمة">★</button>
-              <button type="button" data-n="2" aria-label="نجمتان">★</button>
-              <button type="button" data-n="3" aria-label="3 نجوم">★</button>
-              <button type="button" data-n="4" aria-label="4 نجوم">★</button>
-              <button type="button" data-n="5" aria-label="5 نجوم">★</button>
-            </div>
-            <button class="btn btn-primary" id="rateSend" type="submit">أرسل التقييم</button>
-          </div>
-          <div class="xw-field" style="margin-top:14px"><label>رأيك <small>(اختياري)</small></label><textarea id="rateText" maxlength="400" rows="3" placeholder="المنتج، التوصيل، الخدمة… اكتب ما شاء الله."></textarea></div>
-        </form>
-        <p class="rate-err" id="rateErr"></p>
-      </div>
-    </section>
 
     <!-- Hot deals -->
     <section id="products" class="section deals">
       <div class="section-head">
-        <h2 data-i18n="hotDeals">عروض ساخنة</h2>
+        <h2 data-i18n="hotDeals">العروض المجمّعة</h2>
       </div>
       <div class="deal-grid" id="dealGrid"></div>
     </section>
 
-    <!-- Reviews -->
-    <section id="reviews" class="section reviews">
-      <div class="section-head">
-        <h2 data-i18n="whatGamersSay">آراء الزبائن</h2>
-        <p class="faint" id="revStat">⭐ متجر بتقييم 5 نجوم</p>
-      </div>
-      <div class="rev-grid" id="revGrid"></div>
-      <div class="review-cta">
-        <a href="#rate" class="btn btn-primary">أضف تقييمك بعد الشراء</a>
-      </div>
-    </section>
 
     <!-- Social -->
     <section id="social" class="section social">
@@ -2003,6 +1929,51 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
       </div>
     </section>
 
+    <!-- Reviews -->
+    <section id="reviews" class="section reviews">
+      <div class="section-head">
+        <h2 data-i18n="whatGamersSay">آراء الزبائن</h2>
+        <p class="faint" id="revStat">⭐ متجر بتقييم 5 نجوم</p>
+      </div>
+      <div class="rev-grid" id="revGrid"></div>
+      <div class="review-cta">
+        <a href="#rate" class="btn btn-primary">أضف تقييمك بعد الشراء</a>
+      </div>
+    </section>
+
+    <!-- p54 - أضف تقييمك بعد الشراء (مع عدد التقييمات): آخر قسم في الصفحة، وفوقه آراء الزبائن -->
+    <section id="rate" class="section rate">
+      <div class="section-head">
+        <h2 data-i18n="rateTitle">أضف تقييمك بعد الشراء</h2>
+        <p class="faint">عدد التقييمات: <b id="rateCount">0</b> · متوسط التقييم: <b id="rateAvg">—</b></p>
+      </div>
+      <div class="rate-box" id="rateBox">
+        <div id="rateStep1">
+          <p class="rate-lead">دخّل رقم الهاتف اللي طلبت بيه، ونفتحلك الاستبيان. ولاّ ما طلبتيش من عندنا؟ راسلنا على واتساب.</p>
+          <div class="rate-row">
+            <div class="xw-field"><label>رقم الهاتف</label><input id="ratePhone" type="tel" inputmode="numeric" maxlength="10" placeholder="0555 00 00 00" autocomplete="tel"></div>
+            <button class="btn btn-primary" id="rateGo" type="button">تابع</button>
+          </div>
+        </div>
+        <form id="rateForm" style="display:none">
+          <p class="rate-lead" id="rateWho"></p>
+          <div class="rate-row">
+            <div class="xw-field"><label>المنتج</label><select id="rateProd"></select></div>
+            <div class="rate-stars" id="rateStars">
+              <button type="button" data-n="1" aria-label="نجمة">★</button>
+              <button type="button" data-n="2" aria-label="نجمتان">★</button>
+              <button type="button" data-n="3" aria-label="3 نجوم">★</button>
+              <button type="button" data-n="4" aria-label="4 نجوم">★</button>
+              <button type="button" data-n="5" aria-label="5 نجوم">★</button>
+            </div>
+            <button class="btn btn-primary" id="rateSend" type="submit">أرسل التقييم</button>
+          </div>
+          <div class="xw-field" style="margin-top:14px"><label>رأيك <small>(اختياري)</small></label><textarea id="rateText" maxlength="400" rows="3" placeholder="المنتج، التوصيل، الخدمة… اكتب ما شاء الله."></textarea></div>
+        </form>
+        <p class="rate-err" id="rateErr"></p>
+      </div>
+    </section>
+
   <!-- Footer -->
   <footer id="footer">
     <div class="foot-line"></div>
@@ -2045,7 +2016,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
         <h4 data-i18n="shopCol">المتجر</h4>
         <ul>
           <li><a href="#shop">المتجر</a></li>
-          <li><a href="#categories">الفئات</a></li>
           <li><a href="#products">العروض الحصرية</a></li>
         </ul>
       </div>
@@ -2057,7 +2027,6 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.4 0-.5s-.6-1.5-.8-2c-.2-.6-.4-.5-.6-.5h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8 14.7 14.7 0 0 0 1.4.5 3.4 3.4 0 0 0 1.6.1 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .2-1.2c-.1-.1-.3-.2-.6-.3Z"/></svg>
   </a>
   <a href="https://wa.me/213600000000" class="wa-help" target="_blank" rel="noopener">تحتاج مساعدة؟</a>
-  <a href="https://www.instagram.com/xstore_algeria" class="ig-float" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
 
   <!-- Cart drawer -->
   <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -2235,14 +2204,14 @@ window.REVIEWS = [
       orders: "سجل الطلبات", cart: "السلة", shopNow: "تسوق الآن",
       heroBadge: "متخصصون في قيمنغ الموبايل · الجزائر",
       heroDesc: "مراوح تبريد، سماعات قيمنغ، قفازات أصابع وشواحن مصممة للاعبي الموبايل. توصيل سريع لكل الجزائر.",
-      explore: "استكشف المتجر", dealsBtn: "عرض العروض",
+      explore: "استكشف المتجر", dealsBtn: "العروض المجمّعة",
       allProducts: "عرض كل المنتجات",
       f1: "توصيل سريع", f1d: "شحن ZR Xpress لكل ولاية — معداتك تصل إلى باب بيتك خلال أيام.",
       f2: "معاملات آمنة", f2d: "مدفوعات آمنة 100% مشفرة لراحة بالك.",
       f3: "منتجات أصيلة", f3d: "نحن موزعون معتمدون لجميع ماركات الألعاب الكبرى.",
       f4: "دعم على مدار الساعة", f4d: "فريقنا دائماً هنا لمساعدتك، ليلاً ونهاراً.",
-      whatWeOffer: "ماذا نقدم", featured: "المنتجات المميزة",
-      hotDeals: "عروض ساخنة", whatGamersSay: "آراء الزبائن", rateTitle: "أضف تقييمك بعد الشراء", polTitle: "سياسات المتجر",
+      featured: "المنتجات المميزة",
+      hotDeals: "العروض المجمّعة", whatGamersSay: "آراء الزبائن", rateTitle: "أضف تقييمك بعد الشراء", polTitle: "سياسات المتجر",
       footDesc: "معدات قيمنغ الموبايل في الجزائر. مراوح تبريد، سماعات، قفازات أصابع وشواحن — توصيل سريع، أسعار بالدينار.",
       shopCol: "المتجر", supportCol: "الدعم", exploreGear: "اكتشف المعدات"
     },
@@ -2250,14 +2219,14 @@ window.REVIEWS = [
       orders: "Order History", cart: "Cart", shopNow: "Shop Now",
       heroBadge: "Mobile gaming experts · Algeria",
       heroDesc: "Cooling fans, gaming earphones, finger sleeves and chargers built for mobile players. Fast delivery across Algeria.",
-      explore: "Explore the store", dealsBtn: "View deals",
+      explore: "Explore the store", dealsBtn: "Bundle deals",
       allProducts: "View all products",
       f1: "Fast Delivery", f1d: "ZR Xpress shipping to every wilaya — your gear arrives at your door in days.",
       f2: "Secure Payments", f2d: "100% encrypted secure payments for peace of mind.",
       f3: "Authentic Products", f3d: "Authorized distributors for all major gaming brands.",
       f4: "24/7 Support", f4d: "Our team is always here to help, day and night.",
-      whatWeOffer: "What we offer", featured: "Featured Products",
-      hotDeals: "Hot Deals", whatGamersSay: "What gamers say", rateTitle: "Rate us after your purchase", polTitle: "Store policies",
+      featured: "Featured Products",
+      hotDeals: "Bundle Deals", whatGamersSay: "What gamers say", rateTitle: "Rate us after your purchase", polTitle: "Store policies",
       footDesc: "Mobile gaming gear in Algeria. Cooling fans, earphones, finger sleeves and chargers — fast delivery, prices in Dinar.",
       shopCol: "Shop", supportCol: "Support", exploreGear: "Discover the gear"
     }
@@ -2352,6 +2321,20 @@ window.REVIEWS = [
     setTimeout(() => { t.classList.add("out"); setTimeout(() => t.remove(), 400); }, 2600);
   };
   const findProduct = (id) => window.PRODUCTS.find((p) => p.id === id);
+  /* الألوان: لكل لون كمية. وجود ألوان يعني أن مخزون المنتج = مجموعها والزبون يختار لوناً */
+  const pColors = (p) => (p && Array.isArray(p.colors) ? p.colors.filter((c) => c && c.name) : []);
+  const lineStock = (p, color) => {
+    if (pColors(p).length) { const c = pColors(p).find((x) => x.name === color); return c ? Math.max(0, Number(c.stock) || 0) : 0; }
+    return typeof p.stock === "number" ? p.stock : Infinity;
+  };
+  const colorChipsHTML = (p) => {
+    const cs = pColors(p); if (!cs.length) return "";
+    return '<div class="xw-colors"><div class="xw-clbl">اختر اللون <i>*</i></div><div class="xw-chips">' + cs.map((c) => {
+      const n = Number(c.stock) || 0;
+      return '<button type="button" class="xw-chip' + (n > 0 ? "" : " off") + '" data-color="' + esc(c.name) + '"' + (n > 0 ? "" : " disabled") + ">" + esc(c.name) + " <small>" + (n > 0 ? "(" + n + " متوفر)" : "نفد") + "</small></button>";
+    }).join("") + "</div></div>";
+  };
+  const pickedColor = () => { const c = document.querySelector("#xwProductBox .xw-chip.on"); return c ? c.dataset.color : ""; };
 
   /* ---------- Discounts: a price, the price before it, and a clock ----------
      price     what the customer pays while the offer is alive
@@ -2369,6 +2352,13 @@ window.REVIEWS = [
      فمنتج ثمنه 2000 و«سعر شراء 3» = 5000: أربع قطع = 7000، وخمس = 9000، وهكذا.
      نطبّقه فقط إذا كان فعلاً أرخص؛ منتج بلا قيمة يبقى بلا عرض. هذه دالة واحدة
      تشترك فيها السلة وشاشة الدفع كي لا يختلف الرقمان أبداً. */
+  /* التخفيض عند بلوغ السلة حدّاً معيّناً: الحد ونسبته من «معلومات المتجر»، فارغ = متوقف */
+  const xwBulk = (base) => {
+    try {
+      const m = Number(INFO.bulkMin), pc = Math.min(100, Number(INFO.bulkPct));
+      return m > 0 && pc > 0 && base >= m ? Math.round(base * pc / 100) : 0;
+    } catch (e) { return 0; }
+  };
   const xwTier = (p, q) => {
     const base = sellPrice(p), normal = base * q;
     const q2 = Math.max(0, Number(p && p.price2) || 0), q3 = Math.max(0, Number(p && p.price3) || 0);
@@ -2397,12 +2387,14 @@ window.REVIEWS = [
   /* which product the product window is showing, so a clock can find it again */
   let openPid = "";
 
-  const addToCart = (id, qty = 1) => {
+  const addToCart = (id, qty = 1, color = "") => {
     const prod = findProduct(id);
-    const item = cart.find((i) => i.id === id);
-    if (prod && typeof prod.stock === "number" && (item ? item.qty : 0) + qty > prod.stock) { toast(prod.stock > 0 ? "الكمية المتوفرة: " + prod.stock : "نفد المخزون"); return; }
+    if (prod && pColors(prod).length && !color) { toast("اختر اللون أولاً"); const bx = $("#xwProduct"); if (!(bx && bx.classList.contains("open"))) openProduct(id); return; }
+    const item = cart.find((i) => i.id === id && (i.color || "") === color);
+    const have = prod ? lineStock(prod, color) : Infinity;
+    if (prod && (item ? item.qty : 0) + qty > have) { toast(have > 0 ? "الكمية المتوفرة: " + have : "نفد المخزون"); return; }
     if (item) item.qty += qty;
-    else cart.push({ id, qty });
+    else cart.push(color ? { id, qty, color } : { id, qty });
     saveCart();
     renderCart();
     toast("تمت الإضافة إلى السلة", true);
@@ -2434,7 +2426,7 @@ window.REVIEWS = [
       row.className = "cart-item";
       row.innerHTML =
         '<img class="ci-img" src="' + esc(cld(p.img, 260)) + '" alt=""' + IMG_ATTR + ' width="260" height="260" loading="lazy">' +
-        '<div class="ci-info"><div class="ci-name">' + esc(p.name) + '</div>' +
+        '<div class="ci-info"><div class="ci-name">' + esc(p.name) + (ci.color ? ' <small style="color:var(--muted)">· ' + esc(ci.color) + "</small>" : "") + '</div>' +
         '<div class="ci-price">' + fmt(t.total) + (t.total < strike ? ' <s>' + fmt(strike) + "</s>" : "") + ' دج</div>' +
         '<div class="ci-qty"><button data-act="minus" data-i="' + idx + '">−</button><b>' + ci.qty + '</b><button data-act="plus" data-i="' + idx + '">+</button></div></div>' +
         '<button class="ci-del" data-act="del" data-i="' + idx + '" aria-label="حذف"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>';
@@ -2444,8 +2436,7 @@ window.REVIEWS = [
           const act = btn.dataset.act;
           if (act === "plus") {
             /* الكمية توقف عند حد المخزون: ما يزيدش فوق المتوفر، وإذا صفر ما تزيدش أصلاً */
-            if (typeof p.stock === "number" && cart[i].qty >= p.stock) toast(p.stock > 0 ? "الكمية المتوفرة: " + p.stock : "نفد المخزون");
-            else cart[i].qty++;
+            { const have = lineStock(p, cart[i].color || ""); if (cart[i].qty >= have) toast(have > 0 ? "الكمية المتوفرة: " + have : "نفد المخزون"); else cart[i].qty++; }
           }
           else if (act === "minus") { cart[i].qty--; if (cart[i].qty <= 0) cart.splice(i, 1); }
           else cart.splice(i, 1);
@@ -2455,7 +2446,7 @@ window.REVIEWS = [
       });
       cartBody.appendChild(row);
     });
-    xwSaved = Math.min(xwSaved, xwSub);
+    xwSaved = Math.min(xwSaved + xwBulk(xwSub - xwSaved), xwSub);
     cartTotal.textContent = fmt(xwSub - xwSaved) + " دج";
     cartDisc.hidden = !(xwSaved > 0);
     if (xwSaved > 0) cartDiscV.textContent = "−" + fmt(xwSaved) + " دج";
@@ -2470,7 +2461,7 @@ window.REVIEWS = [
   $("#checkoutBtn").addEventListener("click", () => {
     if (cart.length === 0) return;
     closeDrawer();
-    openCheckout(cart.map((c) => ({ id: c.id, qty: c.qty })), { fromCart: true });
+    openCheckout(cart.map((c) => (c.color ? { id: c.id, qty: c.qty, color: c.color } : { id: c.id, qty: c.qty })), { fromCart: true });
   });
 
   /* =====================================================================
@@ -2589,7 +2580,7 @@ window.REVIEWS = [
   const xwMissRead = () => { try { return Number(localStorage.getItem("xw-miss") || 0); } catch (e) { return 0; } };
   const xwMissClear = () => { sealOff(); try { localStorage.removeItem("xw-miss"); } catch (e) {} };
   const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings", blocks: "xw_blocks", pcount: "xw_pcount", reviews: "xw_reviews", rateKeys: "xw_ratingkeys" };
-  const XW_WILAYAS = [["01","أدرار",1450,870],["02","الشلف",850,520],["03","الأغواط",950,620],["04","أم البواقي",800,520],["05","باتنة",850,520],["06","بجاية",800,520],["07","بسكرة",950,620],["08","بشار",1150,720],["09","البليدة",800,520],["10","البويرة",800,520],["11","تمنراست",1650,1070],["12","تبسة",900,520],["13","تلمسان",950,570],["14","تيارت",850,520],["15","تيزي وزو",800,520],["16","الجزائر",600,470],["17","الجلفة",950,620],["18","جيجل",500,370],["19","سطيف",750,520],["20","سعيدة",850,570],["21","سكيكدة",800,520],["22","سيدي بلعباس",850,520],["23","عنابة",850,520],["24","قالمة",800,520],["25","قسنطينة",800,520],["26","المدية",850,520],["27","مستغانم",850,520],["28","المسيلة",900,570],["29","معسكر",850,520],["30","ورقلة",950,600],["31","وهران",800,520],["32","البيض",1150,600],["34","برج بوعريريج",650,520],["35","بومرداس",800,520],["36","الطارف",850,520],["38","تيسمسيلت",850,520],["39","الوادي",950,600],["40","خنشلة",850,520],["41","سوق أهراس",800,520],["42","تيبازة",800,520],["43","ميلة",800,520],["44","عين الدفلى",800,520],["45","النعامة",1150,600],["46","عين تموشنت",850,520],["47","غرداية",950,600],["48","غليزان",850,520],["49","تيميمون",1450,870],["51","أولاد جلال",950,620],["52","بني عباس",1200,870],["53","عين صالح",1650,1070],["54","عين قزام",1650,1070],["55","تقرت",950,600],["57","المغير",1100,null],["58","المنيعة",1050,600]];
+  const XW_WILAYAS = [["01","أدرار",1450,880],["02","الشلف",850,530],["03","الأغواط",1000,630],["04","أم البواقي",800,530],["05","باتنة",850,530],["06","بجاية",800,530],["07","بسكرة",1000,630],["08","بشار",1150,730],["09","البليدة",800,530],["10","البويرة",800,530],["11","تمنراست",1650,1080],["12","تبسة",900,530],["13","تلمسان",950,580],["14","تيارت",850,530],["15","تيزي وزو",800,530],["16","الجزائر",600,480],["17","الجلفة",1000,630],["18","جيجل",500,370],["19","سطيف",750,530],["20","سعيدة",850,580],["21","سكيكدة",800,530],["22","سيدي بلعباس",850,530],["23","عنابة",850,530],["24","قالمة",800,530],["25","قسنطينة",800,530],["26","المدية",850,530],["27","مستغانم",850,530],["28","المسيلة",900,580],["29","معسكر",850,530],["30","ورقلة",1000,680],["31","وهران",800,530],["32","البيض",1150,680],["34","برج بوعريريج",650,530],["35","بومرداس",800,530],["36","الطارف",850,530],["38","تيسمسيلت",850,530],["39","الوادي",1000,680],["40","خنشلة",850,530],["41","سوق أهراس",800,530],["42","تيبازة",800,530],["43","ميلة",800,530],["44","عين الدفلى",800,530],["45","النعامة",1150,680],["46","عين تموشنت",850,530],["47","غرداية",1000,680],["48","غليزان",850,530],["49","تيميمون",1450,880],["51","أولاد جلال",950,630],["52","بني عباس",1200,880],["53","عين صالح",1650,1080],["54","عين قزام",1650,1080],["55","تقرت",1000,680],["57","المغير",1000,null],["58","المنيعة",1050,680]];
 
   const XW_OFFICES = {"10":["البويرة"],"11":["تمنراست"],"12":["تبسة"],"13":["تلمسان"],"14":["تيارت"],"15":["تيزي وزو"],"16":["بئر توتة","براقي","بئر خادم","أولاد فايت","برج الكيفان","رغاية","الكاليتوس","الشراقة"],"17":["الجلفة"],"18":["جيجل","الطاهير"],"19":["سطيف","العلمة"],"20":["سعيدة"],"21":["سكيكدة"],"22":["سيدي بلعباس"],"23":["عنابة","البوني"],"24":["قالمة"],"25":["قسنطينة","المدينة الجديدة علي منجلي","الزواغي"],"26":["المدية"],"27":["مستغانم"],"28":["المسيلة","بوسعادة"],"29":["معسكر"],"30":["ورقلة","حاسي مسعود"],"31":["وهران - مارافال","وهران - المرشد","وهران - كاناستيل"],"32":["البيض"],"34":["برج بوعريريج"],"35":["بومرداس","برج منايل","دلس"],"36":["الطارف"],"38":["تيسمسيلت"],"39":["الوادي"],"40":["خنشلة"],"41":["سوق أهراس"],"42":["تيبازة","القليعة"],"43":["ميلة"],"44":["عين الدفلى"],"45":["المشرية"],"46":["عين تموشنت"],"47":["غرداية"],"48":["غليزان"],"49":["تيميمون"],"51":["أولاد جلال"],"52":["بني عباس"],"53":["عين صالح"],"54":["عين قزام"],"55":["تقرت"],"58":["المنيعة"],"01":["أدرار"],"02":["الشلف","تنس"],"03":["الأغواط"],"04":["أم البواقي","عين البيضاء"],"05":["باتنة"],"06":["بجاية","أقبو","سوق الاثنين"],"07":["بسكرة"],"08":["بشار"],"09":["البليدة","بوفاريك","موزاية"]};
 
@@ -2614,7 +2605,9 @@ window.REVIEWS = [
     hero: null,
     /* p52 - the four policies, writable from the admin room. Empty means "the text
        that shipped in this page", so a policy can never vanish by accident. */
-    polShipping: "", polReturns: "", polTerms: "", polPrivacy: ""
+    polShipping: "", polReturns: "", polTerms: "", polPrivacy: "",
+    /* الحد الأقصى للتخفيضات: مبلغ السلة (دج) اللي عنده يبدأ التخفيض، ونسبته %. فارغ = متوقف */
+    bulkMin: "", bulkPct: ""
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
   const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp", "facebook"];
@@ -2630,6 +2623,8 @@ window.REVIEWS = [
     ["polTerms", "شروط الاستخدام — فارغة = النص الافتراضي", "area"],
     ["polPrivacy", "سياسة الخصوصية — فارغة = النص الافتراضي", "area"],
     ["heroBadge", "الشارة أعلى الصفحة الرئيسية"], ["heroDesc", "وصف الصفحة الرئيسية", "area"],
+    ["bulkMin", "الحد الأقصى للتخفيضات — مبلغ السلة بالدينار اللي لما يبلغه يتطبق التخفيض (مثال: 7000) — فارغ = متوقف"],
+    ["bulkPct", "نسبة التخفيض عند بلوغ هذا الحد % (مثال: 10)"],
     ["phone", "رقم الهاتف — يتبان في الفوتر ول Requests"],
     ["shopSub", "النص تحت عنوان المنتجات"], ["footDesc", "وصف المتجر في أسفل الموقع", "area"]
   ];
@@ -2738,7 +2733,7 @@ window.REVIEWS = [
      Every row is rebuilt from the template it was born from, so a hidden link
      can come back without a page reload. */
   const XW_SOCIAL = [
-    { v: "instagram", base: "https://www.instagram.com/", links: ".pill.ig, .fs-ig, .li-ig, .slogan-ig, .ig-float", pill: ".pill.ig", text: ".li-ig a", name: "Instagram" },
+    { v: "instagram", base: "https://www.instagram.com/", links: ".pill.ig, .fs-ig, .li-ig, .slogan-ig", pill: ".pill.ig", text: ".li-ig a", name: "Instagram" },
     { v: "tiktok", base: "https://www.tiktok.com/@", links: ".pill.tt, .fs-tt, .li-tt", pill: ".pill.tt", text: ".li-tt a", name: "TikTok" },
     { v: "facebook", base: "https://facebook.com/", links: ".pill.fb, .fs-fb, .li-fb, .li-fb a", pill: ".pill.fb", text: ".li-fb a", name: "Facebook" },
     { v: "whatsapp", base: "https://wa.me/", links: ".fs-wa", name: "WhatsApp" },
@@ -2774,7 +2769,7 @@ window.REVIEWS = [
   let HERO_ORIG = "";
   const grabHero = () => { const b = document.getElementById("heroVis"); if (b && !HERO_ORIG) HERO_ORIG = b.innerHTML; };
   const heroCard = (c, i) =>
-    '<a href="' + esc(c.href || "#categories") + '" class="hcard hcard-' + (i + 1) + '">' +
+    '<a href="' + esc(c.href || "#shop") + '" class="hcard hcard-' + (i + 1) + '">' +
     '<img src="' + esc(cld(c.img, 500, 300)) + '" alt="' + esc(c.title || "") + '" width="500" height="300"' +
     (i ? ' loading="lazy"' : ' fetchpriority="high"') + ' decoding="async">' +
     (c.title ? "<h3>" + esc(c.title) + "</h3>" : "") + "</a>";
@@ -3148,7 +3143,8 @@ window.REVIEWS = [
     $("#shopTabs").innerHTML = ["all"].concat(cats).map((c) => '<button class="tab' + (c === shopFilter ? " active" : "") + '" data-tab="' + esc(c) + '">' + (c === "all" ? "الكل" : esc(c)) + "</button>").join("");
   };
   const renderProducts = () => {
-    const list = shopFilter === "all" ? window.PRODUCTS : window.PRODUCTS.filter((p) => hasCat(p, shopFilter));
+    const single = window.PRODUCTS.filter((p) => !p.bundle);   /* الباقات لها قسمها: العروض المجمّعة */
+    const list = shopFilter === "all" ? single : single.filter((p) => hasCat(p, shopFilter));
     /* p56 - an empty category used to leave a bare grid, which reads as a
        broken page. It says what is true, and offers the way back. */
     prodGrid.innerHTML = list.length
@@ -3158,8 +3154,9 @@ window.REVIEWS = [
     const rest = list.length - shopLimit;
     $("#moreWrap").innerHTML = rest > 0 ? '<button class="btn btn-ghost" id="moreBtn">عرض المزيد (' + rest + ")</button>" : "";
   };
+  const isBundle = (p) => !!(p && p.bundle);
   const renderDeals = () => {
-    const deals = window.PRODUCTS.filter(discOn).slice(0, 3);
+    const deals = window.PRODUCTS.filter(isBundle).slice(0, 8);
     dealGrid.innerHTML = deals.map((p) => cardHTML(p, -1).replace('class="ptag hot"', 'class="ptag hot-live"')).join("");
     $("#products").style.display = deals.length ? "" : "none";
   };
@@ -3167,12 +3164,6 @@ window.REVIEWS = [
     const base = window.CATEGORIES.slice();
     tabCats().forEach((n) => { if (!base.some((c) => c.name === n)) base.push({ name: n, desc: "", icon: "🏷️" }); });
     const catN = (name) => window.PRODUCTS.filter((p) => hasCat(p, name)).length;
-    $("#catsGrid").innerHTML = base.map((c) =>
-      '<a href="#shop" class="cat-card" data-cat="' + esc(c.name) + '" data-reveal>' +
-      '<div class="cat-ico">' + c.icon + "</div>" +
-      '<div class="cat-body"><h3>' + esc(c.name) + "</h3><p>" + esc(c.desc) + "</p>" +
-      '<span class="cat-count">' + catN(c.name) + " منتج</span></div></a>"
-    ).join("");
     /* p52 - the same list, one number per category, for the arrow in the phone menu.
        p56 - and now it does what the press says: this category's products,
        not the shelf where all the categories sit. */
@@ -3287,6 +3278,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-price' + (lp ? " fire" : "") + '">' + fmt(sp) + " دج" + (lp ? "<s>" + fmt(lp) + " دج</s>" : "") + (lp ? '<em class="pdrop">-' + discPct(p) + "%</em>" : "") + "</div>" +
       (discTagged(p) ? '<div class="ptimer line" data-cd="' + esc(p.id) + '">⏳ ينتهي الخصم بعد <b>' + fmtLeft(discLeft(p)) + "</b></div>" : "") +
       (typeof p.stock === "number" ? '<div class="pstock ' + (p.stock <= 0 ? "out" : p.stock <= 5 ? "low" : "") + '" style="margin-top:8px">' + (p.stock <= 0 ? "نفد المخزون" : "الكمية المتوفرة: " + p.stock) + "</div>" : "") +
+      colorChipsHTML(p) +
       /* الزرين يوقفو مباشرة تحت السعر: الزبون يشوف «اشترِ الآن» أول ما يدخل،
          والوصف (المواصفات) يبقى تحتهم فيقرأ من أراد بعد ما شاف الثمن */
       '<div class="xw-pbtns"><button class="xw-btn ghost" data-add="' + esc(p.id) + '"' + dis + ">" + CART_SVG.replace("<svg ", '<svg width="18" height="18" ') + " أضف للسلة</button>" +
@@ -3306,6 +3298,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const start = () => { stop(); if (imgs.length > 4) galTimer = setInterval(() => { cur = show(cur + 1); }, 2600); };
     stop();
     $("#xwProductBox").onclick = (e) => {
+      const ch = e.target.closest(".xw-chip");
+      if (ch) { if (!ch.disabled) $$(".xw-chip", $("#xwProductBox")).forEach((x) => x.classList.toggle("on", x === ch)); return; }
       const t = e.target.closest("[data-gi]");
       if (t) { stop(); cur = show(+t.dataset.gi); start(); return; }
       if (e.target.closest("#xwGalPrev")) { stop(); cur = show(cur - 1); start(); return; }
@@ -3406,6 +3400,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         const q = x.it.qty, r = xwTier(x.p, q);
         if (r.saved > 0) { saved += r.saved; if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
       }
+      saved += xwBulk(sub - saved);
       return { saved: Math.min(saved, sub + (sh || 0)), has3, has2 };
     };
 
@@ -3459,7 +3454,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
         (saved > 0 ? '<div class="xw-save">' + (t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
-        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
+        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
         (saved > 0 ? '<div class="xw-tot off"><span>خصم العرض</span><span>−' + fmt(saved) + " دج</span></div>" : "") +
@@ -3482,10 +3477,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (q) {
         collect();
         const it = lines()[+q.dataset.i].it, p = findProduct(it.id);
-        const nq = it.qty + +q.dataset.q;
-        if (nq > 0 && (typeof p.stock !== "number" || nq <= p.stock)) it.qty = nq;
+        const nq = it.qty + +q.dataset.q, have = lineStock(p, it.color || "");
+        if (nq > 0 && nq <= have) it.qty = nq;
         else if (nq <= 0 && items.length > 1) items.splice(items.indexOf(it), 1);
-        else if (nq > 0) toast("الكمية المتوفرة: " + p.stock);
+        else if (nq > 0) toast("الكمية المتوفرة: " + have);
         render();
       }
     };
@@ -3515,7 +3510,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const cv = communeVal();
       if (!cv) return fail(st.delivery === "office" ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.");
       if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.");
-      for (const x of ls) if (typeof x.p.stock === "number" && x.it.qty > x.p.stock) return fail("الكمية المتوفرة من «" + x.p.name + "» هي " + x.p.stock + " فقط.");
+      for (const x of ls) { const have = lineStock(x.p, x.it.color || ""); if (x.it.qty > have) return fail("الكمية المتوفرة من «" + x.p.name + (x.it.color ? " (" + x.it.color + ")" : "") + "» هي " + have + " فقط."); }
       const sub = ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0), sh = shipping();
       /* the same tier figure the summary shows goes into the order itself */
       const t = tiers(ls, sub, sh);
@@ -3525,7 +3520,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         uid: XW_UID, dev: XW_DEVICE,
         customer: { name: st.name.trim(), phone: st.phone, wilaya: st.wilaya, commune: cv, address: st.delivery === "home" ? st.address.trim() : "استلام من مكتب: " + cv, notes: st.notes.trim() },
         delivery: st.delivery,
-        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, quantity: x.it.qty, price: sellPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
+        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: sellPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
         subtotal: sub, shipping: sh, discount: saved, total: sub + (sh || 0) - saved, status: "new", createdAt: new Date().toISOString()
       };
       st.busy = true; st.err = ""; render();
@@ -3533,7 +3528,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         await saveOrder(order);
       } catch (err) {
         st.busy = false;
-        const msg = "طلب جديد " + order.id + "\nالاسم: " + order.customer.name + "\nالهاتف: " + order.customer.phone + "\nالولاية: " + order.customer.wilaya + " - " + order.customer.commune + "\nالعنوان: " + order.customer.address + "\n" + order.items.map((i) => i.name + " x" + i.quantity).join("\n") + "\nالمجموع: " + fmt(order.total) + " دج";
+        const msg = "طلب جديد " + order.id + "\nالاسم: " + order.customer.name + "\nالهاتف: " + order.customer.phone + "\nالولاية: " + order.customer.wilaya + " - " + order.customer.commune + "\nالعنوان: " + order.customer.address + "\n" + order.items.map((i) => i.name + (i.color ? " (" + i.color + ")" : "") + " x" + i.quantity).join("\n") + "\nالمجموع: " + fmt(order.total) + " دج";
         st.err = 'تعذّر إرسال الطلب. <a style="color:#25D366;text-decoration:underline" target="_blank" rel="noopener" href="https://wa.me/' + waNumber() + "?text=" + encodeURIComponent(msg) + '">أرسله عبر واتساب</a>';
         render(); return;
       }
@@ -3541,9 +3536,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       xwNotePhoneOrder(st.phone);
       /* update local stock */
       const changed = [];
-      ls.forEach((x) => { if (typeof x.p.stock === "number") { x.p.stock = Math.max(0, x.p.stock - x.it.qty); changed.push(x); } });
+      ls.forEach((x) => {
+        if (pColors(x.p).length) {
+          x.p.colors = x.p.colors.map((c) => (c.name === x.it.color ? { name: c.name, stock: Math.max(0, (Number(c.stock) || 0) - x.it.qty) } : c));
+          x.p.stock = x.p.colors.reduce((t, c) => t + (Number(c.stock) || 0), 0);
+          changed.push(x);
+        } else if (typeof x.p.stock === "number") { x.p.stock = Math.max(0, x.p.stock - x.it.qty); changed.push(x); }
+      });
       if (changed.length && seeded) {
-        if (online) changed.forEach((x) => db.collection(XW_COL.products).doc(x.p.id).update({ stock: x.p.stock }).catch(() => {}));
+        if (online) changed.forEach((x) => db.collection(XW_COL.products).doc(x.p.id).update(pColors(x.p).length ? { stock: x.p.stock, colors: x.p.colors } : { stock: x.p.stock }).catch(() => {}));
         else lsSet("xw-products", window.PRODUCTS);
       }
       if (opts.fromCart) { cart = []; saveCart(); renderCart(); }
@@ -3562,8 +3563,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const b = e.target.closest("[data-buy]");
     if (b && !b.disabled) {
       const p = findProduct(b.dataset.buy); if (!p) return;
+      let col = "";
+      if (pColors(p).length) {
+        const inBox = !!b.closest("#xwProductBox");
+        col = inBox ? pickedColor() : "";
+        if (!col) { toast("اختر اللون أولاً"); if (!inBox) openProduct(p.id); return; }
+      }
       closeModal($("#xwProduct"));
-      openCheckout([{ id: p.id, qty: 1 }]);
+      openCheckout([col ? { id: p.id, qty: 1, color: col } : { id: p.id, qty: 1 }]);
       return;
     }
     if (e.target.closest("#moreBtn")) { shopLimit += 8; renderProducts(); return; }
@@ -3769,7 +3776,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -3783,7 +3790,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -3894,7 +3901,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       "<div><small>ملاحظات</small>" + (esc(c.notes) || "—") + "</div>" +
       (o.dev ? "<div><small>الجهاز</small>" + esc(o.dev) + "</div>" : "") +
       (o.uid ? '<div><small>رمز الجهاز</small><span dir="ltr">' + esc(o.uid) + "</span></div>" : "") + "</div>" +
-      '<div class="xw-oi">' + (o.items || []).map((i) => "<div><span>" + esc(i.name) + " × " + esc(i.quantity) + "</span><span>" + fmt(i.price * i.quantity) + " دج</span></div>").join("") +
+      '<div class="xw-oi">' + (o.items || []).map((i) => "<div><span>" + esc(i.name) + (i.color ? " (" + esc(i.color) + ")" : "") + " × " + esc(i.quantity) + "</span><span>" + fmt(i.price * i.quantity) + " دج</span></div>").join("") +
       "<div><span>التوصيل</span><span>" + fmt(o.shipping || 0) + " دج</span></div>" +
       (o.discount > 0 ? "<div><span>خصم العرض</span><span>−" + fmt(o.discount) + " دج</span></div>" : "") +
       '<div style="font-weight:800;border-top:1px dashed var(--line-2);margin-top:4px;padding-top:6px"><span>المجموع</span><span style="color:#FF6B00">' + fmt(o.total) + " دج</span></div></div>" +
@@ -4448,14 +4455,26 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!it.productId || !(n > 0)) continue;
       const p = (window.PRODUCTS || []).find((x) => x.id === it.productId);
       if (!p || typeof p.stock !== "number") continue;
-      add.push({ p: p, n: n });
+      add.push({ p: p, n: n, color: it.color || "" });
     }
+    /* منتج بألوان: الكمية ترجع إلى لونه، والمخزون الكلي = مجموع الألوان */
+    const wc = {};
+    add.forEach((a) => {
+      if (!(a.color && pColors(a.p).length)) return;
+      const w = wc[a.p.id] || (wc[a.p.id] = a.p.colors.map((c) => ({ name: c.name, stock: Number(c.stock) || 0 })));
+      const c = w.find((x) => x.name === a.color); if (c) c.stock += a.n;
+    });
+    const wtot = (id) => wc[id].reduce((t, c) => t + c.stock, 0);
     if (add.length && db && online && seeded) {
-      const b = db.batch();
-      add.forEach((a) => b.update(db.collection(XW_COL.products).doc(a.p.id), { stock: firebase.firestore.FieldValue.increment(a.n) }));
+      const b = db.batch(), seen = {};
+      add.forEach((a) => {
+        const ref = db.collection(XW_COL.products).doc(a.p.id);
+        if (wc[a.p.id]) { if (!seen[a.p.id]) { seen[a.p.id] = 1; b.update(ref, { colors: wc[a.p.id], stock: wtot(a.p.id) }); } }
+        else b.update(ref, { stock: firebase.firestore.FieldValue.increment(a.n) });
+      });
       await tmo(b.commit());
     }
-    add.forEach((a) => { a.p.stock += a.n; });
+    add.forEach((a) => { if (wc[a.p.id]) { a.p.colors = wc[a.p.id]; a.p.stock = wtot(a.p.id); } else a.p.stock += a.n; });
     const moved = add.reduce((s, a) => s + a.n, 0);
     /* the mark goes on the order in memory too, not only in the cloud. Without
        it, cancelling and changing your mind within one sitting hands the
@@ -4578,6 +4597,58 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const list = window.CATEGORIES.slice();
     tabCats().forEach((n) => { if (!list.some((c) => c.name === n)) list.push({ name: n, desc: "", icon: "🏷️" }); });
     return list;
+  };
+  /* ----- العروض المجمّعة: كل باقة منتج حقيقي (bundle:true) فتمرّ في السلة والدفع كأي منتج ----- */
+  const tabBundles = () => {
+    const prods = window.PRODUCTS.filter((p) => !isBundle(p));
+    const bundles = window.PRODUCTS.filter(isBundle);
+    $("#xwBody").innerHTML =
+      '<div class="xw-card" style="max-width:840px"><h3>🎁 إنشاء باقة</h3>' +
+      '<p class="xw-note" style="margin:-6px 0 14px">اختر المنتجات اللي تدخل في الباقة (اثنين أو أكثر) واكتب سعرها الموحّد. تظهر في قسم «العروض المجمّعة» والزبون يشتريها بضغطة وحدة.</p>' +
+      '<div class="xw-err" id="bErr"></div>' +
+      '<div class="xw-field"><label>اسم الباقة</label><input id="bName" placeholder="مثال: باقة اللاعب"></div>' +
+      (prods.length ? prods.map((p) => '<div class="xw-prow"><label style="display:flex;gap:8px;align-items:center;flex:1"><input type="checkbox" class="bChk" data-id="' + esc(p.id) + '"> ' + esc(p.name) + ' <span style="font-size:12px;color:var(--faint)">' + fmt(sellPrice(p)) + ' دج</span></label>' +
+        '<input type="number" class="bQty" data-id="' + esc(p.id) + '" value="1" min="1" style="width:64px"></div>').join("") : '<div class="xw-empty">أضف منتجات أولاً.</div>') +
+      '<div class="xw-field" style="margin-top:14px"><label>سعر الباقة (دج)</label><input id="bPrice" type="number" min="1"></div>' +
+      '<div class="xw-field"><label>رابط صورة الباقة (اختياري — بدونه تؤخذ صورة أول منتج)</label><input id="bImg" placeholder="https://..."></div>' +
+      '<button class="xw-btn" id="bSave" type="button">حفظ الباقة</button></div>' +
+      '<div class="xw-card" style="max-width:840px;margin-top:16px"><h3>الباقات الحالية (' + bundles.length + ')</h3>' +
+      (bundles.length ? bundles.map((b) => '<div class="xw-prow"><div class="i" style="flex:1"><b>' + esc(b.name) + '</b> <span style="font-size:12px;color:var(--faint)">' + fmt(sellPrice(b)) + ' دج</span></div>' +
+        '<button type="button" class="xw-btn danger sm" data-bdel="' + esc(b.id) + '">حذف</button></div>').join("") : '<div class="xw-empty">لا توجد باقات بعد.</div>') + "</div>";
+    const err = (m) => { $("#bErr").textContent = m; };
+    $("#bSave").addEventListener("click", async () => {
+      const name = $("#bName").value.trim(), price = Math.round(Number($("#bPrice").value));
+      const qtys = Array.from(document.querySelectorAll(".bQty"));
+      const items = Array.from(document.querySelectorAll(".bChk")).filter((c) => c.checked).map((c) => {
+        const q = qtys.find((x) => x.dataset.id === c.dataset.id);
+        return { id: c.dataset.id, qty: Math.max(1, parseInt(q && q.value, 10) || 1) };
+      });
+      if (!name) return err("اكتب اسم الباقة.");
+      if (items.length < 2) return err("اختر منتجين على الأقل.");
+      if (!(price > 0)) return err("اكتب سعر الباقة.");
+      const ps = items.map((i) => findProduct(i.id));
+      const sum = ps.reduce((t, p, k) => t + sellPrice(p) * items[k].qty, 0);
+      const stocks = ps.map((p, k) => (typeof p.stock === "number" ? Math.floor(p.stock / items[k].qty) : null)).filter((n) => n != null);
+      const img = $("#bImg").value.trim() || ps[0].img;
+      const minOrder = window.PRODUCTS.reduce((m, x) => Math.min(m, x.order == null ? 0 : x.order), 0);
+      const np = {
+        id: "b-" + Date.now().toString(36), order: minOrder - 1, name, bundle: true, items, cat: [],
+        desc: "تحتوي الباقة: " + items.map((i, k) => i.qty + "× " + ps[k].name).join("، ") + ".",
+        price, old: sum > price ? sum : price, img, images: [img], tagIds: ["discount"], tags: ["باقة"]
+      };
+      if (stocks.length) np.stock = Math.min.apply(null, stocks);
+      try {
+        await commitProducts([np].concat(window.PRODUCTS), np, null);
+        toast("تمت إضافة الباقة", true); renderStore(); tabBundles();
+      } catch (ex) { err("تعذّر الحفظ: " + (ex.code || ex.message)); }
+    });
+    document.querySelectorAll("[data-bdel]").forEach((btn) => btn.addEventListener("click", async () => {
+      if (!confirm("حذف هذه الباقة؟")) return;
+      try {
+        await commitProducts(window.PRODUCTS.filter((x) => x.id !== btn.dataset.bdel), null, btn.dataset.bdel);
+        toast("تم حذف الباقة", true); renderStore(); tabBundles();
+      } catch (ex) { err("تعذّر الحذف: " + (ex.code || ex.message)); }
+    }));
   };
   const tabCategories = () => {
     const body = $("#xwBody");
@@ -4743,6 +4814,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field" id="pCatNewWrap" style="display:none;margin-top:10px"><label>اسم الفئة الجديدة</label><input id="pCatNew"></div>' +
       '<div class="xw-row"><div class="xw-field"><label><span id="pPriceLbl">السعر (دج)</span> <i>*</i> <small>(السعر الذي يدفعه الزبون)</small></label><input id="pPrice" type="number" min="0" value="' + (p ? p.price : "") + '"></div>' +
       '<div class="xw-field"><label>الكمية المتوفرة <i>*</i></label><input id="pStock" type="number" min="0" value="' + (p && typeof p.stock === "number" ? p.stock : "") + '" placeholder="مثال: 20"></div></div>' +
+      '<div class="xw-field"><label>الألوان <small>(اختياري — اكتب اسم كل لون وكم قطعة متوفرة منه. عند وجود ألوان تصير الكمية الكلية مجموعها، ويختار الزبون لوناً عند الطلب)</small></label><div id="pColors"></div><button type="button" class="xw-btn ghost sm" id="pColorAdd">➕ إضافة لون</button></div>' +
       '<div class="xw-row"><div class="xw-field"><label>السعر إذا طلب 2 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل قطعتين كاملتين، وليس سعر القطعة. اتركه فارغاً لإيقاف العرض)</small></label><input id="pQ2" type="number" min="0" step="1" value="' + (p && Number(p.price2) > 0 ? Number(p.price2) : "") + '" placeholder="مثال: 2400"></div>' +
 '<div class="xw-field"><label>السعر الجديد إذا طلب 3 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل 3 قطع بالضبط، وكل قطعة زائدة عن الثلاثة تُحسب بالسعر الأصلي، وليس سعر القطعة)</small></label><input id="pQ3" type="number" min="0" step="1" value="' + (p && Number(p.price3) > 0 ? Number(p.price3) : "") + '" placeholder="مثال: 3600"></div></div>' +
       '<div class="xw-field"><label>الوسوم <small>(اختياري — يمكن اختيار أكثر من وسم)</small></label><div class="xw-tags">' +
@@ -4779,6 +4851,17 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       (p ? '<button type="button" class="xw-btn ghost" id="pCancel">إلغاء</button>' : "") + "</div></form>";
     drawImgs();
     const form = $("#xwPForm");
+    const colorRowHTML = (n, q) => '<div class="xw-crow"><input class="cName" placeholder="اسم اللون (مثال: أسود)" value="' + esc(n) + '"><input class="cStock" type="number" min="0" placeholder="الكمية" value="' + esc(q) + '"><button type="button" class="xw-btn danger sm" data-cdelrow>×</button></div>';
+    const syncColors = () => {
+      const rows = $$(".xw-crow", $("#pColors")), st = $("#pStock");
+      if (rows.length) { st.value = rows.reduce((t, r) => t + (Math.max(0, Math.floor(Number(r.querySelector(".cStock").value)) || 0)), 0); st.readOnly = true; }
+      else st.readOnly = false;
+    };
+    $("#pColors").innerHTML = pColors(p).map((c) => colorRowHTML(c.name, c.stock)).join("");
+    $("#pColorAdd").addEventListener("click", () => { $("#pColors").insertAdjacentHTML("beforeend", colorRowHTML("", "")); syncColors(); });
+    $("#pColors").addEventListener("input", syncColors);
+    $("#pColors").addEventListener("click", (e) => { const d = e.target.closest("[data-cdelrow]"); if (d) { d.closest(".xw-crow").remove(); syncColors(); } });
+    syncColors();
     const syncNewCat = () => { const n = document.querySelector('[data-cpick="__new"]'); $("#pCatNewWrap").style.display = n && n.checked ? "" : "none"; };
     $$("[data-cpick]").forEach((cb) => cb.addEventListener("change", syncNewCat));
     /* the admin writes the price after the discount + the original price; the site computes the percentage */
@@ -4859,6 +4942,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!cat.length) return err("اختر فئة واحدة على الأقل أو أضف فئة جديدة.");
       if (!(price > 0)) return err("اكتب سعراً صحيحاً.");
       if (stockRaw === "" || Number(stockRaw) < 0) return err("اكتب الكمية المتوفرة.");
+      const colors = $$(".xw-crow").map((r) => ({ name: r.querySelector(".cName").value.trim(), stock: Math.max(0, Math.floor(Number(r.querySelector(".cStock").value)) || 0) }));
+      if (colors.some((c) => !c.name)) return err("اكتب اسم كل لون أو احذف الصف الفارغ.");
+      if (new Set(colors.map((c) => c.name)).size !== colors.length) return err("اسم لون مكرّر.");
       if (!formImgs.length) return err("أضف صورة واحدة على الأقل.");
       const tagIds = $$("[data-tid]").filter((c) => c.checked && c.dataset.tid !== "__custom").map((c) => c.dataset.tid);
       const extraTags = ($("#pTagCustom").value || "").split(/[،,]/).map((t) => t.trim()).filter(Boolean);
@@ -4898,8 +4984,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const videoRaw = String(($("#pVideo") || {}).value || "").trim();
       const videoId = ytId(videoRaw);
       if (videoRaw && !videoId) return err("رابط YouTube غير صحيح — الصق رابط الفيديو كما هو (مثال: https://youtu.be/xxxxxxxxxxx) أو فرّغ الخانة.");
-      const data = { name, cat, price, old, disc, stock: Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const data = { name, cat, price, old, disc, stock: colors.length ? colors.reduce((t, c) => t + c.stock, 0) : Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
+      if (colors.length) data.colors = colors;
       if (videoId) data.video = videoId;
       if (JSON.stringify(data).length > 900000) return err("حجم الصور كبير جداً، استخدم روابط صور أو صوراً أصغر.");
       const btn = $("#pSave"); btn.disabled = true; err("");
@@ -4909,6 +4996,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           if (!data.old) delete upd.old;
           if (!data.discUntil) delete upd.discUntil;
           if (!data.disc) delete upd.disc;
+          if (!data.colors) delete upd.colors;
           if (!data.tag) delete upd.tag;
           if (!(data.tags || []).length) delete upd.tags;
           /* emptied on purpose -> taken out of the record, not left behind */
@@ -4949,7 +5037,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           '<div class="he-fields">' +
           '<div class="xw-field"><label>رابط الصورة</label><input data-hs="' + i + '" data-hk="img" value="' + esc(c && c.img ? c.img : "") + '" placeholder="https://… أو ارفعها من تحت" spellcheck="false"></div>' +
           '<div class="xw-row"><div class="xw-field"><label>الاسم اللي يبان تحت الصورة</label><input data-hs="' + i + '" data-hk="title" value="' + esc(c && c.title ? c.title : "") + '" placeholder="مثال: مراوح تبريد"></div>' +
-          '<div class="xw-field"><label>وين يروح الضغط عليها</label><input data-hs="' + i + '" data-hk="href" value="' + esc(c && c.href ? c.href : "") + '" placeholder="#categories"></div></div>' +
+          '<div class="xw-field"><label>وين يروح الضغط عليها</label><input data-hs="' + i + '" data-hk="href" value="' + esc(c && c.href ? c.href : "") + '" placeholder="#shop"></div></div>' +
           '<label class="xw-btn ghost sm he-up" style="cursor:pointer">📷 ارفع صورة' +
           '<input type="file" accept="image/*" data-hs="' + i + '" data-hk="file" hidden></label>' +
           "</div></div>";
@@ -4968,7 +5056,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       for (let i = 0; i < 3; i++) {
         const u = val(i, "img");
         if (!u) continue;
-        list.push({ img: u, title: val(i, "title"), href: val(i, "href") || "#categories" });
+        list.push({ img: u, title: val(i, "title"), href: val(i, "href") || "#shop" });
       }
       return list;
     };
@@ -5613,7 +5701,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   /* ---------- Event delegation: add-to-cart ---------- */
   document.addEventListener("click", (e) => {
     const add = e.target.closest("[data-add]");
-    if (add) { e.preventDefault(); addToCart(add.dataset.add); }
+    if (add) { e.preventDefault(); addToCart(add.dataset.add, 1, add.closest("#xwProductBox") ? pickedColor() : ""); }
   });
 
   /* ---------- Search ---------- */
@@ -5651,7 +5739,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   });
 
 
-  const sections = ["home", "shop", "reviews", "categories"];
+  const sections = ["home", "shop", "reviews"];
   const navLinks = $$(".nav-link");
   const spy = () => {
     let cur = "home";
@@ -5672,7 +5760,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   );
   const revealAll = (root) => $$("[data-reveal]", root).forEach((el) => io.observe(el));
   revealAll(document);
-  document.querySelectorAll("#prodGrid, #dealGrid, #catsGrid, #revGrid").forEach((g) => {
+  document.querySelectorAll("#prodGrid, #dealGrid, #revGrid").forEach((g) => {
     new MutationObserver(() => revealAll(g)).observe(g, { childList: true });
   });
 
