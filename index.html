@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="ltr">
 <head>
@@ -422,7 +423,7 @@ body.menu-open .mm-overlay { opacity: 1; visibility: visible; }
 .rate-stars button.on { color: #F59E0B; transform: scale(1.08); }
 .rate-err { margin: 12px 0 0; min-height: 22px; font-size: 14px; color: #dc2626; }
 .rate-err:empty { margin: 0; min-height: 0; }
-#rateCount, #rateAvg { color: #FF6B00; }
+#rateAvg { color: #FF6B00; }
 
 @media (max-width: 620px) {
   .rate-box { padding: 20px 16px; }
@@ -1431,7 +1432,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
   html[data-theme="dark"] .rate-stars button { color: rgba(255, 182, 124, .25); }
   html[data-theme="dark"] .rate-stars button.on { color: #FBBF24; }
   html[data-theme="dark"] .rate-err { color: #fca5a5; }
-  html[data-theme="dark"] #rateCount, html[data-theme="dark"] #rateAvg { color: var(--warm); }
+  html[data-theme="dark"] #rateAvg { color: var(--warm); }
   html[data-theme="dark"] .deals .section-head h2 { color: var(--warm); text-shadow: 0 0 28px rgba(255, 107, 0, .45); }
   html[data-theme="dark"] .marquee { background: rgba(255, 150, 80, .028); border-color: rgba(255, 172, 112, .11); }
   html[data-theme="dark"] .f-left { background: linear-gradient(90deg, #120C08, transparent); }
@@ -1945,7 +1946,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
     <section id="rate" class="section rate">
       <div class="section-head">
         <h2 data-i18n="rateTitle">أضف تقييمك بعد الشراء</h2>
-        <p class="faint">عدد التقييمات: <b id="rateCount">0</b> · متوسط التقييم: <b id="rateAvg">—</b></p>
+        <p class="faint">متوسط التقييم: <b id="rateAvg">—</b></p>
       </div>
       <div class="rate-box" id="rateBox">
         <div id="rateStep1">
@@ -2356,24 +2357,29 @@ window.REVIEWS = [
      تحته، يدفع الزبون السعر الأصلي ولا عروض كمية؛ ومن بلوغه تتطبق تخفيضات المنتجات.
      فارغ = التخفيضات دائماً مطبّقة. الباقات سعرها ثابت ولا يمسّه هذا الحد. */
   const regPrice = (p) => (p ? (p.bundle ? sellPrice(p) : Number(p.old) || Number(p.price) || 0) : 0);
-  const xwGateMin = () => { try { return Math.max(0, Number(INFO.bulkMin) || 0); } catch (e) { return 0; } };
+  const xwCartMin = () => { try { const v = Math.max(0, Number(INFO.cartMin) || 0); return v || Math.max(0, Number(INFO.bulkMin) || 0); } catch (e) { return 0; } };
   const xwGateSum = (lines) => lines.reduce((t, l) => t + regPrice(l.p) * l.qty, 0);
-  const xwGateOpen = (lines) => { const m = xwGateMin(); return !m || xwGateSum(lines) >= m; };
-  const xwSubLines = (ls) => { const o = xwGateOpen(ls.map((x) => ({ p: x.p, qty: x.it.qty }))); return ls.reduce((a, x) => a + (o ? sellPrice(x.p) : regPrice(x.p)) * x.it.qty, 0); };
+  const xwGateOpen = (lines) => { const m = xwCartMin(); return !m || xwGateSum(lines) >= m; };
+  const xwSubLines = (ls) => ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0);
   const xwGateHint = (lines) => {
-    const m = xwGateMin(); if (!m || xwGateOpen(lines)) return "";
+    const m = xwCartMin(); if (!m || xwGateOpen(lines)) return "";
     if (!lines.some((l) => discOn(l.p) || Number(l.p.price2) > 0 || Number(l.p.price3) > 0)) return "";
     return "🎁 تخفيضات المنتجات تبدأ عند " + fmt(m) + " دج — بقي " + fmt(m - xwGateSum(lines)) + " دج";
   };
-  const xwTier = (p, q, open = true) => {
-    if (!open) { const b0 = regPrice(p); return { base: b0, normal: b0 * q, total: b0 * q, saved: 0 }; }
+  const xwTier = (p, q, combo) => {
+    /* السعر الأساسي هو سعر البيع بعد تخفيض المنتج (أو السعر القديم إن لا تخفيض) */
     const base = sellPrice(p), normal = base * q;
     const q2 = Math.max(0, Number(p && p.price2) || 0), q3 = Math.max(0, Number(p && p.price3) || 0);
     let total = normal;
     if (q === 2) { if (q2 > 0 && q2 < normal) total = q2; }
     else if (q >= 3) { if (q3 > 0 && q3 < base * 3) total = q3 + (q - 3) * base; }
     if (total > normal) total = normal;
-    return { base, normal, total, saved: Math.max(0, normal - total) };
+    /* «سعر القطعة مع منتج آخر» (cartPrice): يُطبّق فقط إذا طُلب (السلة فيها
+       منتجان مختلفان وبلغت cartMin)، وفقط إذا كان فعلاً أرخص من عرض الكمية. */
+    let used = false;
+    const cp = Math.max(0, Number(p && p.cartPrice) || 0);
+    if (combo && cp > 0) { const c = cp * q; if (c < total) { total = c; used = true; } }
+    return { base, normal, total, saved: Math.max(0, normal - total), combo: used };
   };
   /* the struck-through price — 0 means "show no old price" */
   const listPrice = (p) => (discOn(p) ? Number(p.old) : 0);
@@ -2417,9 +2423,11 @@ window.REVIEWS = [
       return;
     }
     cartFoot.style.display = "block";
-    let xwSub = 0, xwSaved = 0;
+    let xwSub = 0, xwSaved = 0, comboUsed = false, big3 = false;
     const gLines = cart.map((c) => ({ p: findProduct(c.id), qty: c.qty })).filter((l) => l.p);
-    const gOpen = xwGateOpen(gLines);
+    const cMin = xwCartMin();
+    const baseSum = gLines.reduce((a, l) => a + sellPrice(l.p) * l.qty, 0);
+    const comboOn = new Set(gLines.map((l) => l.p.id)).size >= 2 && (!cMin || baseSum >= cMin);
     cart.forEach((ci, idx) => {
       const p = findProduct(ci.id);
       if (!p) return;
@@ -2427,7 +2435,9 @@ window.REVIEWS = [
          xwTier — قطعتان بـ«سعر شراء 2»، و3 ثلاث قطع بـ«سعر شراء 3» وكل قطعة
          زائدة بالسعر الأصلي، وإلا الثمن العادي. هكذا سلة واحدة وشاشة دفع واحدة
          يقولان نفس المبلغ دائماً. */
-      const t = xwTier(p, ci.qty, gOpen);
+      const t = xwTier(p, ci.qty, comboOn);
+      if (t.combo) comboUsed = true;
+      if (ci.qty >= 3 && xwTier(p, ci.qty, false).saved > 0) big3 = true;
       const strike = discOn(p) ? listPrice(p) * ci.qty : t.normal;
       xwSub += t.normal;
       xwSaved += t.saved;
@@ -2456,8 +2466,15 @@ window.REVIEWS = [
       cartBody.appendChild(row);
     });
     xwSaved = Math.min(xwSaved, xwSub);
-    const gh = xwGateHint(gLines);
-    if (gh) { const hint = document.createElement("div"); hint.style.cssText = "margin:0 0 10px;padding:10px 12px;border-radius:12px;background:rgba(255,107,0,.12);color:#FF6B00;font-weight:700;font-size:13px;line-height:1.6"; hint.textContent = gh; cartBody.insertBefore(hint, cartBody.firstChild); }
+    if (xwSaved > 0) {
+      const hint = document.createElement("div");
+      hint.className = "xw-save";
+      hint.style.cssText = "margin:0 0 10px";
+      hint.textContent = comboUsed
+        ? '🎁 الخصم الخاص مفعّل — وفرت ' + fmt(xwSaved) + ' دج على طلبك'
+        : (big3 ? '🎉 وفرت ' : '🔥 وفرت ') + fmt(xwSaved) + ' دج على طلبك';
+      cartBody.insertBefore(hint, cartBody.firstChild);
+    }
     cartTotal.textContent = fmt(xwSub - xwSaved) + " دج";
     cartDisc.hidden = !(xwSaved > 0);
     if (xwSaved > 0) cartDiscV.textContent = "−" + fmt(xwSaved) + " دج";
@@ -2617,8 +2634,11 @@ window.REVIEWS = [
     /* p52 - the four policies, writable from the admin room. Empty means "the text
        that shipped in this page", so a policy can never vanish by accident. */
     polShipping: "", polReturns: "", polTerms: "", polPrivacy: "",
-    /* الحد الأقصى للتخفيضات: مبلغ السلة (دج) اللي عنده يبدأ التخفيض، ونسبته %. فارغ = متوقف */
-    bulkMin: ""
+    /* الحد الأدنى اللي لازم تبلغه السلة (دج) باش يتفعّل «سعر القطعة مع منتج آخر». فارغ = بلا حد.
+       bulkMin بقى غير للتوافق مع قيمة قديمة محفوظة. */
+    cartMin: "", bulkMin: "",
+    /* إيميل استقبال التقييمات: كل تقييم جديد ينبعت لهذا العنوان عبر FormSubmit */
+    revEmail: ""
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
   const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp", "facebook"];
@@ -2634,7 +2654,8 @@ window.REVIEWS = [
     ["polTerms", "شروط الاستخدام — فارغة = النص الافتراضي", "area"],
     ["polPrivacy", "سياسة الخصوصية — فارغة = النص الافتراضي", "area"],
     ["heroBadge", "الشارة أعلى الصفحة الرئيسية"], ["heroDesc", "وصف الصفحة الرئيسية", "area"],
-    ["bulkMin", "الحد الأقصى للتخفيضات — مبلغ السلة بالدينار اللي لما تبلغه تتطبق تخفيضات المنتجات (مثال: 7000). تحته يدفع الزبون السعر الأصلي — فارغ = التخفيضات دائماً مطبّقة"],
+    ["cartMin", "سعر «مع منتج آخر» — الحد الأدنى لمبلغ السلة (دج) باش يتفعّل سعر القطعة عند شرائها مع منتج آخر (مثال: 4000). لازم يكون في السلة منتجان مختلفان. فارغ = يتفعّل بلا حد"],
+    ["revEmail", "إيميل استقبال التقييمات — كل تقييم جديد يوصل لهذا الإيميل (يتطلب تفعيل مرة واحدة من FormSubmit)", "email"],
     ["phone", "رقم الهاتف — يتبان في الفوتر ول Requests"],
     ["shopSub", "النص تحت عنوان المنتجات"], ["footDesc", "وصف المتجر في أسفل الموقع", "area"]
   ];
@@ -3405,13 +3426,27 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
        total - tier total, summed, capped at the payable total. has3 wins the message
        when any 3+ line saved; otherwise has2. */
     const tiers = (ls, sub, sh) => {
-      let saved = 0, has3 = false, has2 = false;
-      const open = xwGateOpen(ls.map((x) => ({ p: x.p, qty: x.it.qty })));
+      let saved = 0, has3 = false, has2 = false, hasCombo = false;
+      /* الأعلام (2/3) من كل سطر كما هو؛ والمال من مجموع كل منتج (لونان لنفس
+         المنتج يُجمعان فيُحسبان كقطعتين). */
       for (const x of ls) {
-        const q = x.it.qty, r = xwTier(x.p, q, open);
-        if (r.saved > 0) { saved += r.saved; if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
+        const q = Number(x.it && x.it.qty) || 0;
+        const r1 = xwTier(x.p, q, false);
+        if (r1.saved > 0) { if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
       }
-      return { saved: Math.min(saved, sub + (sh || 0)), has3, has2 };
+      const groups = new Map();
+      for (const x of ls) {
+        const id = x.p && x.p.id;
+        if (!groups.has(id)) groups.set(id, { p: x.p, q: 0 });
+        groups.get(id).q += Number(x.it && x.it.qty) || 0;
+      }
+      const m = xwCartMin();
+      const comboOn = groups.size >= 2 && (!m || sub >= m);
+      for (const g of groups.values()) {
+        const r = xwTier(g.p, g.q, comboOn);
+        if (r.saved > 0) { saved += r.saved; if (r.combo) hasCombo = true; }
+      }
+      return { saved: Math.min(saved, sub + (sh || 0)), has3, has2, hasCombo };
     };
 
     const render = () => {
@@ -3430,8 +3465,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const ls = lines();
       if (!ls.length) { closeModal($("#xwCheckout")); return; }
       const r = rates(), sh = shipping();
-      const gLines = ls.map((x) => ({ p: x.p, qty: x.it.qty })), gOpen = xwGateOpen(gLines), gHint = xwGateHint(gLines);
       const sub = xwSubLines(ls);
+      const cMin = xwCartMin();
+      const comboOn = new Set(ls.map((x) => x.p && x.p.id)).size >= 2 && (!cMin || sub >= cMin);
       const list = placeList();
       const opt = (o, cur) => "<option" + (o === cur ? " selected" : "") + ">" + esc(o) + "</option>";
       const isOff = st.delivery === "office";
@@ -3464,9 +3500,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<div class="xw-field"><label>ملاحظات <small>(اختياري)</small></label><textarea id="fNotes" style="min-height:64px">' + esc(st.notes) + "</textarea></div>" +
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
-        (gHint ? '<div class="xw-save" style="background:rgba(255,107,0,.12);color:#FF6B00">' + gHint + "</div>" : "") +
-        (saved > 0 ? '<div class="xw-save">' + (t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
-        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty, gOpen); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
+        (saved > 0 ? '<div class="xw-save">' + (t.hasCombo ? '🎁 باقتك الخاصة جاهزة — ووفرت ' + fmt(saved) + ' دج على طلبك' : t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
+        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty, comboOn); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
         (saved > 0 ? '<div class="xw-tot off"><span>خصم العرض</span><span>−' + fmt(saved) + " دج</span></div>" : "") +
@@ -3523,7 +3558,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!cv) return fail(st.delivery === "office" ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.");
       if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.");
       for (const x of ls) { const have = lineStock(x.p, x.it.color || ""); if (x.it.qty > have) return fail("الكمية المتوفرة من «" + x.p.name + (x.it.color ? " (" + x.it.color + ")" : "") + "» هي " + have + " فقط."); }
-      const gOpen = xwGateOpen(ls.map((x) => ({ p: x.p, qty: x.it.qty }))), sub = xwSubLines(ls), sh = shipping();
+      const sub = xwSubLines(ls), sh = shipping();
       /* the same tier figure the summary shows goes into the order itself */
       const t = tiers(ls, sub, sh);
       const saved = t.saved;
@@ -3532,7 +3567,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         uid: XW_UID, dev: XW_DEVICE,
         customer: { name: st.name.trim(), phone: st.phone, wilaya: st.wilaya, commune: cv, address: st.delivery === "home" ? st.address.trim() : "استلام من مكتب: " + cv, notes: st.notes.trim() },
         delivery: st.delivery,
-        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: gOpen ? sellPrice(x.p) : regPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
+        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: sellPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
         subtotal: sub, shipping: sh, discount: saved, total: sub + (sh || 0) - saved, status: "new", createdAt: new Date().toISOString()
       };
       st.busy = true; st.err = ""; render();
@@ -4319,6 +4354,27 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   };
   const rvOne = (v) => (Math.round(Number(v) * 10) / 10).toFixed(1);
   const rvProd = (id) => { const p = (window.PRODUCTS || []).filter((x) => x && x.id === id)[0]; return p ? p.name : ""; };
+  /* كل تقييم جديد يتبعت لإيميل المالك عبر FormSubmit (بلا حساب وبلا مفتاح).
+     ما نوقفوش التسجيل إذا فشل الإرسال — التقييم يتسجّل في القاعدة دائماً. */
+  const xwMailReview = (pid, num, txt, phone) => {
+    try {
+      const to = String(INFO.revEmail || "").trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) return;
+      const mask = phone ? String(phone).slice(0, 4) + "••••" + String(phone).slice(-2) : "";
+      fetch("https://formsubmit.co/ajax/" + encodeURIComponent(to), {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          _subject: "تقييم جديد — X Store",
+          "المنتج": rvProd(pid) || pid,
+          "النجوم": String(num) + " من 5",
+          "التقييم": txt || "(بلا كلام)",
+          "الهاتف": mask,
+          "التاريخ": new Date().toLocaleString("ar-DZ-u-nu-latn")
+        })
+      }).catch(() => {});
+    } catch (e) {}
+  };
   /* the words that shipped keep standing until a real voice arrives, so the
      wall is never empty - and the first real word replaces them all */
   const rvSamples = () => window.REVIEWS.map((r) =>
@@ -4333,10 +4389,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const rvPaint = (list) => {
     const arr = Array.isArray(list) ? list : [];
     const st = rvStats(arr);
-    const cnt = $("#rateCount"), avg = $("#rateAvg"), stat = $("#revStat"), grid = $("#revGrid");
-    if (cnt) cnt.textContent = String(st.n);
+    const avg = $("#rateAvg"), stat = $("#revStat"), grid = $("#revGrid");
     if (avg) avg.textContent = st.n ? rvOne(st.avg) + " من 5" : "—";
-    if (stat) stat.innerHTML = st.n ? stars(st.avg) + " · " + st.n + " تقييم · " + rvOne(st.avg) + " من 5" : "⭐ متجر بتقييم 5 نجوم";
+    if (stat) stat.innerHTML = st.n ? stars(st.avg) + " · " + rvOne(st.avg) + " من 5" : "⭐ متجر بتقييم 5 نجوم";
     if (!grid) return;
     if (!st.n) { grid.innerHTML = rvSamples(); return; }
     grid.innerHTML = arr.slice(0, XW_RATE_SHOW).map((r) => {
@@ -4412,6 +4467,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         const t = document.getElementById("rateText"); if (t) t.value = "";
         picked = 0; say(0);
         toast("تسجّل التقييم. شكرا على الكلمة الطيبة", true);
+        xwMailReview(pid, num, txt, box.dataset.phone || "");
         rvPaint(await xwRateRead(true));
       } catch (e2) {
         if (err) err.textContent = "ما تسجّلش التقييم: " + ((e2 && e2.code) || "خطأ في الاتصال");
@@ -4829,6 +4885,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field"><label>الألوان <small>(اختياري — اكتب اسم كل لون وكم قطعة متوفرة منه. عند وجود ألوان تصير الكمية الكلية مجموعها، ويختار الزبون لوناً عند الطلب)</small></label><div id="pColors"></div><button type="button" class="xw-btn ghost sm" id="pColorAdd">➕ إضافة لون</button></div>' +
       '<div class="xw-row"><div class="xw-field"><label>السعر إذا طلب 2 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل قطعتين كاملتين، وليس سعر القطعة. اتركه فارغاً لإيقاف العرض)</small></label><input id="pQ2" type="number" min="0" step="1" value="' + (p && Number(p.price2) > 0 ? Number(p.price2) : "") + '" placeholder="مثال: 2400"></div>' +
 '<div class="xw-field"><label>السعر الجديد إذا طلب 3 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل 3 قطع بالضبط، وكل قطعة زائدة عن الثلاثة تُحسب بالسعر الأصلي، وليس سعر القطعة)</small></label><input id="pQ3" type="number" min="0" step="1" value="' + (p && Number(p.price3) > 0 ? Number(p.price3) : "") + '" placeholder="مثال: 3600"></div></div>' +
+      '<div class="xw-field"><label>سعر القطعة عند شرائها مع منتج آخر (دج) <small>(سعر القطعة الواحدة — يتطبّق فقط كي السلة فيها منتجان مختلفان وتبلغ الحد الأدنى، وإذا كان أرخص من عرض الكمية. اتركه فارغاً لإيقافه)</small></label><input id="pCombo" type="number" min="0" step="1" value="' + (p && Number(p.cartPrice) > 0 ? Number(p.cartPrice) : "") + '" placeholder="مثال: 1500"></div>' +
       '<div class="xw-field"><label>الوسوم <small>(اختياري — يمكن اختيار أكثر من وسم)</small></label><div class="xw-tags">' +
       XW_TAGS.map((t) => '<label class="xw-tagchk"><input type="checkbox" data-tid="' + t.id + '"' + (initIds.indexOf(t.id) >= 0 ? " checked" : "") + "><span>" + t.label + "</span></label>").join("") +
       '<label class="xw-tagchk"><input type="checkbox" data-tid="__custom"' + (customTags.length ? " checked" : "") + '><span>وسم آخر…</span></label></div>' +
@@ -4996,7 +5053,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const videoRaw = String(($("#pVideo") || {}).value || "").trim();
       const videoId = ytId(videoRaw);
       if (videoRaw && !videoId) return err("رابط YouTube غير صحيح — الصق رابط الفيديو كما هو (مثال: https://youtu.be/xxxxxxxxxxx) أو فرّغ الخانة.");
-      const data = { name, cat, price, old, disc, stock: colors.length ? colors.reduce((t, c) => t + c.stock, 0) : Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const data = { name, cat, price, old, disc, stock: colors.length ? colors.reduce((t, c) => t + c.stock, 0) : Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), cartPrice: Math.max(0, Math.floor(Number(($("#pCombo") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
       if (colors.length) data.colors = colors;
       if (videoId) data.video = videoId;
@@ -5021,6 +5078,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           /* the two tier prices: taken out too when emptied (0 = off) */
           if (!(data.price2 > 0)) delete upd.price2;
           if (!(data.price3 > 0)) delete upd.price3;
+          if (!(data.cartPrice > 0)) delete upd.cartPrice;
           await commitProducts(window.PRODUCTS.map((x) => (x.id === p.id ? upd : x)), upd, null);
           toast("تم حفظ التعديلات", true);
         } else {
@@ -5201,13 +5259,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const tabInfo = () => {
     $("#xwBody").innerHTML =
       '<form class="xw-card" id="xwIForm" style="max-width:760px"><h3>معلومات المتجر</h3><p class="xw-note" style="margin:-6px 0 16px">أي تغيير هنا يظهر مباشرة في الموقع. إنستغرام ظاهر دائماً؛ أما تيك توك وفيسبوك وواتساب والخريطة فيبقون مخفيين ما دامت خاناتهم فارغة — املأها فيظهروا، فرّغها فيختفيوا.</p>' +
-      XW_INFO_FIELDS.map((f) => '<div class="xw-field"><label>' + f[1] + "</label>" + (f[2] === "area" ? '<textarea data-if="' + f[0] + '">' + esc(INFO[f[0]]) + "</textarea>" : '<input data-if="' + f[0] + '" value="' + esc(INFO[f[0]]) + '">') + "</div>").join("") +
+      XW_INFO_FIELDS.map((f) => '<div class="xw-field"><label>' + f[1] + "</label>" + (f[2] === "area" ? '<textarea data-if="' + f[0] + '">' + esc(INFO[f[0]]) + "</textarea>" : f[2] === "email" ? '<input type="email" inputmode="email" dir="ltr" data-if="' + f[0] + '" value="' + esc(INFO[f[0]]) + '">' : '<input data-if="' + f[0] + '" value="' + esc(INFO[f[0]]) + '">') + "</div>").join("") +
       '<div class="xw-err" id="iErr"></div><button class="xw-btn" type="submit">حفظ المعلومات</button></form>';
     $("#xwIForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const next = {}; $$("[data-if]", $("#xwIForm")).forEach((el) => { next[el.dataset.if] = el.value.trim(); });
       if (!/^0[5-7]\d{8}$/.test(String(next.phone || "").replace(/\s/g, ""))) { $("#iErr").textContent = "رقم الهاتف يجب أن يكون 10 أرقام ويبدأ بـ 05 أو 06 أو 07."; return; }
       next.phone = next.phone.replace(/\s/g, "");
+      const mail = String(next.revEmail || "").trim();
+      if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { $("#iErr").textContent = "الإيميل غير صحيح — اكتبه بصيغة name@example.com أو اتركه فارغاً."; return; }
       /* saving the shop info must leave the top-of-page pictures alone */
       next.hero = Array.isArray(INFO.hero) ? INFO.hero : null;
       /* the SEO tab owns the domain */
