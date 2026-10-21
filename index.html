@@ -2352,14 +2352,21 @@ window.REVIEWS = [
      فمنتج ثمنه 2000 و«سعر شراء 3» = 5000: أربع قطع = 7000، وخمس = 9000، وهكذا.
      نطبّقه فقط إذا كان فعلاً أرخص؛ منتج بلا قيمة يبقى بلا عرض. هذه دالة واحدة
      تشترك فيها السلة وشاشة الدفع كي لا يختلف الرقمان أبداً. */
-  /* التخفيض عند بلوغ السلة حدّاً معيّناً: الحد ونسبته من «معلومات المتجر»، فارغ = متوقف */
-  const xwBulk = (base) => {
-    try {
-      const m = Number(INFO.bulkMin), pc = Math.min(100, Number(INFO.bulkPct));
-      return m > 0 && pc > 0 && base >= m ? Math.round(base * pc / 100) : 0;
-    } catch (e) { return 0; }
+  /* حد تطبيق تخفيضات المنتجات (من «معلومات المتجر»): ما دام مجموع السلة بالأسعار العادية
+     تحته، يدفع الزبون السعر الأصلي ولا عروض كمية؛ ومن بلوغه تتطبق تخفيضات المنتجات.
+     فارغ = التخفيضات دائماً مطبّقة. الباقات سعرها ثابت ولا يمسّه هذا الحد. */
+  const regPrice = (p) => (p ? (p.bundle ? sellPrice(p) : Number(p.old) || Number(p.price) || 0) : 0);
+  const xwGateMin = () => { try { return Math.max(0, Number(INFO.bulkMin) || 0); } catch (e) { return 0; } };
+  const xwGateSum = (lines) => lines.reduce((t, l) => t + regPrice(l.p) * l.qty, 0);
+  const xwGateOpen = (lines) => { const m = xwGateMin(); return !m || xwGateSum(lines) >= m; };
+  const xwSubLines = (ls) => { const o = xwGateOpen(ls.map((x) => ({ p: x.p, qty: x.it.qty }))); return ls.reduce((a, x) => a + (o ? sellPrice(x.p) : regPrice(x.p)) * x.it.qty, 0); };
+  const xwGateHint = (lines) => {
+    const m = xwGateMin(); if (!m || xwGateOpen(lines)) return "";
+    if (!lines.some((l) => discOn(l.p) || Number(l.p.price2) > 0 || Number(l.p.price3) > 0)) return "";
+    return "🎁 تخفيضات المنتجات تبدأ عند " + fmt(m) + " دج — بقي " + fmt(m - xwGateSum(lines)) + " دج";
   };
-  const xwTier = (p, q) => {
+  const xwTier = (p, q, open = true) => {
+    if (!open) { const b0 = regPrice(p); return { base: b0, normal: b0 * q, total: b0 * q, saved: 0 }; }
     const base = sellPrice(p), normal = base * q;
     const q2 = Math.max(0, Number(p && p.price2) || 0), q3 = Math.max(0, Number(p && p.price3) || 0);
     let total = normal;
@@ -2411,6 +2418,8 @@ window.REVIEWS = [
     }
     cartFoot.style.display = "block";
     let xwSub = 0, xwSaved = 0;
+    const gLines = cart.map((c) => ({ p: findProduct(c.id), qty: c.qty })).filter((l) => l.p);
+    const gOpen = xwGateOpen(gLines);
     cart.forEach((ci, idx) => {
       const p = findProduct(ci.id);
       if (!p) return;
@@ -2418,7 +2427,7 @@ window.REVIEWS = [
          xwTier — قطعتان بـ«سعر شراء 2»، و3 ثلاث قطع بـ«سعر شراء 3» وكل قطعة
          زائدة بالسعر الأصلي، وإلا الثمن العادي. هكذا سلة واحدة وشاشة دفع واحدة
          يقولان نفس المبلغ دائماً. */
-      const t = xwTier(p, ci.qty);
+      const t = xwTier(p, ci.qty, gOpen);
       const strike = discOn(p) ? listPrice(p) * ci.qty : t.normal;
       xwSub += t.normal;
       xwSaved += t.saved;
@@ -2446,7 +2455,9 @@ window.REVIEWS = [
       });
       cartBody.appendChild(row);
     });
-    xwSaved = Math.min(xwSaved + xwBulk(xwSub - xwSaved), xwSub);
+    xwSaved = Math.min(xwSaved, xwSub);
+    const gh = xwGateHint(gLines);
+    if (gh) { const hint = document.createElement("div"); hint.style.cssText = "margin:0 0 10px;padding:10px 12px;border-radius:12px;background:rgba(255,107,0,.12);color:#FF6B00;font-weight:700;font-size:13px;line-height:1.6"; hint.textContent = gh; cartBody.insertBefore(hint, cartBody.firstChild); }
     cartTotal.textContent = fmt(xwSub - xwSaved) + " دج";
     cartDisc.hidden = !(xwSaved > 0);
     if (xwSaved > 0) cartDiscV.textContent = "−" + fmt(xwSaved) + " دج";
@@ -2607,7 +2618,7 @@ window.REVIEWS = [
        that shipped in this page", so a policy can never vanish by accident. */
     polShipping: "", polReturns: "", polTerms: "", polPrivacy: "",
     /* الحد الأقصى للتخفيضات: مبلغ السلة (دج) اللي عنده يبدأ التخفيض، ونسبته %. فارغ = متوقف */
-    bulkMin: "", bulkPct: ""
+    bulkMin: ""
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
   const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp", "facebook"];
@@ -2623,8 +2634,7 @@ window.REVIEWS = [
     ["polTerms", "شروط الاستخدام — فارغة = النص الافتراضي", "area"],
     ["polPrivacy", "سياسة الخصوصية — فارغة = النص الافتراضي", "area"],
     ["heroBadge", "الشارة أعلى الصفحة الرئيسية"], ["heroDesc", "وصف الصفحة الرئيسية", "area"],
-    ["bulkMin", "الحد الأقصى للتخفيضات — مبلغ السلة بالدينار اللي لما يبلغه يتطبق التخفيض (مثال: 7000) — فارغ = متوقف"],
-    ["bulkPct", "نسبة التخفيض عند بلوغ هذا الحد % (مثال: 10)"],
+    ["bulkMin", "الحد الأقصى للتخفيضات — مبلغ السلة بالدينار اللي لما تبلغه تتطبق تخفيضات المنتجات (مثال: 7000). تحته يدفع الزبون السعر الأصلي — فارغ = التخفيضات دائماً مطبّقة"],
     ["phone", "رقم الهاتف — يتبان في الفوتر ول Requests"],
     ["shopSub", "النص تحت عنوان المنتجات"], ["footDesc", "وصف المتجر في أسفل الموقع", "area"]
   ];
@@ -3396,11 +3406,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
        when any 3+ line saved; otherwise has2. */
     const tiers = (ls, sub, sh) => {
       let saved = 0, has3 = false, has2 = false;
+      const open = xwGateOpen(ls.map((x) => ({ p: x.p, qty: x.it.qty })));
       for (const x of ls) {
-        const q = x.it.qty, r = xwTier(x.p, q);
+        const q = x.it.qty, r = xwTier(x.p, q, open);
         if (r.saved > 0) { saved += r.saved; if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
       }
-      saved += xwBulk(sub - saved);
       return { saved: Math.min(saved, sub + (sh || 0)), has3, has2 };
     };
 
@@ -3420,7 +3430,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const ls = lines();
       if (!ls.length) { closeModal($("#xwCheckout")); return; }
       const r = rates(), sh = shipping();
-      const sub = ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0);
+      const gLines = ls.map((x) => ({ p: x.p, qty: x.it.qty })), gOpen = xwGateOpen(gLines), gHint = xwGateHint(gLines);
+      const sub = xwSubLines(ls);
       const list = placeList();
       const opt = (o, cur) => "<option" + (o === cur ? " selected" : "") + ">" + esc(o) + "</option>";
       const isOff = st.delivery === "office";
@@ -3453,8 +3464,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<div class="xw-field"><label>ملاحظات <small>(اختياري)</small></label><textarea id="fNotes" style="min-height:64px">' + esc(st.notes) + "</textarea></div>" +
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
+        (gHint ? '<div class="xw-save" style="background:rgba(255,107,0,.12);color:#FF6B00">' + gHint + "</div>" : "") +
         (saved > 0 ? '<div class="xw-save">' + (t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
-        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
+        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty, gOpen); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
         (saved > 0 ? '<div class="xw-tot off"><span>خصم العرض</span><span>−' + fmt(saved) + " دج</span></div>" : "") +
@@ -3511,7 +3523,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!cv) return fail(st.delivery === "office" ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.");
       if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.");
       for (const x of ls) { const have = lineStock(x.p, x.it.color || ""); if (x.it.qty > have) return fail("الكمية المتوفرة من «" + x.p.name + (x.it.color ? " (" + x.it.color + ")" : "") + "» هي " + have + " فقط."); }
-      const sub = ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0), sh = shipping();
+      const gOpen = xwGateOpen(ls.map((x) => ({ p: x.p, qty: x.it.qty }))), sub = xwSubLines(ls), sh = shipping();
       /* the same tier figure the summary shows goes into the order itself */
       const t = tiers(ls, sub, sh);
       const saved = t.saved;
@@ -3520,7 +3532,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         uid: XW_UID, dev: XW_DEVICE,
         customer: { name: st.name.trim(), phone: st.phone, wilaya: st.wilaya, commune: cv, address: st.delivery === "home" ? st.address.trim() : "استلام من مكتب: " + cv, notes: st.notes.trim() },
         delivery: st.delivery,
-        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: sellPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
+        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: gOpen ? sellPrice(x.p) : regPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
         subtotal: sub, shipping: sh, discount: saved, total: sub + (sh || 0) - saved, status: "new", createdAt: new Date().toISOString()
       };
       st.busy = true; st.err = ""; render();
@@ -5781,3 +5793,4 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   </script>
 </body>
 </html>
+      
