@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="ltr">
 <head>
@@ -724,6 +723,13 @@ body.cart-open .cart-drawer { transform: translateX(0); }
 .xw-field textarea { min-height: 90px; resize: vertical; }
 .xw-field input:focus, .xw-field select:focus, .xw-field textarea:focus { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255,107,0,.18); }
 .xw-field input:disabled, .xw-field select:disabled { opacity: .5; }
+/* الحقل الناقص: خط أحمر + رسالة تحتو، وعلامة تنبيه */
+.xw-field.bad input, .xw-field.bad select, .xw-field.bad textarea { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.16); }
+.xw-field.bad label { color: #ef4444; }
+.fld-err { color: #ef4444; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+.fld-err::before { content: "⚠"; font-size: 14px; }
+@media (prefers-reduced-motion: no-preference) { .xw-field.bad { animation: xwShake .28s ease-in-out 1; } }
+@keyframes xwShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .xw-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 560px) { .xw-row { grid-template-columns: 1fr; } .xw-box { padding: 22px 16px; } }
 
@@ -2360,7 +2366,7 @@ window.REVIEWS = [
   const xwCartMin = () => { try { const v = Math.max(0, Number(INFO.cartMin) || 0); return v || Math.max(0, Number(INFO.bulkMin) || 0); } catch (e) { return 0; } };
   const xwGateSum = (lines) => lines.reduce((t, l) => t + regPrice(l.p) * l.qty, 0);
   const xwGateOpen = (lines) => { const m = xwCartMin(); return !m || xwGateSum(lines) >= m; };
-  const xwSubLines = (ls) => ls.reduce((a, x) => a + sellPrice(x.p) * x.it.qty, 0);
+  const xwSubLines = (ls) => { const reg = xwRegSum(ls); return ls.reduce((a, x) => a + sellPrice(xwEff(x.p, reg)) * x.it.qty, 0); };
   const xwGateHint = (lines) => {
     const m = xwCartMin(); if (!m || xwGateOpen(lines)) return "";
     if (!lines.some((l) => discOn(l.p) || Number(l.p.price2) > 0 || Number(l.p.price3) > 0)) return "";
@@ -2381,6 +2387,15 @@ window.REVIEWS = [
     if (combo && cp > 0) { const c = cp * q; if (c < total) { total = c; used = true; } }
     return { base, normal, total, saved: Math.max(0, normal - total), combo: used };
   };
+  /* «السعر اللي يبدأ منّو التخفيض»: لكل منتج حدّ خاص (discFrom)، وإلا الحد
+     العام اللي في «معلومات المتجر» (cartMin). ما دام مجموع السلة بالأسعار
+     العادية تحتو، الزبون يدفع السعر القديم ولا عروض (2 / 3 / مع منتج آخر).
+     فارغ في الجوج = التخفيض يبان دائماً. */
+  const xwThr = (p) => { const v = Math.max(0, Number(p && p.discFrom) || 0); return v || xwCartMin(); };
+  const xwOpen = (p, reg) => { const t = xwThr(p); return !t || reg >= t; };
+  const xwNoOffers = (p) => Object.assign({}, p, { price: regPrice(p), old: 0, price2: 0, price3: 0, cartPrice: 0 });
+  const xwEff = (p, reg) => (xwOpen(p, reg) ? p : xwNoOffers(p));
+  const xwRegSum = (ls) => ls.reduce((a, x) => a + regPrice(x.p) * x.it.qty, 0);
   /* the struck-through price — 0 means "show no old price" */
   const listPrice = (p) => (discOn(p) ? Number(p.old) : 0);
   const discPct = (p) => { const l = listPrice(p), s = sellPrice(p); return l > s ? Math.round((1 - s / l) * 100) : 0; };
@@ -2411,6 +2426,7 @@ window.REVIEWS = [
     saveCart();
     renderCart();
     toast("تمت الإضافة إلى السلة", true);
+    if (prod) xwTrack("AddToCart", { ids: [prod.id], type: "product", value: sellPrice(prod) * qty, qty: qty });
   };
 
   const renderCart = () => {
@@ -2425,9 +2441,8 @@ window.REVIEWS = [
     cartFoot.style.display = "block";
     let xwSub = 0, xwSaved = 0, comboUsed = false, big3 = false;
     const gLines = cart.map((c) => ({ p: findProduct(c.id), qty: c.qty })).filter((l) => l.p);
-    const cMin = xwCartMin();
-    const baseSum = gLines.reduce((a, l) => a + sellPrice(l.p) * l.qty, 0);
-    const comboOn = new Set(gLines.map((l) => l.p.id)).size >= 2 && (!cMin || baseSum >= cMin);
+    const xreg = gLines.reduce((a, l) => a + regPrice(l.p) * l.qty, 0);
+    const multi = new Set(gLines.map((l) => l.p.id)).size >= 2;
     cart.forEach((ci, idx) => {
       const p = findProduct(ci.id);
       if (!p) return;
@@ -2435,17 +2450,19 @@ window.REVIEWS = [
          xwTier — قطعتان بـ«سعر شراء 2»، و3 ثلاث قطع بـ«سعر شراء 3» وكل قطعة
          زائدة بالسعر الأصلي، وإلا الثمن العادي. هكذا سلة واحدة وشاشة دفع واحدة
          يقولان نفس المبلغ دائماً. */
-      const t = xwTier(p, ci.qty, comboOn);
+      const open = xwOpen(p, xreg);
+      const ep = xwEff(p, xreg);
+      const t = xwTier(ep, ci.qty, multi && open);
       if (t.combo) comboUsed = true;
-      if (ci.qty >= 3 && xwTier(p, ci.qty, false).saved > 0) big3 = true;
-      const strike = discOn(p) ? listPrice(p) * ci.qty : t.normal;
+      if (ci.qty >= 3 && xwTier(ep, ci.qty, false).saved > 0) big3 = true;
+      const strike = discOn(ep) ? listPrice(ep) * ci.qty : t.normal;
       xwSub += t.normal;
       xwSaved += t.saved;
       const row = document.createElement("div");
       row.className = "cart-item";
       row.innerHTML =
         '<img class="ci-img" src="' + esc(cld(p.img, 260)) + '" alt=""' + IMG_ATTR + ' width="260" height="260" loading="lazy">' +
-        '<div class="ci-info"><div class="ci-name">' + esc(p.name) + (ci.color ? ' <small style="color:var(--muted)">· ' + esc(ci.color) + "</small>" : "") + '</div>' +
+        '<div class="ci-info"><div class="ci-name">' + esc(p.name) + (ci.color ? ' <small style="color:var(--muted)">· ' + esc(ci.color) + "</small>" : "") + (open ? "" : ' <small style="color:#FF6B00">· التخفيض يبدأ عند ' + fmt(xwThr(p)) + ' دج</small>') + '</div>' +
         '<div class="ci-price">' + fmt(t.total) + (t.total < strike ? ' <s>' + fmt(strike) + "</s>" : "") + ' دج</div>' +
         '<div class="ci-qty"><button data-act="minus" data-i="' + idx + '">−</button><b>' + ci.qty + '</b><button data-act="plus" data-i="' + idx + '">+</button></div></div>' +
         '<button class="ci-del" data-act="del" data-i="' + idx + '" aria-label="حذف"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>';
@@ -2476,7 +2493,12 @@ window.REVIEWS = [
       cartBody.insertBefore(hint, cartBody.firstChild);
     }
     cartTotal.textContent = fmt(xwSub - xwSaved) + " دج";
+    /* .cart-disc carries display:flex, which beats the hidden attribute — so the
+       row is hidden with an explicit display too, otherwise it lingers with a
+       stale amount after the discount stops applying (cart drops below its
+       starting price). */
     cartDisc.hidden = !(xwSaved > 0);
+    cartDisc.style.display = xwSaved > 0 ? "flex" : "none";
     if (xwSaved > 0) cartDiscV.textContent = "−" + fmt(xwSaved) + " دج";
   };
 
@@ -2638,7 +2660,9 @@ window.REVIEWS = [
        bulkMin بقى غير للتوافق مع قيمة قديمة محفوظة. */
     cartMin: "", bulkMin: "",
     /* إيميل استقبال التقييمات: كل تقييم جديد ينبعت لهذا العنوان عبر FormSubmit */
-    revEmail: ""
+    revEmail: "",
+    /* معرّفات التتبع (تُكتب من غرفة الإدارة): ما والو ما يتحمّل حتى تُعمَّر خانة */
+    pxMeta: "", pxTikTok: "", pxGoogle: ""
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
   const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp", "facebook"];
@@ -2654,7 +2678,7 @@ window.REVIEWS = [
     ["polTerms", "شروط الاستخدام — فارغة = النص الافتراضي", "area"],
     ["polPrivacy", "سياسة الخصوصية — فارغة = النص الافتراضي", "area"],
     ["heroBadge", "الشارة أعلى الصفحة الرئيسية"], ["heroDesc", "وصف الصفحة الرئيسية", "area"],
-    ["cartMin", "سعر «مع منتج آخر» — الحد الأدنى لمبلغ السلة (دج) باش يتفعّل سعر القطعة عند شرائها مع منتج آخر (مثال: 4000). لازم يكون في السلة منتجان مختلفان. فارغ = يتفعّل بلا حد"],
+    ["cartMin", "الحد العام لبدء التخفيض — مجموع السلة (دج) اللي كيبدا منّو يبان تخفيض المنتجات في السلة (مثال: 7000). كل منتج يقدر يكون عندو حدّ خاص في «تعديل المنتج» ويغلب هاد العام. فارغ = بلا حد"],
     ["revEmail", "إيميل استقبال التقييمات — كل تقييم جديد يوصل لهذا الإيميل (يتطلب تفعيل مرة واحدة من FormSubmit)", "email"],
     ["phone", "رقم الهاتف — يتبان في الفوتر ول Requests"],
     ["shopSub", "النص تحت عنوان المنتجات"], ["footDesc", "وصف المتجر في أسفل الموقع", "area"]
@@ -2723,6 +2747,75 @@ window.REVIEWS = [
   /* publish counter: bumped every time the admin saves, so customers know to re-read */
   let XW_REV = 0;
   const INFO = Object.assign({}, XW_INFO_DEFAULTS);
+  /* ---------- Pixel & tag IDs: written in the admin room, loaded only when filled ----------
+     An ID of this kind is public by nature - it travels in the page every visitor
+     downloads - so it sits with the shop info, never in the code. Nothing is loaded
+     until the owner fills a box, each network loads once per page even when the info
+     document is applied twice, and the owner's own room is never measured. */
+  const XW_PX_ON = { meta: false, tiktok: false, google: false };
+  const xwPxKey = { meta: "pxMeta", tiktok: "pxTikTok", google: "pxGoogle" };
+  /* accept a bare id or a whole snippet pasted from the network's dashboard */
+  const xwPxId = (kind, raw) => {
+    const s = String(raw == null ? "" : raw).trim();
+    if (!s) return "";
+    if (kind === "meta") {
+      const m = s.match(/fbq\s*\(\s*['"]init['"]\s*,\s*['"](\d{6,20})/i) || s.match(/(?:^|\D)(\d{10,20})(?:\D|$)/);
+      return m ? m[1] : "";
+    }
+    if (kind === "tiktok") {
+      const m = s.match(/ttq\.load\s*\(\s*['"]([A-Z0-9]{8,40})['"]/i) || s.match(/(?:^|\W)([A-Z0-9]{15,40})(?:\W|$)/i);
+      return m ? m[1].toUpperCase() : "";
+    }
+    const m = s.match(/(?:AW|G|GT|UA|DC)-[A-Za-z0-9]{4,}/);
+    return m ? m[0] : "";
+  };
+  const xwPxScript = (src) => {
+    try { const s = document.createElement("script"); s.async = true; s.src = src; (document.head || document.documentElement).appendChild(s); } catch (e) {}
+  };
+  const xwPixels = () => {
+    /* the owner's own room is never counted */
+    if (/\/admin\/?$/.test(location.pathname) || /(?:^|[?&])admin(?:[=&]|$)/.test(location.search)) return;
+    const id = (k) => xwPxId(k, INFO[xwPxKey[k]]);
+    const m = id("meta");
+    if (m && !XW_PX_ON.meta) {
+      XW_PX_ON.meta = true;
+      if (!window.fbq) {
+        const q = [];
+        const f = function () { q.push(arguments); };
+        f.queue = q; f.loaded = true; f.version = "2.0";
+        window.fbq = f; window._fbq = f;
+      }
+      xwPxScript("https://connect.facebook.net/en_US/fbevents.js");
+      try { window.fbq("init", m); window.fbq("track", "PageView"); } catch (e) {}
+    }
+    const t = id("tiktok");
+    if (t && !XW_PX_ON.tiktok) {
+      XW_PX_ON.tiktok = true;
+      /* the loader the network ships, with an id already proven to be letters and digits */
+      const code = "(function(w,d,t){w.TiktokAnalyticsObject=t;var q=w[t]=w[t]||[];q.methods=['page','track','identify','instances','debug','on','off','once','ready','alias','group','enableCookie','disableCookie'],q.setAndDefer=function(o,e){o[e]=function(){o.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<q.methods.length;i++)q.setAndDefer(q,q.methods[i]);q.instance=function(o){for(var e=q._i[o]||[],n=0;n<q.methods.length;n++)q.setAndDefer(e,q.methods[n]);return e},q.load=function(o,e){var r='https://analytics.tiktok.com/i18n/pixel/events.js';q._i=q._i||{},q._i[o]=[],q._i[o]._u=r,q._t=q._t||{},q._t[o]=+new Date,q._o=q._o||{},q._o[o]=e||{};var a=d.createElement('script');a.type='text/javascript',a.async=!0,a.src=r+'?sdkid='+o+'&lib='+t;var b=d.getElementsByTagName('script')[0];b.parentNode.insertBefore(a,b)}})(window,document,'ttq');ttq.load('" + t + "');ttq.page();";
+      try { const s = document.createElement("script"); s.textContent = code; (document.head || document.documentElement).appendChild(s); } catch (e) {}
+    }
+    const g = id("google");
+    if (g && !XW_PX_ON.google) {
+      XW_PX_ON.google = true;
+      window.dataLayer = window.dataLayer || [];
+      if (!window.gtag) window.gtag = function () { window.dataLayer.push(arguments); };
+      xwPxScript("https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(g));
+      try { window.gtag("js", new Date()); window.gtag("config", g); } catch (e) {}
+    }
+  };
+  /* one event, mirrored to whichever networks are on; never throws, never blocks a sale */
+  const xwTrack = (ev, data) => {
+    const d = data || {};
+    const items = d.items || (d.ids || []).map((x) => ({ id: x }));
+    try {
+      if (window.fbq) window.fbq("track", ev, { content_ids: d.ids || [], content_type: d.type || "product", value: d.value, currency: "DZD", num_items: d.qty });
+      if (window.ttq) window.ttq.track(ev, { content_id: (d.ids || [])[0], content_type: d.type || "product", value: d.value, currency: "DZD", quantity: d.qty });
+      const map = { ViewContent: "view_item", AddToCart: "add_to_cart", InitiateCheckout: "begin_checkout", Purchase: "purchase" };
+      const g = map[ev] || String(ev).toLowerCase();
+      if (window.gtag) window.gtag("event", g, { currency: "DZD", value: d.value, transaction_id: d.tx, items: items });
+    } catch (e) {}
+  };
   /* The address of the shop is the one value in INFO that other people depend on:
      the shareable links, the sitemap, the canonical tag. A settings document is
      allowed to set it - the admin has a field for that - but not to blank it, and
@@ -2822,6 +2915,8 @@ window.REVIEWS = [
     const sub = $("#shop .section-head p"); if (sub) sub.textContent = String(INFO.shopSub || "").replace(/\+100 منتج/g, "+" + (window.PRODUCTS ? window.PRODUCTS.length : 0) + " منتج");
     I18N.ar.heroBadge = INFO.heroBadge; I18N.ar.heroDesc = INFO.heroDesc; I18N.ar.footDesc = INFO.footDesc;
     applyLang(lang);
+    /* the pixels ride with the shop info: a saved id starts them, an empty one keeps them off */
+    xwPixels();
   };
 
   /* ---------- Caching: paint the products instantly, then re-check the cloud ----------
@@ -3036,6 +3131,21 @@ window.REVIEWS = [
 
   /* ---------- Products: cards, tabs, deals, categories ---------- */
   const inStock = (p) => p.stock == null || p.stock > 0;
+  /* أولوية العرض: رقم كتبو المالك في لوحة التحكم — الأصغر يظهر قبل. الأرقام
+     وحدها هي اللي كتترتّب، ما كاينش فراغات: 1 و50 كيجيو ورا بعضهم مباشرة.
+     اللي ما عندوش رقم كيمشي من بعد المرقّمين بترتيبو القديم، واللي نفد مخزونو
+     كيهبط لآخر المتجر دايماً — حتى لو أولويتو 1. */
+  const prioOf = (p) => { const n = Number(p && p.prio); return isFinite(n) && n > 0 ? n : Infinity; };
+  const prioSort = (list) => {
+    const cmp = (a, b) => {
+      const ka = prioOf(a), kb = prioOf(b);
+      if (ka !== kb) return ka < kb ? -1 : 1;
+      return (a.order == null ? 0 : a.order) - (b.order == null ? 0 : b.order);
+    };
+    const on = [], off = [];
+    list.forEach((p) => (inStock(p) ? on : off).push(p));
+    return on.sort(cmp).concat(off.sort(cmp));
+  };
   /* منتج واحد يوقف على أكثر من رف: p.cat صار مصفوفة لكل ما يُحفظ من الآن،
      واسم وحيد لكل ما حُفظ قبل هذه السطرة — وكل قائمة تحت تسأل هاذين الاثنتين،
      ما تسألش الحقل بوحدو. هكذا يدخل الزبون للمنتج من أي فئة هو فيها. */
@@ -3166,7 +3276,7 @@ window.REVIEWS = [
     );
   };
 
-  let shopFilter = "all", shopLimit = 8;
+  let shopFilter = "all", shopLimit = 20;
   const prodGrid = $("#prodGrid"), dealGrid = $("#dealGrid");
   const renderTabs = () => {
     const cats = tabCats();
@@ -3174,7 +3284,7 @@ window.REVIEWS = [
     $("#shopTabs").innerHTML = ["all"].concat(cats).map((c) => '<button class="tab' + (c === shopFilter ? " active" : "") + '" data-tab="' + esc(c) + '">' + (c === "all" ? "الكل" : esc(c)) + "</button>").join("");
   };
   const renderProducts = () => {
-    const single = window.PRODUCTS.filter((p) => !p.bundle);   /* الباقات لها قسمها: العروض المجمّعة */
+    const single = prioSort(window.PRODUCTS.filter((p) => !p.bundle));   /* الباقات لها قسمها: العروض المجمّعة */
     const list = shopFilter === "all" ? single : single.filter((p) => hasCat(p, shopFilter));
     /* p56 - an empty category used to leave a bare grid, which reads as a
        broken page. It says what is true, and offers the way back. */
@@ -3187,7 +3297,7 @@ window.REVIEWS = [
   };
   const isBundle = (p) => !!(p && p.bundle);
   const renderDeals = () => {
-    const deals = window.PRODUCTS.filter(isBundle).slice(0, 8);
+    const deals = prioSort(window.PRODUCTS.filter(isBundle)).slice(0, 8);
     dealGrid.innerHTML = deals.map((p) => cardHTML(p, -1).replace('class="ptag hot"', 'class="ptag hot-live"')).join("");
     $("#products").style.display = deals.length ? "" : "none";
   };
@@ -3210,7 +3320,7 @@ window.REVIEWS = [
      that is not a category is refused rather than half-honoured. */
   const goCat = (name) => {
     if (!name || tabCats().indexOf(name) < 0) return false;
-    shopFilter = name; shopLimit = 8;
+    shopFilter = name; shopLimit = 20;
     renderTabs(); renderProducts();
     const el = document.getElementById("shop"); if (el) el.scrollIntoView({ behavior: "smooth" });
     return true;
@@ -3298,6 +3408,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const imgs = (p.images && p.images.length ? p.images : [p.img]).filter(Boolean);
     const out = !inStock(p), dis = out ? " disabled" : "";
     const lp = listPrice(p), sp = sellPrice(p);
+    xwTrack("ViewContent", { ids: [p.id], type: "product", value: sp });
     $("#xwProductBox").innerHTML =
       '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><div class="xw-pgrid">' +
       '<div><div class="xw-gal" id="xwGal"><img class="xw-gmain" id="xwGMain" src="' + esc(cld(imgs[0], 1100, 1100)) + '" alt="' + esc(p.name) + '"' + IMG_ATTR + " decoding=\"async\">" +
@@ -3399,8 +3510,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const wByName = (n) => XW_WILAYAS.find((w) => w[1] === n);
   const openCheckout = (items, opts) => {
     opts = opts || {};
+    xwTrack("InitiateCheckout", { ids: items.map((i) => i.id), value: items.reduce((a, it) => { const p = findProduct(it.id); return a + (p ? sellPrice(p) : 0) * (Number(it.qty) || 0); }, 0) });
     const box = $("#xwCheckoutBox");
-    const st = { name: "", phone: "", wilaya: "", cSel: "", address: "", notes: "", delivery: "home", err: "", busy: false, done: null };
+    const st = { name: "", phone: "", wilaya: "", cSel: "", address: "", notes: "", delivery: "home", err: "", bad: "", busy: false, done: null };
     const lines = () => items.map((it) => ({ it, p: findProduct(it.id) })).filter((x) => x.p);
     const rates = () => { const w = wByName(st.wilaya); return w ? { home: w[2], office: w[3], id: w[0] } : null; };
     /* office delivery -> the ZR Express offices of that wilaya only; home delivery -> every commune of that wilaya */
@@ -3429,9 +3541,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       let saved = 0, has3 = false, has2 = false, hasCombo = false;
       /* الأعلام (2/3) من كل سطر كما هو؛ والمال من مجموع كل منتج (لونان لنفس
          المنتج يُجمعان فيُحسبان كقطعتين). */
+      const reg = xwRegSum(ls);
+      const multi = new Set(ls.map((x) => x.p && x.p.id)).size >= 2;
       for (const x of ls) {
         const q = Number(x.it && x.it.qty) || 0;
-        const r1 = xwTier(x.p, q, false);
+        const r1 = xwTier(xwEff(x.p, reg), q, false);
         if (r1.saved > 0) { if (q >= 3) has3 = true; else if (q === 2) has2 = true; }
       }
       const groups = new Map();
@@ -3440,10 +3554,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         if (!groups.has(id)) groups.set(id, { p: x.p, q: 0 });
         groups.get(id).q += Number(x.it && x.it.qty) || 0;
       }
-      const m = xwCartMin();
-      const comboOn = groups.size >= 2 && (!m || sub >= m);
       for (const g of groups.values()) {
-        const r = xwTier(g.p, g.q, comboOn);
+        const open = xwOpen(g.p, reg);
+        const r = xwTier(xwEff(g.p, reg), g.q, multi && open);
         if (r.saved > 0) { saved += r.saved; if (r.combo) hasCombo = true; }
       }
       return { saved: Math.min(saved, sub + (sh || 0)), has3, has2, hasCombo };
@@ -3466,8 +3579,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!ls.length) { closeModal($("#xwCheckout")); return; }
       const r = rates(), sh = shipping();
       const sub = xwSubLines(ls);
-      const cMin = xwCartMin();
-      const comboOn = new Set(ls.map((x) => x.p && x.p.id)).size >= 2 && (!cMin || sub >= cMin);
+      const xreg = xwRegSum(ls);
+      const xmulti = new Set(ls.map((x) => x.p && x.p.id)).size >= 2;
       const list = placeList();
       const opt = (o, cur) => "<option" + (o === cur ? " selected" : "") + ">" + esc(o) + "</option>";
       const isOff = st.delivery === "office";
@@ -3476,9 +3589,22 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         ? '<div class="xw-spam"><b>🚫 ' + XW_DAILY_MSG + "</b><span>للتفادي من الطلبات المكررة، نقبل " + XW_DAILY_MAX + ' طلبات في 24 ساعة من نفس الجهاز ونفس الرقم. غادي نتصلو بك على رقمك باش نأكدو الطلبات ديالك.</span></div>'
         : (left < XW_DAILY_MAX ? '<div class="xw-spam soft">استعملت <b>' + xwSentToday() + "</b> من " + XW_DAILY_MAX + " طلبات في آخر 24 ساعة — باقيلك <b>" + left + "</b>.</div>" : "");
       const multi = list.length > 1;
+      /* الحقل اللي فيه النقص: ياخذ خط أحمر ورسالة تحتو، والصفحة تمشي ليه */
+      const badMsg = {
+        name: "اكتب الاسم الكامل — 3 أحرف على الأقل.",
+        phone: "رقم الهاتف لازم يكون 10 أرقام ويبدأ بـ 05 أو 06 أو 07.",
+        wilaya: "اختر الولاية باش نحسبو التوصيل.",
+        commune: isOff ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.",
+        address: "اكتب العنوان الكامل — الحي، الشارع، ورقم المنزل."
+      };
+      const fld = (key, inner) => {
+        const bad = st.bad === key;
+        const body = bad ? inner.replace(/<(input|select|textarea)/, '<$1 aria-invalid="true"') : inner;
+        return '<div class="xw-field' + (bad ? " bad" : "") + '">' + body + (bad ? '<div class="fld-err" role="alert">' + badMsg[key] + "</div>" : "") + "</div>";
+      };
       let communeBlock = "";
       if (multi) {
-        communeBlock = '<div class="xw-field"><label>' + (isOff ? "اختر أقرب مكتب ZR Xpress" : "اختر البلدية") + ' <i>*</i></label><select id="fCommune"><option value="">' + (isOff ? "اختر أقرب مكتب" : "اختر البلدية") + '</option>' + list.map((o) => opt(o, st.cSel)).join("") + "</select></div>";
+        communeBlock = fld("commune", '<label>' + (isOff ? "اختر أقرب مكتب ZR Xpress" : "اختر البلدية") + ' <i>*</i></label><select id="fCommune"><option value="">' + (isOff ? "اختر أقرب مكتب" : "اختر البلدية") + '</option>' + list.map((o) => opt(o, st.cSel)).join("") + "</select>");
       }
       /* per product: a line of exactly 2 earns the product's own "price when
          ordering 2"; a line of 3 or more earns its "new price when ordering 3"
@@ -3489,24 +3615,24 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       box.innerHTML =
         '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><form id="xwChkForm" novalidate><div class="xw-chk"><div>' +
         "<h3>معلومات الطلب</h3>" + guard +
-        '<div class="xw-field"><label>الاسم الكامل <i>*</i></label><input id="fName" value="' + esc(st.name) + '" placeholder="مثال: محمد أمين بن علي"></div>' +
-        '<div class="xw-field"><label>رقم الهاتف <i>*</i></label><input id="fPhone" type="tel" inputmode="numeric" maxlength="10" value="' + esc(st.phone) + '" placeholder="0555123456"></div>' +
-        '<div class="xw-field"><label>الولاية <i>*</i></label><select id="fWilaya"><option value="">اختر الولاية</option>' + XW_WILAYAS.map((w) => '<option value="' + esc(w[1]) + '"' + (w[1] === st.wilaya ? " selected" : "") + ">" + w[0] + " · " + esc(w[1]) + "</option>").join("") + "</select></div>" +
+        fld("name", '<label>الاسم الكامل <i>*</i></label><input id="fName" value="' + esc(st.name) + '" placeholder="مثال: محمد أمين بن علي">') +
+        fld("phone", '<label>رقم الهاتف <i>*</i></label><input id="fPhone" type="tel" inputmode="numeric" maxlength="10" value="' + esc(st.phone) + '" placeholder="0555123456">') +
+        fld("wilaya", '<label>الولاية <i>*</i></label><select id="fWilaya"><option value="">اختر الولاية</option>' + XW_WILAYAS.map((w) => '<option value="' + esc(w[1]) + '"' + (w[1] === st.wilaya ? " selected" : "") + ">" + w[0] + " · " + esc(w[1]) + "</option>").join("") + "</select>") +
         '<div class="xw-field"><label>طريقة التوصيل</label><div class="xw-choice">' +
         '<button type="button" data-d="home" class="' + (st.delivery === "home" ? "on" : "") + '">🏠 إلى المنزل<small>' + (r ? fmt(r.home) + " دج" : "اختر الولاية") + "</small></button>" +
         '<button type="button" data-d="office" class="' + (st.delivery === "office" ? "on" : "") + '"' + (!r || r.office == null ? " disabled" : "") + ">📍 أقرب مكتب ZR Xpress<small>" + (!r ? "اختر الولاية" : r.office == null ? "غير متاح" : fmt(r.office) + " دج") + "</small></button></div></div>" +
         communeBlock +
-        (st.delivery === "home" ? '<div class="xw-field"><label>العنوان الكامل <i>*</i></label><input id="fAddr" value="' + esc(st.address) + '" placeholder="' + (multi ? "الحي، الشارع، رقم المنزل" : "البلدية، الحي، الشارع، رقم المنزل") + '"></div>' : "") +
+        (st.delivery === "home" ? fld("address", '<label>العنوان الكامل <i>*</i></label><input id="fAddr" value="' + esc(st.address) + '" placeholder="' + (multi ? "الحي، الشارع، رقم المنزل" : "البلدية، الحي، الشارع، رقم المنزل") + '">') : "") +
         '<div class="xw-field"><label>ملاحظات <small>(اختياري)</small></label><textarea id="fNotes" style="min-height:64px">' + esc(st.notes) + "</textarea></div>" +
         "</div>" +
         '<div class="xw-sum"><h4>ملخص الطلب</h4>' +
         (saved > 0 ? '<div class="xw-save">' + (t.hasCombo ? '🎁 باقتك الخاصة جاهزة — ووفرت ' + fmt(saved) + ' دج على طلبك' : t.has3 ? '🎉 ووفرت ' + fmt(saved) + ' دج! أقصى خصم خاص متوفر الآن على طلبك' : '🔥 وووفرت ' + fmt(saved) + ' دج! عرض الخصم الخاص متوفر الآن على طلبك') + '</div>' : "") +
-        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(x.p, x.it.qty, comboOn); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
+        ls.map((x, i) => '<div class="xw-line"><img src="' + esc(cld(x.p.img, 180, 180)) + '" width="140" height="140" loading="lazy" decoding="async" alt=""><div>' + esc(x.p.name) + (x.it.color ? ' <small style="color:var(--muted)">· ' + esc(x.it.color) + "</small>" : "") + '<div class="q"><button type="button" data-q="-1" data-i="' + i + '">−</button><b>' + x.it.qty + '</b><button type="button" data-q="1" data-i="' + i + '">+</button></div></div><span class="p">' + (function () { var tr = xwTier(xwEff(x.p, xreg), x.it.qty, xmulti && xwOpen(x.p, xreg)); return (tr.total < tr.normal ? "<s>" + fmt(tr.normal) + "</s> " : "") + fmt(tr.total); })() + " دج</span></div>").join("") +
         '<div class="xw-tot"><span>المنتجات</span><span>' + fmt(sub) + " دج</span></div>" +
         '<div class="xw-tot"><span>التوصيل' + (r ? " (" + esc(st.wilaya) + ")" : "") + "</span><span>" + (sh == null ? "اختر الولاية" : fmt(sh) + " دج") + "</span></div>" +
         (saved > 0 ? '<div class="xw-tot off"><span>خصم العرض</span><span>−' + fmt(saved) + " دج</span></div>" : "") +
         '<div class="xw-tot big"><span>المجموع</span><b>' + fmt(sub + (sh || 0) - saved) + " دج</b></div>" +
-        '<div class="xw-err" id="fErr">' + st.err + "</div>" +
+        '<div class="xw-err" id="fErr" role="alert">' + st.err + "</div>" +
         '<button class="xw-btn wide" type="submit"' + (st.busy ? " disabled" : "") + ">" + (st.busy ? "جاري الإرسال..." : xwSpamLocked() ? "⛔ وصلت للحد الأقصى للطلبات" : "تأكيد الطلب") + "</button>" +
         '<p class="xw-note" style="text-align:center">💵 الدفع عند الاستلام</p></div></div></form>';
     };
@@ -3519,7 +3645,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     };
     box.onclick = (e) => {
       const d = e.target.closest("[data-d]");
-      if (d && !d.disabled) { collect(); st.delivery = d.dataset.d; st.cSel = ""; st.err = ""; render(); return; }
+      if (d && !d.disabled) { collect(); st.delivery = d.dataset.d; st.cSel = ""; st.err = ""; st.bad = ""; render(); return; }
       const q = e.target.closest("[data-q]");
       if (q) {
         collect();
@@ -3534,10 +3660,23 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     box.onchange = (e) => {
       if (e.target.id === "fCommune") { collect(); render(); return; }
       if (e.target.id === "fWilaya") {
-        collect(); st.wilaya = e.target.value; st.cSel = ""; st.err = "";
+        collect(); st.wilaya = e.target.value; st.cSel = ""; st.err = ""; st.bad = "";
         const r = rates(); if (st.delivery === "office" && (!r || r.office == null)) st.delivery = "home";
         render();
       }
+    };
+    box.oninput = (e) => {
+      /* بدا يكتب: نحّي الخط الأحمر والرسالة من هاد الحقل، وامسح سطر الخطأ اللي فوق */
+      const f = e.target.closest(".xw-field");
+      if (f && f.classList.contains("bad")) {
+        f.classList.remove("bad");
+        const m = f.querySelector(".fld-err");
+        if (m) m.remove();
+        const ai = f.querySelector("[aria-invalid]");
+        if (ai) ai.removeAttribute("aria-invalid");
+        st.bad = "";
+      }
+      if (st.err) { st.err = ""; const fe = $("#fErr", box); if (fe) fe.textContent = ""; }
     };
     box.onsubmit = async (e) => {
       e.preventDefault(); if (st.busy) return;
@@ -3550,15 +3689,23 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       st.busy = false;
       if (gate) { st.err = gate; render(); return; }
       const ls = lines(), r = rates();
-      const fail = (m) => { st.err = m; render(); };
-      if (st.name.trim().length < 3) return fail("اكتب الاسم الكامل.");
-      if (!/^(05|06|07)\d{8}$/.test(st.phone)) return fail("رقم الهاتف يجب أن يكون 10 أرقام ويبدأ بـ 05 أو 06 أو 07.");
-      if (!r) return fail("اختر الولاية.");
+      /* الحقل الناقص يولّي عليه الخط الأحمر، والصفحة تمشي ليه وتركّز عليه */
+      const focusBad = () => {
+        const el = box.querySelector(".xw-field.bad");
+        if (!el) return;
+        try { el.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e) { el.scrollIntoView(); }
+        const inp = el.querySelector("input,select,textarea");
+        if (inp) { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } }
+      };
+      const fail = (m, key) => { st.err = m; st.bad = key || ""; render(); focusBad(); };
+      if (st.name.trim().length < 3) return fail("اكتب الاسم الكامل.", "name");
+      if (!/^(05|06|07)\d{8}$/.test(st.phone)) return fail("رقم الهاتف يجب أن يكون 10 أرقام ويبدأ بـ 05 أو 06 أو 07.", "phone");
+      if (!r) return fail("اختر الولاية.", "wilaya");
       const cv = communeVal();
-      if (!cv) return fail(st.delivery === "office" ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.");
-      if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.");
+      if (!cv) return fail(st.delivery === "office" ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.", "commune");
+      if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.", "address");
       for (const x of ls) { const have = lineStock(x.p, x.it.color || ""); if (x.it.qty > have) return fail("الكمية المتوفرة من «" + x.p.name + (x.it.color ? " (" + x.it.color + ")" : "") + "» هي " + have + " فقط."); }
-      const sub = xwSubLines(ls), sh = shipping();
+      const sub = xwSubLines(ls), sh = shipping(), reg = xwRegSum(ls);
       /* the same tier figure the summary shows goes into the order itself */
       const t = tiers(ls, sub, sh);
       const saved = t.saved;
@@ -3567,10 +3714,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         uid: XW_UID, dev: XW_DEVICE,
         customer: { name: st.name.trim(), phone: st.phone, wilaya: st.wilaya, commune: cv, address: st.delivery === "home" ? st.address.trim() : "استلام من مكتب: " + cv, notes: st.notes.trim() },
         delivery: st.delivery,
-        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: sellPrice(x.p), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
+        items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: sellPrice(xwEff(x.p, reg)), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
         subtotal: sub, shipping: sh, discount: saved, total: sub + (sh || 0) - saved, status: "new", createdAt: new Date().toISOString()
       };
-      st.busy = true; st.err = ""; render();
+      st.busy = true; st.err = ""; st.bad = ""; render();
       try {
         await saveOrder(order);
       } catch (err) {
@@ -3596,6 +3743,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       }
       if (opts.fromCart) { cart = []; saveCart(); renderCart(); }
       st.busy = false; st.done = order.id; render(); renderStore();
+      xwTrack("Purchase", { ids: order.items.map((i) => i.productId), value: order.total, tx: order.id, items: order.items.map((i) => ({ id: i.productId, quantity: i.quantity, price: i.price })) });
     };
     render();
     openModal($("#xwCheckout"));
@@ -3620,15 +3768,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       openCheckout([col ? { id: p.id, qty: 1, color: col } : { id: p.id, qty: 1 }]);
       return;
     }
-    if (e.target.closest("#moreBtn")) { shopLimit += 8; renderProducts(); return; }
+    if (e.target.closest("#moreBtn")) { shopLimit += 20; renderProducts(); return; }
     const t = e.target.closest("#shopTabs .tab");
-    if (t) { shopFilter = t.dataset.tab; shopLimit = 8; renderTabs(); renderProducts(); return; }
+    if (t) { shopFilter = t.dataset.tab; shopLimit = 20; renderTabs(); renderProducts(); return; }
     /* p56 - the cards and the phone menu are one list of names in two
        shapes, so they are one press: the name on the element is the truth,
        not whatever the heading happens to render. */
     const cat = e.target.closest("[data-cat]");
     if (cat) { e.preventDefault(); goCat(cat.dataset.cat); return; }
-    if (e.target.closest("#allBtn")) { shopFilter = "all"; shopLimit = 8; renderTabs(); renderProducts(); return; }
+    if (e.target.closest("#allBtn")) { shopFilter = "all"; shopLimit = 20; renderTabs(); renderProducts(); return; }
   });
 
   /* ---------- Admin: login ---------- */
@@ -3823,7 +3971,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -3837,7 +3985,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, info: tabInfo, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -4630,7 +4778,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const q = $("#xwPSearch").value.trim().toLowerCase();
       const list = window.PRODUCTS.filter((p) => !q || (p.name + " " + pCats(p).join(" ")).toLowerCase().indexOf(q) >= 0);
       $("#xwPList").innerHTML = list.length ? list.map((p) =>
-        '<div class="xw-prow"><img src="' + esc(cld(p.img, 180, 180)) + '" width="90" height="90" loading="lazy" decoding="async" alt=""><div class="i"><b>' + esc(p.name) + "</b><span>" + esc(pCats(p).join(" · ")) + " · " + fmt(sellPrice(p)) + " دج" + (discTagged(p) ? " · ⏳ " + fmtLeft(discLeft(p)) : "") + " · المخزون: " + (typeof p.stock === "number" ? p.stock : "غير محدد") + "</span>" +
+        '<div class="xw-prow"><img src="' + esc(cld(p.img, 180, 180)) + '" width="90" height="90" loading="lazy" decoding="async" alt=""><div class="i"><b>' + esc(p.name) + "</b><span>" + esc(pCats(p).join(" · ")) + " · " + fmt(sellPrice(p)) + " دج" + (discTagged(p) ? " · ⏳ " + fmtLeft(discLeft(p)) : "") + " · المخزون: " + (typeof p.stock === "number" ? p.stock : "غير محدد") + (Number(p.prio) > 0 ? " · 🎯 الأولوية: " + Number(p.prio) : "") + "</span>" +
         (pTags(p).length ? '<span class="xw-prow-tags">' + pTags(p).map((t) => '<i class="' + (/^خصم/.test(t) ? "hot" : (/مبيع/.test(t) ? "fire" : (/طلباً|طلبا/.test(t) ? "fire2" : (/جديد/.test(t) ? "new" : (/مميز/.test(t) ? "top" : ""))))) + '">' + esc(t) + "</i>").join("") + "</span>" : "") +
         '</div>' +
         '<button class="xw-btn ghost sm" data-pe="' + esc(p.id) + '">تعديل</button><button class="xw-btn danger sm" data-pd="' + esc(p.id) + '">حذف</button></div>').join("") : '<div class="xw-empty">لا توجد منتجات.</div>';
@@ -4876,6 +5024,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<form class="xw-card" id="xwPForm" novalidate style="max-width:760px">' +
       "<h3>" + (p ? "تعديل المنتج" : "إضافة منتج جديد") + "</h3>" +
       '<div class="xw-field"><label>اسم المنتج <i>*</i></label><input id="pName" value="' + esc(p ? p.name : "") + '"></div>' +
+      '<div class="xw-field"><label>أولوية العرض <small>(رقم — الأصغر كيظهر قبل في واجهة المتجر: 1 أول المتجر، 2 من بعدو... وما كاينش فراغات، 1 و50 كيجيو ورا بعضهم. اتركها فارغة ويمشي من بعد المنتجات المرقّمة. الرقم ما يبانش للزبون أبداً — غير في لوحة التحكم)</small></label><input id="pPrio" type="number" min="0" step="1" value="' + (p && Number(p.prio) > 0 ? Number(p.prio) : "") + '" placeholder="مثال: 1"></div>' +
       '<div class="xw-field"><label>الفئات <i>*</i> <small>(يمكن اختيار أكثر من فئة — دوز على الكل اللي يناسب المنتج)</small></label><div class="xw-tags">' +
       cats.map((c) => '<label class="xw-tagchk"><input type="checkbox" data-cpick="' + esc(c) + '"' + (cur.indexOf(c) >= 0 ? " checked" : "") + "><span>" + esc(c) + "</span></label>").join("") +
       '<label class="xw-tagchk"><input type="checkbox" data-cpick="__new"><span>➕ فئة جديدة...</span></label></div></div>' +
@@ -4885,7 +5034,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-field"><label>الألوان <small>(اختياري — اكتب اسم كل لون وكم قطعة متوفرة منه. عند وجود ألوان تصير الكمية الكلية مجموعها، ويختار الزبون لوناً عند الطلب)</small></label><div id="pColors"></div><button type="button" class="xw-btn ghost sm" id="pColorAdd">➕ إضافة لون</button></div>' +
       '<div class="xw-row"><div class="xw-field"><label>السعر إذا طلب 2 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل قطعتين كاملتين، وليس سعر القطعة. اتركه فارغاً لإيقاف العرض)</small></label><input id="pQ2" type="number" min="0" step="1" value="' + (p && Number(p.price2) > 0 ? Number(p.price2) : "") + '" placeholder="مثال: 2400"></div>' +
 '<div class="xw-field"><label>السعر الجديد إذا طلب 3 (دج) <small>(الإجمالي — المبلغ الذي يدفعه الزبون مقابل 3 قطع بالضبط، وكل قطعة زائدة عن الثلاثة تُحسب بالسعر الأصلي، وليس سعر القطعة)</small></label><input id="pQ3" type="number" min="0" step="1" value="' + (p && Number(p.price3) > 0 ? Number(p.price3) : "") + '" placeholder="مثال: 3600"></div></div>' +
-      '<div class="xw-field"><label>سعر القطعة عند شرائها مع منتج آخر (دج) <small>(سعر القطعة الواحدة — يتطبّق فقط كي السلة فيها منتجان مختلفان وتبلغ الحد الأدنى، وإذا كان أرخص من عرض الكمية. اتركه فارغاً لإيقافه)</small></label><input id="pCombo" type="number" min="0" step="1" value="' + (p && Number(p.cartPrice) > 0 ? Number(p.cartPrice) : "") + '" placeholder="مثال: 1500"></div>' +
+      '<div class="xw-field"><label>السعر الذي يبدأ منه ظهور التخفيض (دج) <small>(مجموع السلة اللي كيبدا منّو يبان تخفيض هاد المنتج في السلة. فارغ = يتبع الحد العام اللي في «معلومات المتجر». فارغ في الجوج = التخفيض يبان دائماً)</small></label><input id="pFrom" type="number" min="0" step="1" value="' + (p && Number(p.discFrom) > 0 ? Number(p.discFrom) : "") + '" placeholder="مثال: 7000"></div>' +
+      '<div class="xw-field"><label>سعر القطعة عند شرائها مع منتج آخر (دج) <small>(سعر القطعة الواحدة — يتطبّق فقط كي السلة فيها منتجان مختلفان وتبلغ الحد، وإذا كان أرخص من عرض الكمية. اتركه فارغاً لإيقافه)</small></label><input id="pCombo" type="number" min="0" step="1" value="' + (p && Number(p.cartPrice) > 0 ? Number(p.cartPrice) : "") + '" placeholder="مثال: 1500"></div>' +
       '<div class="xw-field"><label>الوسوم <small>(اختياري — يمكن اختيار أكثر من وسم)</small></label><div class="xw-tags">' +
       XW_TAGS.map((t) => '<label class="xw-tagchk"><input type="checkbox" data-tid="' + t.id + '"' + (initIds.indexOf(t.id) >= 0 ? " checked" : "") + "><span>" + t.label + "</span></label>").join("") +
       '<label class="xw-tagchk"><input type="checkbox" data-tid="__custom"' + (customTags.length ? " checked" : "") + '><span>وسم آخر…</span></label></div>' +
@@ -5053,7 +5203,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const videoRaw = String(($("#pVideo") || {}).value || "").trim();
       const videoId = ytId(videoRaw);
       if (videoRaw && !videoId) return err("رابط YouTube غير صحيح — الصق رابط الفيديو كما هو (مثال: https://youtu.be/xxxxxxxxxxx) أو فرّغ الخانة.");
-      const data = { name, cat, price, old, disc, stock: colors.length ? colors.reduce((t, c) => t + c.stock, 0) : Math.floor(Number(stockRaw)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), cartPrice: Math.max(0, Math.floor(Number(($("#pCombo") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
+      const data = { name, cat, price, old, disc, stock: colors.length ? colors.reduce((t, c) => t + c.stock, 0) : Math.floor(Number(stockRaw)), prio: Math.max(0, Math.floor(Number(($("#pPrio") || {}).value) || 0)), price2: Math.max(0, Math.floor(Number(($("#pQ2") || {}).value) || 0)), price3: Math.max(0, Math.floor(Number(($("#pQ3") || {}).value) || 0)), cartPrice: Math.max(0, Math.floor(Number(($("#pCombo") || {}).value) || 0)), discFrom: Math.max(0, Math.floor(Number(($("#pFrom") || {}).value) || 0)), tagIds, tags: extraTags, tag, desc: $("#pDesc").value.trim(), img: formImgs[0], images: formImgs.slice(), slug: seoSlug, seoTitle: seoTitle, seoDesc: seoDesc, seoKeys: seoKeys };
       if (discUntil) data.discUntil = discUntil;
       if (colors.length) data.colors = colors;
       if (videoId) data.video = videoId;
@@ -5079,11 +5229,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           if (!(data.price2 > 0)) delete upd.price2;
           if (!(data.price3 > 0)) delete upd.price3;
           if (!(data.cartPrice > 0)) delete upd.cartPrice;
+          if (!(data.discFrom > 0)) delete upd.discFrom;
+          /* أولوية العرض: الخانة فُرّغت عمداً -> تُحذف، فيرجع المنتج لترتيبو القديم */
+          if (!(data.prio > 0)) delete upd.prio;
           await commitProducts(window.PRODUCTS.map((x) => (x.id === p.id ? upd : x)), upd, null);
           toast("تم حفظ التعديلات", true);
         } else {
           const minOrder = window.PRODUCTS.reduce((m, x) => Math.min(m, x.order == null ? 0 : x.order), 0);
           const np = Object.assign({ id: "p-" + Date.now().toString(36), order: minOrder - 1 }, data);
+          if (!(np.prio > 0)) delete np.prio;
           await commitProducts([np].concat(window.PRODUCTS), np, null);
           toast("تمت إضافة المنتج", true);
         }
@@ -5263,7 +5417,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-err" id="iErr"></div><button class="xw-btn" type="submit">حفظ المعلومات</button></form>';
     $("#xwIForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const next = {}; $$("[data-if]", $("#xwIForm")).forEach((el) => { next[el.dataset.if] = el.value.trim(); });
+      /* ابدأ من المعلومات الحالية: الحفظ من هنا لا يجب أن يمسح معرّفات التتبع
+         ولا أي قيمة أخرى ما عندها خانة في هاد التبويب */
+      const next = Object.assign({}, INFO);
+      $$("[data-if]", $("#xwIForm")).forEach((el) => { next[el.dataset.if] = el.value.trim(); });
       if (!/^0[5-7]\d{8}$/.test(String(next.phone || "").replace(/\s/g, ""))) { $("#iErr").textContent = "رقم الهاتف يجب أن يكون 10 أرقام ويبدأ بـ 05 أو 06 أو 07."; return; }
       next.phone = next.phone.replace(/\s/g, "");
       const mail = String(next.revEmail || "").trim();
@@ -5275,6 +5432,36 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       Object.keys(XW_INFO_DEFAULTS).forEach((k) => { if (!next[k] && XW_SOCIAL_OPTIONAL.indexOf(k) < 0) next[k] = XW_INFO_DEFAULTS[k]; });
       try { await saveInfo(next); $("#iErr").textContent = ""; toast("تم حفظ معلومات المتجر", true); }
       catch (ex) { $("#iErr").textContent = "تعذّر الحفظ: " + (ex.code || ex.message); }
+    });
+  };
+
+  /* ----- Tracking: the three ids the owner sets, and nothing else ----- */
+  const tabTrack = () => {
+    const on = (k) => (xwPxId(k, INFO[xwPxKey[k]]) ? ' <b style="color:#16a34a">● مفعّل</b>' : ' <b style="color:var(--muted)">○ فارغ</b>');
+    $("#xwBody").innerHTML =
+      '<form class="xw-card" id="xwPxForm" style="max-width:760px" autocomplete="off"><h3>📈 البيكسل والتتبع</h3>' +
+      '<p class="xw-note" style="margin:-6px 0 16px">حطّ الـ ID وحدو، ولا الصق الكود كامل اللي يعطيك الموقع — نستخرجو الـ ID بوحدنا. <b>ما والو ما يتحمّل حتى تعمّر خانة</b>، والخانة الفارغة تعني «مطفي». الـ ID ماشي سر: يبان في كود الصفحة لكل زائر، وهذا عادي في كل المتاجر.</p>' +
+      '<div class="xw-field"><label>Meta Pixel ID — فيسبوك / إنستغرام' + on("meta") + ' <small>أرقام فقط، مثال: 123456789012345</small></label><input data-px="meta" dir="ltr" inputmode="numeric" spellcheck="false" placeholder="123456789012345" value="' + esc(INFO.pxMeta) + '"></div>' +
+      '<div class="xw-field"><label>TikTok Pixel ID' + on("tiktok") + ' <small>مثال: C1A2B3D4E5F6G7H8I9J0</small></label><input data-px="tiktok" dir="ltr" spellcheck="false" placeholder="C1A2B3D4E5F6G7H8I9J0" value="' + esc(INFO.pxTikTok) + '"></div>' +
+      '<div class="xw-field"><label>Google Tag / Ads ID' + on("google") + ' <small>مثال: AW-123456789 ولا G-XXXXXXXXXX</small></label><input data-px="google" dir="ltr" spellcheck="false" placeholder="AW-123456789" value="' + esc(INFO.pxGoogle) + '"></div>' +
+      '<p class="xw-note" style="margin:2px 0 14px">شنو يتتبع أوتوماتيكياً: <b>زيارة الصفحة</b>، <b>فتح منتج</b>، <b>إضافة للسلة</b>، <b>بداية الطلب</b>، و<b>الشراء</b> بالقيمة بالدينار. ما يتبعش الطلب اللي فشل حفظه.</p>' +
+      '<div class="xw-err" id="pxErr"></div><button class="xw-btn" type="submit">حفظ إعدادات التتبع</button></form>';
+    $("#xwPxForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const next = Object.assign({}, INFO);
+      const bad = [];
+      $$("[data-px]", $("#xwPxForm")).forEach((el) => {
+        const k = el.dataset.px, raw = el.value.trim(), id = xwPxId(k, raw);
+        if (raw && !id) bad.push(k === "meta" ? "Meta" : k === "tiktok" ? "TikTok" : "Google");
+        next[xwPxKey[k]] = id;
+      });
+      if (bad.length) { $("#pxErr").textContent = "الـ ID تاع " + bad.join(" و") + " غير صحيح — صحّحو ولا فرّغو الخانة."; return; }
+      try {
+        await saveInfo(next);
+        $("#pxErr").textContent = "";
+        renderAdmin();
+        toast("تم حفظ إعدادات التتبع" + (XW_PX_ON.meta || XW_PX_ON.tiktok || XW_PX_ON.google ? " — حدّث الصفحة باش يتبدّل" : ""), true);
+      } catch (ex) { $("#pxErr").textContent = "تعذّر الحفظ: " + (ex.code || ex.message); }
     });
   };
 
@@ -5795,7 +5982,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const q = searchInput.value.trim().toLowerCase();
     searchResults.innerHTML = "";
     if (!q) return;
-    const hits = window.PRODUCTS.filter((p) => (p.name + " " + pCats(p).join(" ")).toLowerCase().includes(q)).slice(0, 8);
+    const hits = prioSort(window.PRODUCTS.filter((p) => (p.name + " " + pCats(p).join(" ")).toLowerCase().includes(q))).slice(0, 8);
     if (hits.length === 0) { searchResults.innerHTML = '<div class="sr-none">لا توجد نتائج لـ "' + searchInput.value + '"</div>'; return; }
     hits.forEach((p) => {
       const out = !inStock(p);
