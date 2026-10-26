@@ -1665,6 +1665,124 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
     .xw-lb-count { bottom: 10px; }
   }
 
+
+/* ============ صفحات الهبوط ============ */
+body.lp-mode main.page, body.lp-mode #footer { display: none !important; }
+body.lp-mode #xwLandingBox { display: block; }
+#xwLandingBox { display: none; }
+/* القائمة العلوية مخفية: يبقى الشعار فقط، بدون روابط وبدون زر تصفح */
+body.lp-mode.lp-nav-off .nav-left .nav-menu,
+body.lp-mode.lp-nav-off .nav-right,
+body.lp-mode.lp-nav-off #mobileMenu,
+body.lp-mode.lp-nav-off #mmOverlay { display: none !important; }
+body.lp-mode.lp-nav-off #navbar .nav-inner { justify-content: center; }
+body.lp-mode.lp-nav-off .nav-logo { pointer-events: none; }
+.lp-page { max-width: 760px; margin: 0 auto; padding: 96px 16px 110px; direction: rtl; text-align: right; }
+.lp-hero { text-align: center; }
+.lp-badge { display: inline-block; background: linear-gradient(135deg, #FF2D00, #FF6B00 60%, #FFB300); color: #fff; font-family: var(--what-font); font-weight: 800; font-size: 13px; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px; }
+.lp-hero h1 { font-family: var(--what-font); font-weight: 900; font-size: clamp(26px, 6.2vw, 42px); line-height: 1.35; margin: 4px 0 10px; }
+.lp-sub { color: var(--muted); font-size: clamp(15px, 3.6vw, 18px); line-height: 1.8; margin-bottom: 18px; }
+.lp-heroimg { border-radius: 20px; overflow: hidden; background: var(--fill); border: 1px solid var(--line); margin: 16px 0; }
+.lp-heroimg img { width: 100%; height: auto; display: block; }
+.lp-price { display: flex; align-items: baseline; justify-content: center; gap: 12px; margin: 10px 0 16px; }
+.lp-price b { font-family: var(--what-font); font-weight: 900; font-size: clamp(30px, 8vw, 44px); color: #FF6B00; }
+.lp-price s { color: var(--faint); font-size: 18px; }
+.lp-cta, .lp-float button { width: 100%; max-width: 520px; padding: 17px 22px; border-radius: 16px; font-family: var(--what-font); font-weight: 900; font-size: 19px; color: #fff; background: linear-gradient(100deg, #FF4B1F, #FF8A00); box-shadow: 0 14px 30px -12px rgba(255, 75, 31, .7); cursor: pointer; border: 0; }
+.lp-cta:active, .lp-float button:active { transform: scale(.98); }
+.lp-out { text-align: center; padding: 22px; border-radius: 16px; background: var(--fill); border: 1px dashed var(--line-2); color: var(--muted); font-weight: 700; line-height: 2; }
+.lp-sec { margin: 34px 0 0; }
+.lp-sec h2, .lp-formwrap h2 { font-family: var(--what-font); font-weight: 900; font-size: clamp(21px, 5vw, 28px); line-height: 1.5; margin-bottom: 12px; }
+.lp-p { font-size: 17px; line-height: 2; white-space: pre-line; color: var(--ink); }
+.lp-fig img { width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--line); display: block; }
+.lp-fig figcaption { color: var(--muted); font-size: 14px; text-align: center; margin-top: 8px; }
+.lp-feat { display: grid; gap: 10px; }
+.lp-feat li { position: relative; padding: 13px 48px 13px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); font-size: 16px; line-height: 1.7; font-weight: 600; }
+.lp-feat li::before { content: "✓"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; background: #dcfce7; color: #16a34a; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+.lp-sec .xw-video { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000; }
+.lp-sec .xw-video iframe, .lp-sec .xw-video .xw-vplay { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.lp-sec .xw-vplay { padding: 0; cursor: pointer; }
+.lp-sec .xw-vplay img { width: 100%; height: 100%; object-fit: cover; }
+.lp-sec .xw-vplay span { position: absolute; inset: 0; margin: auto; width: 68px; height: 68px; border-radius: 50%; background: rgba(255, 75, 31, .94); color: #fff; font-size: 26px; display: flex; align-items: center; justify-content: center; }
+.lp-formwrap { margin-top: 44px; scroll-margin-top: 84px; }
+.lp-formwrap h2 { text-align: center; }
+.lp-chk { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: var(--shadow); }
+.lp-chk .xw-chk { grid-template-columns: 1fr; }
+.lp-colors { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px; margin-bottom: 12px; }
+.lp-colors.bad { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, .16); }
+.lp-colors b { display: block; margin-bottom: 10px; font-size: 14px; }
+.lp-colors b i { color: #ef4444; font-style: normal; }
+.lp-colors > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.lp-col { padding: 10px 18px; border-radius: 12px; border: 2px solid var(--line-2); background: var(--fill); font-weight: 800; font-size: 14px; }
+.lp-col.on { border-color: #FF6B00; background: rgba(255, 107, 0, .12); color: #FF6B00; }
+.lp-col[disabled] { opacity: .45; text-decoration: line-through; }
+.lp-foot { text-align: center; color: var(--faint); font-size: 13px; margin-top: 36px; }
+.lp-foot a { color: #FF6B00; font-weight: 700; }
+/* الزر العائم */
+.lp-float { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; justify-content: center; padding: 22px 14px calc(12px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(to top, var(--bg) 35%, transparent); pointer-events: none; transition: transform .3s ease, opacity .3s ease; }
+.lp-float button { pointer-events: auto; }
+.lp-float.off { transform: translateY(130%); opacity: 0; }
+.lp-float.off button { pointer-events: none; }
+/* فقاعة واتساب القديمة ترتفع فوق الزر العائم حتى ما تتراكبش معاه */
+body.lp-has-float .whatsapp { bottom: 92px; }
+body.lp-has-float .wa-help { bottom: 158px; }
+@media (prefers-reduced-motion: no-preference) { .lp-float:not(.off) button { animation: lpPulse 2.4s ease-in-out infinite; } }
+@keyframes lpPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
+/* لوحة التحكم */
+.lp-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.lp-top h3 { margin: 0; }
+.lp-acts { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.lp-row { flex-wrap: wrap; }
+.lp-row .i { flex: 1 1 260px; }
+.lp-row .i span { display: block; }
+.lp-em { font-style: normal; background: #ef4444; color: #fff; border-radius: 999px; font-size: 11px; padding: 1px 7px; margin-right: 6px; }
+.lp-sect { margin: 22px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #FF6B00; font-family: var(--what-font); font-weight: 900; font-size: 15px; }
+.lp-bk { border: 1px solid var(--line-2); border-radius: 14px; padding: 12px 14px 2px; margin-bottom: 12px; background: var(--bg-2); }
+.lp-bk-h { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+.lp-bk-c { display: flex; gap: 6px; }
+.lp-add { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 6px; }
+.lp-imgf { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 14px; }
+.lp-imgf img { width: 110px; height: 110px; object-fit: cover; border-radius: 12px; border: 1px solid var(--line-2); }
+.lp-imgf-b { flex: 1 1 220px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.lp-imgf-b input[type="text"], .lp-imgf-b input:not([type]) { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--fill); color: var(--ink); }
+.lp-oc { margin-bottom: 12px; border-right: 5px solid #f59e0b; }
+.lp-oc.confirmed { border-right-color: #16a34a; }
+.lp-oc.cancelled { border-right-color: #94a3b8; opacity: .8; }
+.lp-oc-h { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+.lp-oc-h small { color: var(--muted); margin-inline-start: auto; }
+.lp-st { font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 999px; background: #fef3c7; color: #b45309; }
+.lp-st.confirmed { background: #dcfce7; color: #15803d; }
+.lp-st.cancelled { background: #e2e8f0; color: #475569; }
+.lp-chip { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--fill); border: 1px solid var(--line-2); }
+.lp-oc-g { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 16px; font-size: 14px; margin-bottom: 10px; }
+.lp-oc-g small { display: block; color: var(--muted); font-size: 11px; }
+.lp-oc-g a { color: #FF6B00; font-weight: 700; }
+.lp-oc-i { padding: 10px 12px; border-radius: 10px; background: var(--fill); font-size: 14px; display: grid; gap: 4px; margin-bottom: 8px; }
+.lp-oc-t { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.lp-oc-t b { color: var(--ink); font-size: 16px; }
+html[data-theme="dark"] .lp-feat li::before { background: rgba(16, 185, 129, .18); color: #34D399; }
+html[data-theme="dark"] .lp-st { background: rgba(234, 179, 8, .18); color: #FACC15; }
+html[data-theme="dark"] .lp-st.confirmed { background: rgba(16, 185, 129, .18); color: #34D399; }
+html[data-theme="dark"] .lp-st.cancelled { background: rgba(148, 163, 184, .18); color: #CBD5E1; }
+
+/* ============ تتبّع الطلب + شحن ZR ============ */
+.mm-track { margin-top: 12px; width: 100%; text-align: center; border: 1.5px solid var(--line-2); border-radius: 12px; background: transparent; color: var(--ink); font-weight: 800; cursor: pointer; }
+button.nav-link { background: none; border: 0; cursor: pointer; }
+.trk-card { margin-top: 16px; padding: 14px 16px; border-radius: 14px; background: var(--fill); border: 1px solid var(--line-2); display: grid; gap: 4px; }
+.trk-card small { color: var(--muted); font-size: 12px; }
+.trk-card b { font-size: 17px; letter-spacing: .02em; word-break: break-all; }
+.trk-st { display: inline-block; justify-self: start; margin-top: 6px; padding: 5px 14px; border-radius: 999px; background: linear-gradient(135deg, #FF4B1F, #FF8A00); color: #fff; font-weight: 800; font-size: 14px; }
+.trk-tl { list-style: none; margin: 16px 6px 4px; padding: 0 18px 0 0; border-right: 2px solid var(--line-2); display: grid; gap: 14px; }
+.trk-tl li { position: relative; display: grid; gap: 2px; }
+.trk-tl li::before { content: ""; position: absolute; right: -25px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--line-2); border: 2px solid var(--card); }
+.trk-tl li.now::before { background: #FF6B00; box-shadow: 0 0 0 4px rgba(255, 107, 0, .22); }
+.trk-tl li b { font-size: 15px; }
+.trk-tl li em { font-style: normal; color: #b45309; font-size: 13px; font-weight: 700; }
+.trk-tl li small { color: var(--muted); font-size: 12px; }
+.lp-trk-link { background: none; border: 0; padding: 0; color: #FF6B00; font: inherit; font-weight: 700; cursor: pointer; }
+#lpShipModal { z-index: 270; }
+.lp-ship { margin: 0 0 12px; padding: 10px 12px; border-radius: 10px; background: var(--fill); border: 1px dashed var(--line-2); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; }
+.lp-trk { font-weight: 800; letter-spacing: .02em; background: var(--card); padding: 3px 10px; border-radius: 8px; border: 1px solid var(--line-2); }
+.lp-warn { color: #b45309; font-weight: 700; }
 </style>
 
   <!-- the card Google shows when someone shares a link to the shop -->
@@ -1718,6 +1836,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
           <li><a href="#home" class="nav-link active">الرئيسية</a></li>
           <li><a href="#shop" class="nav-link">المتجر</a></li>
           <li><a href="#reviews" class="nav-link">آراء الزبائن</a></li>
+          <li><button type="button" class="nav-link nav-track" data-track>تتبّع طلبك</button></li>
         </ul>
       </div>
 
@@ -1777,6 +1896,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
     <a href="#reviews" class="mm-link">آراء الزبائن</a>
     <div class="mm-lang"><a href="#" data-lang="en">English</a><a href="#" class="active" data-lang="ar">العربية</a></div>
     <a href="#shop" class="cta-btn mm-cta">تسوق الآن</a>
+    <button type="button" class="mm-track mm-link" data-track>📦 تتبّع طلبك</button>
   </div>
   <div id="mmOverlay" class="mm-overlay"></div>
 
@@ -2086,6 +2206,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
       <button type="submit" class="xw-btn wide">دخول</button>
       <div class="xw-lock" id="xwLoginLock" hidden></div>
       <div class="xw-err" id="xwLoginErr"></div>
+      <button type="button" class="lp-trk-link" id="xwForgot" style="margin-top:12px;font-size:13px">نسيت كلمة السر؟ أرسل رابط إعادة التعيين إلى بريد الإدارة</button>
     </form>
   </div>
 
@@ -2097,6 +2218,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
   <div class="xw-modal" id="xwCheckout"><div class="xw-box chk" id="xwCheckoutBox"></div></div>
   <div class="xw-modal" id="xwPolicy"><div class="xw-box wide" id="xwPolicyBox"></div></div>
   <div class="xw-modal" id="xwAnnounce"><div class="xw-box wide xw-ann-box" id="xwAnnounceBox"></div></div>
+  <div class="xw-modal" id="xwTrack"><div class="xw-box" id="xwTrackBox"></div></div>
 
   <!-- Admin room -->
   <div class="xw-admin" id="xwAdmin" hidden></div>
@@ -2581,6 +2703,8 @@ window.REVIEWS = [
       if (!window.firebase || !firebase.auth) return;
       if (!firebase.apps.length) firebase.initializeApp(XW_FIREBASE);
       xwAuth = firebase.auth();
+    /* the Firebase session ends (signed out elsewhere, account changed) → the room closes with it */
+    try { xwAuth.onAuthStateChanged((u) => { try { if (!u && adminUnlocked) closeAdmin(); } catch (e) {} }); } catch (e) {}
     } catch (e) { xwAuth = null; }
   };
 
@@ -2629,7 +2753,7 @@ window.REVIEWS = [
   const xwMiss = () => { let n = 0; try { n = (Number(localStorage.getItem("xw-miss") || 0) + 1); localStorage.setItem("xw-miss", String(n)); } catch (e) {} return n; };
   const xwMissRead = () => { try { return Number(localStorage.getItem("xw-miss") || 0); } catch (e) { return 0; } };
   const xwMissClear = () => { sealOff(); try { localStorage.removeItem("xw-miss"); } catch (e) {} };
-  const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings", blocks: "xw_blocks", pcount: "xw_pcount", reviews: "xw_reviews", rateKeys: "xw_ratingkeys" };
+  const XW_COL = { products: "xw_products", orders: "xw_orders", settings: "xw_settings", blocks: "xw_blocks", pcount: "xw_pcount", reviews: "xw_reviews", rateKeys: "xw_ratingkeys", leads: "xw_leads", landing: "xw_landing", landingOrders: "xw_landing_orders" };
   const XW_WILAYAS = [["01","أدرار",1450,880],["02","الشلف",850,530],["03","الأغواط",1000,630],["04","أم البواقي",800,530],["05","باتنة",850,530],["06","بجاية",800,530],["07","بسكرة",1000,630],["08","بشار",1150,730],["09","البليدة",800,530],["10","البويرة",800,530],["11","تمنراست",1650,1080],["12","تبسة",900,530],["13","تلمسان",950,580],["14","تيارت",850,530],["15","تيزي وزو",800,530],["16","الجزائر",600,480],["17","الجلفة",1000,630],["18","جيجل",500,370],["19","سطيف",750,530],["20","سعيدة",850,580],["21","سكيكدة",800,530],["22","سيدي بلعباس",850,530],["23","عنابة",850,530],["24","قالمة",800,530],["25","قسنطينة",800,530],["26","المدية",850,530],["27","مستغانم",850,530],["28","المسيلة",900,580],["29","معسكر",850,530],["30","ورقلة",1000,680],["31","وهران",800,530],["32","البيض",1150,680],["34","برج بوعريريج",650,530],["35","بومرداس",800,530],["36","الطارف",850,530],["38","تيسمسيلت",850,530],["39","الوادي",1000,680],["40","خنشلة",850,530],["41","سوق أهراس",800,530],["42","تيبازة",800,530],["43","ميلة",800,530],["44","عين الدفلى",800,530],["45","النعامة",1150,680],["46","عين تموشنت",850,530],["47","غرداية",1000,680],["48","غليزان",850,530],["49","تيميمون",1450,880],["51","أولاد جلال",950,630],["52","بني عباس",1200,880],["53","عين صالح",1650,1080],["54","عين قزام",1650,1080],["55","تقرت",1000,680],["57","المغير",1000,null],["58","المنيعة",1050,680]];
 
   const XW_OFFICES = {"10":["البويرة"],"11":["تمنراست"],"12":["تبسة"],"13":["تلمسان"],"14":["تيارت"],"15":["تيزي وزو"],"16":["بئر توتة","براقي","بئر خادم","أولاد فايت","برج الكيفان","رغاية","الكاليتوس","الشراقة"],"17":["الجلفة"],"18":["جيجل","الطاهير"],"19":["سطيف","العلمة"],"20":["سعيدة"],"21":["سكيكدة"],"22":["سيدي بلعباس"],"23":["عنابة","البوني"],"24":["قالمة"],"25":["قسنطينة","المدينة الجديدة علي منجلي","الزواغي"],"26":["المدية"],"27":["مستغانم"],"28":["المسيلة","بوسعادة"],"29":["معسكر"],"30":["ورقلة","حاسي مسعود"],"31":["وهران - مارافال","وهران - المرشد","وهران - كاناستيل"],"32":["البيض"],"34":["برج بوعريريج"],"35":["بومرداس","برج منايل","دلس"],"36":["الطارف"],"38":["تيسمسيلت"],"39":["الوادي"],"40":["خنشلة"],"41":["سوق أهراس"],"42":["تيبازة","القليعة"],"43":["ميلة"],"44":["عين الدفلى"],"45":["المشرية"],"46":["عين تموشنت"],"47":["غرداية"],"48":["غليزان"],"49":["تيميمون"],"51":["أولاد جلال"],"52":["بني عباس"],"53":["عين صالح"],"54":["عين قزام"],"55":["تقرت"],"58":["المنيعة"],"01":["أدرار"],"02":["الشلف","تنس"],"03":["الأغواط"],"04":["أم البواقي","عين البيضاء"],"05":["باتنة"],"06":["بجاية","أقبو","سوق الاثنين"],"07":["بسكرة"],"08":["بشار"],"09":["البليدة","بوفاريك","موزاية"]};
@@ -3035,7 +3159,9 @@ window.REVIEWS = [
     if (!cats) cats = lsGet("xw-categories", null);
     if (cats && cats.length) window.CATEGORIES = cats;
     applyInfo(); renderStore(); renderCart(); renderCartBadge();
+    loadLandings();
     if (online) cachePut();
+    loadLandings();
   };
   const saveCategories = async (list) => {
     if (online) await tmo(db.collection(XW_COL.settings).doc("categories").set({ items: list }));
@@ -3044,6 +3170,76 @@ window.REVIEWS = [
     if (!await bumpRev()) cacheWarn();
     cachePut();
   };
+  /* صفحات الهبوط */
+  /* ---------- صفحات الهبوط + طلباتها ----------
+     مجموعتان في Firestore، منفصلتان تماماً عن الطلبات العادية (xw_orders) وعن
+     الطلبات المتروكة (xw_leads):
+       xw_landing         → الصفحات نفسها (الزبون يقراها)
+       xw_landing_orders  → طلبيات الصفحات (الزبون يكتب فقط، والمالك يقرا) */
+  let XW_LANDING = [];
+  let XW_LP_ORDERS = [];
+  const LP_LS = "xw-landing", LP_ORD_LS = "xw-lp-orders";
+  const lpLocalPages = () => { const v = lsGet(LP_LS, []); return Array.isArray(v) ? v : []; };
+  const lpLocalOrders = () => { const v = lsGet(LP_ORD_LS, []); return Array.isArray(v) ? v : []; };
+  /* الزبون يقرا الصفحات فقط. إذا فشلت السحابة تبقى النسخة المحفوظة على الجهاز. */
+  const loadLandings = async () => {
+    XW_LANDING = lpLocalPages();
+    if (db) {
+      try {
+        const snap = await tmo(db.collection(XW_COL.landing).get(), 9000);
+        XW_LANDING = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }));
+        lsSet(LP_LS, XW_LANDING);
+      } catch (e) { /* نبقى على النسخة المحلية */ }
+    }
+    return XW_LANDING;
+  };
+  const saveLanding = async (lp) => {
+    const item = clean(Object.assign({}, lp, { updatedAt: Date.now() }));
+    /* حدّ Firestore للوثيقة الواحدة ~1MB: الصور المدمجة (بدون Cloudinary) تثقلها */
+    if (JSON.stringify(item).length > 900000) throw new Error("حجم الصفحة كبير جداً (صور مدمجة) — ارفع الصور عبر Cloudinary أو قلّل عددها");
+    if (db) await tmo(db.collection(XW_COL.landing).doc(item.id).set(item), 15000);
+    const list = lpLocalPages().filter((x) => x.id !== item.id); list.push(item);
+    lsSet(LP_LS, list);
+    XW_LANDING = XW_LANDING.filter((x) => x.id !== item.id).concat([item]);
+    return item;
+  };
+  const deleteLanding = async (id) => {
+    if (db) await tmo(db.collection(XW_COL.landing).doc(id).delete(), 12000);
+    lsSet(LP_LS, lpLocalPages().filter((x) => x.id !== id));
+    XW_LANDING = XW_LANDING.filter((x) => x.id !== id);
+  };
+  const findLanding = (slug, draftOk) => {
+    if (!slug) return null;
+    const s = String(slug).toLowerCase();
+    return (XW_LANDING || []).find((l) => String(l.slug || "").toLowerCase() === s && (draftOk || l.published !== false)) || null;
+  };
+  /* الزبون: يكتب الطلب فقط (يرمي خطأ إذا فشل، ليظهر له زر الواتساب) */
+  const saveLandingOrder = async (o) => {
+    if (db) { await tmo(db.collection(XW_COL.landingOrders).doc(o.id).set(clean(o)), 12000); online = true; return; }
+    const l = lpLocalOrders(); l.unshift(o); lsSet(LP_ORD_LS, l);
+  };
+  /* المالك: يقرا كل الطلبيات */
+  const loadLandingOrders = async () => {
+    let list = lpLocalOrders();
+    if (db && online) {
+      const snap = await tmo(db.collection(XW_COL.landingOrders).get(), 12000);
+      list = snap.docs.map((d) => Object.assign({}, d.data(), { id: d.id }));
+    }
+    XW_LP_ORDERS = list.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+    return XW_LP_ORDERS;
+  };
+  const updateLandingOrder = async (id, patch) => {
+    if (db && online) await tmo(db.collection(XW_COL.landingOrders).doc(id).update(clean(patch)), 12000);
+    else lsSet(LP_ORD_LS, lpLocalOrders().map((o) => (o.id === id ? Object.assign({}, o, patch) : o)));
+    XW_LP_ORDERS = XW_LP_ORDERS.map((o) => (o.id === id ? Object.assign({}, o, patch) : o));
+  };
+  const deleteLandingOrder = async (id) => {
+    if (db && online) await tmo(db.collection(XW_COL.landingOrders).doc(id).delete(), 12000);
+    else lsSet(LP_ORD_LS, lpLocalOrders().filter((o) => o.id !== id));
+    XW_LP_ORDERS = XW_LP_ORDERS.filter((o) => o.id !== id);
+  };
+
+
   const ensureSeeded = async () => {
     if (seeded || !online || !cloudEmpty) return;
     window.PRODUCTS.forEach((p, i) => { if (p.order == null) p.order = i; });
@@ -3128,6 +3324,102 @@ window.REVIEWS = [
     if (db && online) return tmo(db.collection(XW_COL.orders).doc(id).delete());
     lsSet("xw-orders", lsGet("xw-orders", []).filter((x) => x.id !== id));
   };
+
+  /* ---------- الطلبات المتروكة (أرقام كتبت وما كمّلت) ----------
+     الرقم اللي يتكتب في استمارة الطلب هو فرصة، ماشي طلب: يتسجّل هنا للمالك
+     وحدو — قواعد Firestore كتمنع أي زبون آخر يقراه أو يحذفو. ومن هنا ما
+     كتخرج حتى إشارة: لا بيكسل، لا إيميل، لا واتساب. حدث الشراء (Purchase)
+     يبقى في بلاصتو في نهاية الاستمارة، من بعد ما ينجح حفظ الطلب — باش
+     إحصائيات الإعلانات تبقى نادية وما تتلوّثش بأرقام ما شراتش. */
+  const XW_LEADS = "xw-leads";
+  const xwLeadList = () => { const a = lsGet(XW_LEADS, []); return Array.isArray(a) ? a : []; };
+  const xwLeadPut = (list) => lsSet(XW_LEADS, list.slice(0, 150));
+  const xwLeadId = (phone) => "ld-" + String(phone || "").replace(/\D/g, "") + "-" + String(XW_UID || "d").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 22);
+  const xwLeadSave = (lead) => {
+    const list = xwLeadList();
+    const old = list.find((x) => x.id === lead.id);
+    const rec = Object.assign({}, old || {}, lead, { createdAt: (old && old.createdAt) || lead.updatedAt });
+    xwLeadPut([rec].concat(list.filter((x) => x.id !== lead.id)));
+    /* للمالك وحدو — الكتابة كتمشي، والقراءة محجوزة ليه في القواعد */
+    if (db) db.collection(XW_COL.leads).doc(rec.id).set(clean(rec), { merge: true }).catch(() => {});
+    return rec;
+  };
+  const xwLeadDone = (phone, orderId) => {
+    const key = String(phone || "").replace(/\D/g, "");
+    let hit = false;
+    const next = xwLeadList().map((x) => {
+      if (x.phone !== key || x.converted) return x;
+      hit = true;
+      return Object.assign({}, x, { converted: true, orderId: orderId || "", updatedAt: Date.now() });
+    });
+    if (hit) xwLeadPut(next);
+  };
+  /* علامة المالك: «مؤكد» حتى بلا طلب — بعد مكالمة، الزبون قال رايح يشري.
+     هاد العلامة كتبقى في السجل (مرئية ليك وحدك) وكتنفع في الفلتر. */
+  const xwLeadMark = (phone, ok) => {
+    const key = String(phone || "").replace(/\D/g, "");
+    const touched = [];
+    const next = xwLeadList().map((x) => {
+      if (x.phone !== key) return x;
+      const rec = Object.assign({}, x, { ok: !!ok, updatedAt: Date.now() });
+      touched.push(rec);
+      return rec;
+    });
+    if (!touched.length) return;
+    xwLeadPut(next.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)));
+    if (db) touched.forEach((x) => db.collection(XW_COL.leads).doc(x.id).set(clean(x), { merge: true }).catch(() => {}));
+  };
+  /* تعديل معلومات الزبون. الرقم إذا تبدّل، المعرّف يتبدّل معاه (المعرّف فيه
+     الرقم) والسجل القديم يتنحّى — محلياً وفي السحابة. */
+  const xwLeadEdit = (phone, patch) => {
+    const key = String(phone || "").replace(/\D/g, "");
+    const np = String(patch.phone || "").replace(/\D/g, "");
+    const mine = xwLeadList().filter((x) => x.phone === key);
+    if (!mine.length) return;
+    const rest = xwLeadList().filter((x) => x.phone !== key);
+    const out = [];
+    mine.forEach((x) => {
+      const rec = Object.assign({}, x, patch, { phone: np, updatedAt: Date.now() });
+      if (np !== key) rec.id = "ld-" + np + "-" + String(x.uid || XW_UID).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 22);
+      out.push(rec);
+      if (db) {
+        db.collection(XW_COL.leads).doc(rec.id).set(clean(rec), { merge: true }).catch(() => {});
+        if (rec.id !== x.id) db.collection(XW_COL.leads).doc(x.id).delete().catch(() => {});
+      }
+    });
+    xwLeadPut(out.concat(rest).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)));
+  };
+  const xwLeadDropPhone = async (phone) => {
+    const key = String(phone || "").replace(/\D/g, "");
+    const gone = xwLeadList().filter((x) => x.phone === key);
+    xwLeadPut(xwLeadList().filter((x) => x.phone !== key));
+    if (db) {
+      for (const g of gone) { try { await tmo(db.collection(XW_COL.leads).doc(g.id).delete(), 8000); } catch (e) {} }
+    }
+  };
+  const xwLeadsPull = async () => {
+    if (!db) return false;
+    try {
+      const snap = await tmo(db.collection(XW_COL.leads).get(), 9000);
+      const map = new Map();
+      xwLeadList().forEach((x) => map.set(x.id, x));
+      snap.docs.forEach((d) => { const x = d.data(); if (x && x.id) map.set(x.id, Object.assign({}, map.get(x.id) || {}, x)); });
+      xwLeadPut(Array.from(map.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)));
+      return true;
+    } catch (e) { return false; }
+  };
+  /* جمع الحالة بعد ما يسكت الزبون شوية — ماشي مع كل حرف */
+  let xwLeadTimer = 0, xwLeadGrab = null, xwLeadSig = "";
+  const xwLeadFlush = () => {
+    if (xwLeadTimer) { clearTimeout(xwLeadTimer); xwLeadTimer = 0; }
+    if (xwLeadGrab) { try { xwLeadGrab(); } catch (e) {} }
+  };
+  const xwLeadSoon = () => {
+    if (xwLeadTimer) clearTimeout(xwLeadTimer);
+    xwLeadTimer = setTimeout(xwLeadFlush, 1200);
+  };
+  window.addEventListener("pagehide", xwLeadFlush);
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") xwLeadFlush(); });
 
   /* ---------- Products: cards, tabs, deals, categories ---------- */
   const inStock = (p) => p.stock == null || p.stock > 0;
@@ -3338,6 +3630,9 @@ window.REVIEWS = [
   const openModal = (el) => { el.classList.add("open"); document.body.style.overflow = "hidden"; };
   const closeModal = (el) => {
     el.classList.remove("open");
+    /* the visitor just walked away from the form: keep what he had typed for
+       the owner, before the fields are gone (no signal leaves the page) */
+    if (el.id === "xwCheckout") { if (xwLeadGrab) { xwLeadFlush(); xwLeadGrab = null; } }
     if (el.id === "xwProduct") { $$("#xwProductBox .xw-video iframe").forEach((f) => f.remove()); if (galTimer) { clearInterval(galTimer); galTimer = null; } clearProductHash(); clearSeo(); }
     if (!$(".xw-modal.open") && $("#xwAdmin").hidden) document.body.style.overflow = "";
   };
@@ -3510,8 +3805,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const wByName = (n) => XW_WILAYAS.find((w) => w[1] === n);
   const openCheckout = (items, opts) => {
     opts = opts || {};
-    xwTrack("InitiateCheckout", { ids: items.map((i) => i.id), value: items.reduce((a, it) => { const p = findProduct(it.id); return a + (p ? sellPrice(p) : 0) * (Number(it.qty) || 0); }, 0) });
-    const box = $("#xwCheckoutBox");
+    if (!opts.landing) xwTrack("InitiateCheckout", { ids: items.map((i) => i.id), value: items.reduce((a, it) => { const p = findProduct(it.id); return a + (p ? sellPrice(p) : 0) * (Number(it.qty) || 0); }, 0) });
+    const box = opts.container || $("#xwCheckoutBox");
     const st = { name: "", phone: "", wilaya: "", cSel: "", address: "", notes: "", delivery: "home", err: "", bad: "", busy: false, done: null };
     const lines = () => items.map((it) => ({ it, p: findProduct(it.id) })).filter((x) => x.p);
     const rates = () => { const w = wByName(st.wilaya); return w ? { home: w[2], office: w[3], id: w[0] } : null; };
@@ -3566,17 +3861,17 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (st.done) {
         const first = (st.name || "").trim().split(/\s+/)[0] || "بكم";
         box.innerHTML =
-          '<button class="xw-x" data-xclose aria-label="إغلاق">×</button>' +
+          (opts.container ? "" : '<button class="xw-x" data-xclose aria-label="إغلاق">×</button>') +
           '<div class="xw-ok"><div class="tick">✓</div>' +
           '<h3>مرحباً ' + esc(first) + '، تم استلام طلبك بنجاح!</h3>' +
           '<p class="xw-thanks">شكراً لثقتك في <b>X STORE</b> — طلبك صار عندنا وسنتصل بك في أقرب وقت لتأكيده وتجهيزه. سعداء بخدمتك!</p>' +
           '<p style="color:var(--muted);margin:8px 0 14px">الدفع عند الاستلام · التوصيل عبر ZR Xpress</p>' +
           '<p>رقم الطلب: <code>' + esc(st.done) + '</code></p>' +
-          '<button class="xw-btn" style="margin-top:20px" data-xclose>متابعة التسوق</button></div>';
+          (opts.container ? "" : '<button class="xw-btn" style="margin-top:20px" data-xclose>متابعة التسوق</button>') + "</div>";
         return;
       }
       const ls = lines();
-      if (!ls.length) { closeModal($("#xwCheckout")); return; }
+      if (!ls.length) { if (!opts.container) closeModal($("#xwCheckout")); return; }
       const r = rates(), sh = shipping();
       const sub = xwSubLines(ls);
       const xreg = xwRegSum(ls);
@@ -3613,7 +3908,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const t = tiers(ls, sub, sh);
       const saved = t.saved;
       box.innerHTML =
-        '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><form id="xwChkForm" novalidate><div class="xw-chk"><div>' +
+        (opts.container ? "" : '<button class="xw-x" data-xclose aria-label="إغلاق">×</button>') + '<form id="xwChkForm" novalidate><div class="xw-chk"><div>' +
         "<h3>معلومات الطلب</h3>" + guard +
         fld("name", '<label>الاسم الكامل <i>*</i></label><input id="fName" value="' + esc(st.name) + '" placeholder="مثال: محمد أمين بن علي">') +
         fld("phone", '<label>رقم الهاتف <i>*</i></label><input id="fPhone" type="tel" inputmode="numeric" maxlength="10" value="' + esc(st.phone) + '" placeholder="0555123456">') +
@@ -3655,9 +3950,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         else if (nq <= 0 && items.length > 1) items.splice(items.indexOf(it), 1);
         else if (nq > 0) toast("الكمية المتوفرة: " + have);
         render();
+        xwLeadSoon();
       }
     };
     box.onchange = (e) => {
+      collect();
+      xwLeadSoon();
       if (e.target.id === "fCommune") { collect(); render(); return; }
       if (e.target.id === "fWilaya") {
         collect(); st.wilaya = e.target.value; st.cSel = ""; st.err = ""; st.bad = "";
@@ -3677,7 +3975,39 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         st.bad = "";
       }
       if (st.err) { st.err = ""; const fe = $("#fErr", box); if (fe) fe.textContent = ""; }
+      collect();          /* اقرا اللي كتب دروك — قبل ما نخزّنو */
+      xwLeadSoon();
     };
+    /* ---------- الطلبات المتروكة: قراءة الحالة فقط ----------
+       كتقرا اللي كتب الزبون وكتعطيه لـ xwLeadSave (تخزين محلي + سجل المالك).
+       ما كتستدعي حتى حاجة خارجية: لا xwTrack، لا fbq، لا ttq، لا gtag. */
+    xwLeadGrab = () => {
+      const phone = String(st.phone || "").replace(/\D/g, "");
+      if (!/^(05|06|07)\d{8}$/.test(phone)) return;      /* بلا رقم صحيح ما كاينش زبون */
+      const basket = lines();
+      if (!basket.length) return;
+      const sub = xwSubLines(basket), sh = shipping(), reg = xwRegSum(basket);
+      const t = tiers(basket, sub, sh);
+      const rec = {
+        id: xwLeadId(phone),
+        phone,
+        name: String(st.name || "").trim(),
+        wilaya: st.wilaya || "",
+        commune: communeVal() || "",
+        address: st.delivery === "home" ? String(st.address || "").trim() : "استلام من مكتب: " + (communeVal() || ""),
+        delivery: st.delivery,
+        notes: String(st.notes || "").trim(),
+        items: basket.map((x) => ({ id: x.p.id, name: x.p.name, color: x.it.color || "", qty: x.it.qty, price: sellPrice(xwEff(x.p, reg)) })),
+        subtotal: sub, shipping: sh, discount: t.saved, total: sub + (sh || 0) - t.saved,
+        uid: XW_UID, dev: XW_DEVICE,
+        updatedAt: Date.now()
+      };
+      const sig = [phone, rec.name, rec.wilaya, rec.commune, rec.address, rec.delivery, rec.notes, rec.items.map((i) => i.id + "x" + i.qty + (i.color || "")).join(","), sub, sh, t.saved].join("|");
+      if (sig === xwLeadSig) return;                     /* ما تبدّل والو */
+      xwLeadSig = sig;
+      xwLeadSave(rec);
+    };
+    if (opts.landing) xwLeadGrab = null;   /* صفحات الهبوط ما تدخلش في «الطلبات المتروكة» */
     box.onsubmit = async (e) => {
       e.preventDefault(); if (st.busy) return;
       collect();
@@ -3704,6 +4034,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const cv = communeVal();
       if (!cv) return fail(st.delivery === "office" ? "اختر أقرب مكتب ZR Xpress." : "اختر البلدية.", "commune");
       if (st.delivery === "home" && st.address.trim().length < 5) return fail("اكتب العنوان الكامل.", "address");
+      if (opts.landing) {
+        const nc = ls.find((x) => pColors(x.p).length && !x.it.color);
+        if (nc) { const cc = document.getElementById("lpColors"); if (cc) { cc.classList.add("bad"); try { cc.scrollIntoView({ block: "center", behavior: "smooth" }); } catch (e2) {} } return fail("اختر اللون أولاً."); }
+      }
       for (const x of ls) { const have = lineStock(x.p, x.it.color || ""); if (x.it.qty > have) return fail("الكمية المتوفرة من «" + x.p.name + (x.it.color ? " (" + x.it.color + ")" : "") + "» هي " + have + " فقط."); }
       const sub = xwSubLines(ls), sh = shipping(), reg = xwRegSum(ls);
       /* the same tier figure the summary shows goes into the order itself */
@@ -3717,9 +4051,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         items: ls.map((x) => ({ productId: x.p.id, name: x.p.name, color: x.it.color || "", quantity: x.it.qty, price: sellPrice(xwEff(x.p, reg)), image: /^https?:/.test(x.p.img || "") ? x.p.img : "" })),
         subtotal: sub, shipping: sh, discount: saved, total: sub + (sh || 0) - saved, status: "new", createdAt: new Date().toISOString()
       };
+      if (opts.landing) {
+        order.id = "LP-" + order.id.slice(3);
+        order.source = "landing"; order.status = "unconfirmed"; order.confirmed = false;
+        order.landingId = opts.landing.id; order.landingSlug = opts.landing.slug; order.landingTitle = opts.landing.title;
+      }
       st.busy = true; st.err = ""; st.bad = ""; render();
       try {
-        await saveOrder(order);
+        await (opts.landing ? saveLandingOrder(order) : saveOrder(order));
       } catch (err) {
         st.busy = false;
         const msg = "طلب جديد " + order.id + "\nالاسم: " + order.customer.name + "\nالهاتف: " + order.customer.phone + "\nالولاية: " + order.customer.wilaya + " - " + order.customer.commune + "\nالعنوان: " + order.customer.address + "\n" + order.items.map((i) => i.name + (i.color ? " (" + i.color + ")" : "") + " x" + i.quantity).join("\n") + "\nالمجموع: " + fmt(order.total) + " دج";
@@ -3728,6 +4067,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       }
       xwNoteSent(st.phone);
       xwNotePhoneOrder(st.phone);
+      /* الطلب كمّل: الرقم يخرج من لائحة المتروكة (علامة محلية + مطابقة مع الطلبات
+         في اللوحة). ما كاينش أي إشارة بيكسل هنا — الشراء كيتسجّل تحت، مرة وحدة. */
+      xwLeadFlush();                      /* آخر حالة كاملة: البلدية والعنوان */
+      if (!opts.landing) xwLeadDone(st.phone, order.id);
+      xwLeadGrab = null; xwLeadSig = "";
       /* update local stock */
       const changed = [];
       ls.forEach((x) => {
@@ -3746,7 +4090,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       xwTrack("Purchase", { ids: order.items.map((i) => i.productId), value: order.total, tx: order.id, items: order.items.map((i) => ({ id: i.productId, quantity: i.quantity, price: i.price })) });
     };
     render();
-    openModal($("#xwCheckout"));
+    if (!opts.container) openModal($("#xwCheckout"));
+    return { refresh: render };
   };
 
   /* ---------- Global click handling (details / buy) ---------- */
@@ -3910,41 +4255,32 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (isSealed() || !pass || !errEl) { paintLoginLock(); return; }
     const typed = normDigits(pass.value);
     if (!typed) { errEl.textContent = "اكتب كلمة السر"; pass.focus(); return; }
-    /* when the cloud is live, the door is Firebase Authentication: the password is
-       checked by Google's server, never by this page. A success leaves a real signed-in
-       session that Firestore itself can see, which is what lets the owner read orders. */
-    if (xwAuth) {
-      errEl.textContent = "جاري التحقق…";
-      xwAuth.signInWithEmailAndPassword(XW_ADMIN_EMAIL, typed)
-        .then(() => { xwUnlockAdmin(); })
-        .catch((ex) => {
-          const c = (ex && ex.code) || "";
-          /* bridge while the door is changing: if the owner's Firebase account is not
-             created yet, the device's old on-device key still opens the room - the
-             Firestore rules, once published, stay the real gate either way. */
-          if ((c === "auth/user-not-found" || c === "auth/wrong-password" ||
-               c === "auth/invalid-credential" || c === "auth/operation-not-allowed") &&
-              (adminCred || adminLegacy) && adminPassOk(typed)) {
-            xwUnlockAdmin();
-            return;
-          }
-          if (c === "auth/operation-not-allowed") { errEl.textContent = "المصادقة بالبريد غير مفعّلة — فعّل Email/Password في Firebase Console."; return; }
-          if (c === "auth/network-request-failed") { errEl.textContent = "تعذّر الاتصال بالخادم — تحقّق من الإنترنت."; return; }
-          if (c === "auth/too-many-requests") { errEl.textContent = "محاولات كثيرة من هذا الجهاز — حاول بعد قليل."; return; }
-          xwMissFail(errEl, pass);
-        });
-      return;
-    }
-    /* offline, or the SDK did not load: the old on-device check still stands */
-    if (!adminCred && !adminLegacy) { errEl.textContent = "لم تُعيَّن كلمة السر بعد."; pass.value = ""; return; }
-    if (adminPassOk(typed)) {
-      xwUnlockAdmin();
-      /* the one time the plain field is answered for, the cloud is told to forget
-         it - and only after the room is already open, never before */
-      if (adminLegacy) repairAdminPass(typed);
-      return;
-    }
-    xwMissFail(errEl, pass);
+    /* Firebase Authentication is the ONLY door: the password lives at Google, and a
+       live connection is required. No on-device password, no offline entry. */
+    if (!navigator.onLine) { errEl.textContent = "لا يوجد اتصال بالإنترنت — لا تُفتح لوحة التحكم دون اتصال."; return; }
+    if (!xwAuth) { errEl.textContent = "تعذّر الاتصال بـ Firebase — تحقّق من الإنترنت ثم أعد تحميل الصفحة."; return; }
+    errEl.textContent = "جاري التحقق…";
+    xwAuth.signInWithEmailAndPassword(XW_ADMIN_EMAIL, typed)
+      .then(() => { xwUnlockAdmin(); })
+      .catch((ex) => {
+        const c = (ex && ex.code) || "";
+        if (c === "auth/operation-not-allowed") { errEl.textContent = "المصادقة بالبريد غير مفعّلة — فعّل Email/Password في Firebase Console."; return; }
+        if (c === "auth/network-request-failed") { errEl.textContent = "تعذّر الاتصال بالخادم — تحقّق من الإنترنت."; return; }
+        if (c === "auth/too-many-requests") { errEl.textContent = "محاولات كثيرة من هذا الجهاز — حاول بعد قليل."; return; }
+        if (c === "auth/user-not-found") { errEl.textContent = "حساب الإدارة غير موجود في Firebase — أنشئه من Console ← Authentication ← Users."; return; }
+        xwMissFail(errEl, pass);
+      });
+  });
+  loginBox.addEventListener("click", (e) => {
+    if (!e.target.closest("#xwForgot")) return;
+    const errEl = $("#xwLoginErr"), btn = $("#xwForgot");
+    if (!navigator.onLine) { errEl.textContent = "لا يوجد اتصال بالإنترنت."; return; }
+    if (!xwAuth) { errEl.textContent = "تعذّر الاتصال بـ Firebase."; return; }
+    btn.disabled = true; errEl.textContent = "جاري الإرسال…";
+    xwAuth.sendPasswordResetEmail(XW_ADMIN_EMAIL)
+      .then(() => { const m = String(XW_ADMIN_EMAIL).replace(/^(.).*(@.*)$/, "$1•••$2"); errEl.textContent = "أُرسل رابط إعادة التعيين إلى " + m + " — افتحه من بريدك واختر كلمة سر جديدة."; })
+      .catch((ex) => { errEl.textContent = (ex && ex.code) === "auth/too-many-requests" ? "محاولات كثيرة — حاول بعد قليل." : "تعذّر الإرسال: " + ((ex && ex.code) || "خطأ"); })
+      .then(() => { btn.disabled = false; });
   });
 
   /* ---------- Admin room ---------- */
@@ -3956,10 +4292,18 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
 
   const openAdmin = () => { adminEl.hidden = false; document.body.style.overflow = "hidden"; renderAdmin(); };
   const closeAdmin = () => { adminEl.hidden = true; document.body.style.overflow = ""; adminUnlocked = false; xwSignedOut(); offAdminURL(); };
+  /* no connection = no admin room: it closes the moment the network drops and signs out,
+     so it can never sit open on a link that cannot save (or that someone else can reach). */
+  window.addEventListener("offline", () => {
+    if (!adminUnlocked) return;
+    closeAdmin();
+    toast("انقطع الاتصال بالإنترنت — أُغلقت لوحة التحكم. سجّل الدخول من جديد عند عودة الاتصال.");
+  });
 
   const renderAdmin = () => {
     const newCount = ordersCache.filter((o) => o.status === "new" && !o.binned).length;
     const binCount = ordersCache.filter((o) => o.binned).length;
+    const leadCount = xwLeadList().filter((l) => !l.converted && !l.ok).length;
     adminEl.innerHTML =
       '<div class="xw-ah"><div class="xw-ah-in"><h2>' + GEAR_SVG + " غرفة الإدارة</h2><div style=\"display:flex;gap:10px;align-items:center;flex-wrap:wrap\">" +
       '<span class="xw-badge ' + (online || !db ? "" : "off") + '" id="xwConn"></span>' +
@@ -3971,8 +4315,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
-        .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+        .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "leads" && leadCount ? "<em>" + leadCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
     conn.textContent = online ? "● متصل بقاعدة البيانات" : (db ? "⚠ غير متصل — حفظ محلي فقط" : "⚠ وضع محلي (بدون قاعدة بيانات)");
@@ -3985,13 +4329,56 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
-    if (at) { if (at.dataset.at === "form" && adminTab !== "form") { editing = null; formImgs = []; } if (at.dataset.at !== "form") editing = null; adminTab = at.dataset.at; renderAdmin(); return; }
+    if (at) { if (at.dataset.at === "form" && adminTab !== "form") { editing = null; formImgs = []; } if (at.dataset.at !== "form") editing = null; leadEdit = null; adminTab = at.dataset.at; renderAdmin(); return; }
     if (e.target.closest("#xwExit")) { closeAdmin(); return; }
     if (e.target.closest("#xwRefresh")) { toast("جاري التحديث..."); await loadRemote(); renderAdmin(); return; }
+    const ldel = e.target.closest("[data-ldel]");
+    if (ldel) {
+      if (!confirm("تحذف هاد الرقم من قائمة الطلبات المتروكة؟")) return;
+      await xwLeadDropPhone(ldel.dataset.ldel);
+      toast("تحذف", true);
+      tabLeads();
+      return;
+    }
+    const lf = e.target.closest("[data-lf]");
+    if (lf) { leadFilter = lf.dataset.lf; leadEdit = null; tabLeads(); return; }
+    const lok = e.target.closest("[data-lok]");
+    if (lok) {
+      xwLeadMark(lok.dataset.lok, lok.dataset.ok === "1");
+      toast(lok.dataset.ok === "1" ? "تسجّل مؤكد" : "رجع غير مؤكد", true);
+      tabLeads();
+      return;
+    }
+    const ledit = e.target.closest("[data-ledit]");
+    if (ledit) { leadEdit = ledit.dataset.ledit; tabLeads(); return; }
+    if (e.target.closest("[data-lcancel]")) { leadEdit = null; tabLeads(); return; }
+    const lsave = e.target.closest("[data-lsave]");
+    if (lsave) {
+      const g = (id) => { const el = $("#" + id, $("#xwBody")); return el ? el.value : ""; };
+      const phone = String(g("lePhone")).replace(/\D/g, "");
+      if (!/^(05|06|07)\d{8}$/.test(phone)) { toast("رقم الهاتف لازم 10 أرقام ويبدأ بـ 05 أو 06 أو 07"); return; }
+      xwLeadEdit(lsave.dataset.lsave, {
+        name: String(g("leName")).trim(), phone, wilaya: g("leWilaya"),
+        commune: String(g("leCommune")).trim(), address: String(g("leAddr")).trim(),
+        delivery: g("leDelivery") === "office" ? "office" : "home", notes: String(g("leNotes")).trim()
+      });
+      leadEdit = null;
+      toast("تعدّلت معلومات الزبون", true);
+      tabLeads();
+      return;
+    }
+    if (e.target.closest("#leadPull")) {
+      const lb = e.target.closest("#leadPull");
+      lb.disabled = true;
+      const ok = await xwLeadsPull();
+      toast(ok ? "تحدّثت اللائحة من السحابة" : "ما قدرناش نجيبو من السحابة — شوف قواعد Firestore", ok);
+      tabLeads();
+      return;
+    }
     const gol = e.target.closest("[data-golog]");
     if (gol) { adminTab = "log"; renderAdmin(); return; }
     const ob = e.target.closest("[data-ob]");
@@ -4766,6 +5153,518 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (!s) return;
     await setOrderStatus(s.dataset.os, s.value);
   });
+  /* ----- الطلبات المتروكة: أرقام كتبت في الاستمارة وما أكّدتش ----- */
+  let leadFilter = "all", leadEdit = null, leadsPulled = false;
+  /* العدّاد على التبويب يتبع نفس تعريف «غير مؤكد» اللي في الفلتر */
+  const paintLeadBadge = () => {
+    const b = $('[data-at="leads"]', adminEl);
+    if (!b) return;
+    const n = xwLeadList().filter((l) => !l.converted && !l.ok).length;
+    b.innerHTML = "📞 طلبات متروكة" + (n ? "<em>" + n + "</em>" : "");
+  };
+  const xwAgo = (ms) => {
+    if (!ms) return "—";
+    const m = Math.round(Math.max(0, Date.now() - ms) / 60000);
+    if (m < 1) return "دروك";
+    if (m < 60) return "قبل " + m + " دقيقة";
+    const h = Math.round(m / 60);
+    if (h < 24) return "قبل " + h + " ساعة";
+    return "قبل " + Math.round(h / 24) + " يوم";
+  };
+  const tabLeads = () => {
+    const body = $("#xwBody");
+    /* رقم واحد = صف واحد: آخر محاولة، ومعاها عدد المرات */
+    const groups = new Map();
+    xwLeadList().forEach((l) => {
+      const g = groups.get(l.phone);
+      if (!g) groups.set(l.phone, Object.assign({ tries: 1 }, l));
+      else { g.tries++; if ((l.updatedAt || 0) > (g.updatedAt || 0)) { const n = g.tries; Object.assign(g, l); g.tries = n; } }
+    });
+    const handed = new Set(ordersCache.map((o) => String((o.customer || {}).phone || "").replace(/\D/g, "")).filter(Boolean));
+    const isSold = (l) => !!(l.converted || handed.has(l.phone));
+    const isOk = (l) => isSold(l) || !!l.ok;
+    const all = Array.from(groups.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    const open = all.filter((l) => !isOk(l));
+    const okd = all.filter(isOk);
+    const show = leadFilter === "open" ? open : leadFilter === "ok" ? okd : all;
+    const chip = (id, label, n) => '<button class="xw-tab' + (leadFilter === id ? " on" : "") + '" data-lf="' + id + '">' + label + " (" + n + ")</button>";
+    const editRow = (l) => {
+      const opts = XW_WILAYAS.map((w) => '<option value="' + esc(w[1]) + '"' + (w[1] === l.wilaya ? " selected" : "") + ">" + esc(w[0] + " · " + w[1]) + "</option>").join("");
+      return '<div class="xw-order back">' +
+        '<div class="xw-oh"><b>✏️ تعديل معلومات الزبون</b><span dir="ltr">' + esc(l.phone) + "</span></div>" +
+        '<div class="xw-og">' +
+          '<div class="xw-field"><label>الاسم</label><input id="leName" value="' + esc(l.name || "") + '"></div>' +
+          '<div class="xw-field"><label>الهاتف</label><input id="lePhone" dir="ltr" inputmode="tel" value="' + esc(l.phone) + '"></div>' +
+          '<div class="xw-field"><label>الولاية</label><select id="leWilaya"><option value="">—</option>' + opts + "</select></div>" +
+          '<div class="xw-field"><label>البلدية / النقطة</label><input id="leCommune" value="' + esc(l.commune || "") + '"></div>' +
+          '<div class="xw-field"><label>العنوان</label><input id="leAddr" value="' + esc(l.address || "") + '"></div>' +
+          '<div class="xw-field"><label>طريقة التوصيل</label><select id="leDelivery"><option value="home"' + (l.delivery === "office" ? "" : " selected") + '>إلى المنزل</option><option value="office"' + (l.delivery === "office" ? " selected" : "") + ">مكتب ZR Xpress</option></select></div>" +
+          '<div class="xw-field" style="grid-column:1/-1"><label>ملاحظات</label><input id="leNotes" value="' + esc(l.notes || "") + '"></div>' +
+        "</div>" +
+        '<div class="xw-oa">' +
+          '<button class="xw-btn sm" data-lsave="' + esc(l.phone) + '">💾 حفظ</button>' +
+          '<button class="xw-btn ghost sm" data-lcancel>إلغاء</button></div></div>';
+    };
+    const row = (l) => {
+      if (leadEdit === l.phone) return editRow(l);
+      const sold = isSold(l), fixed = isOk(l);
+      const nat = "213" + String(l.phone).replace(/^0/, "");
+      const msg = "سلام" + (l.name ? " " + l.name : "") + "، معاك X Store 👋 شفتك كنت راك تكمل طلبك" +
+        ((l.items || []).length ? " (" + l.items.map((i) => i.name).join(" + ") + ")" : "") + ". تحب نعاونك تكملو؟";
+      return '<div class="xw-order' + (fixed ? " done" : " new") + '">' +
+        '<div class="xw-oh"><b>' + esc(l.name || "بلا اسم") + "</b><span>" + esc(xwAgo(l.updatedAt)) + "</span>" +
+          '<span class="xwc">' + (sold ? '<i class="xws confirmed">✅ شرا</i>' : fixed ? '<i class="xws confirmed">✅ مؤكد</i>' : '<i class="xws new">غير مؤكد</i>') +
+          (l.tries > 1 ? '<i class="xwx">' + l.tries + " محاولات</i>" : "") + "</span></div>" +
+        '<div class="xw-og">' +
+          '<div><small>الهاتف</small><span dir="ltr">' + esc(l.phone) + "</span></div>" +
+          "<div><small>الولاية</small>" + (esc(l.wilaya) || "—") + "</div>" +
+          "<div><small>البلدية / النقطة</small>" + (esc(l.commune) || "—") + "</div>" +
+          '<div><small>العنوان</small>' + (esc(l.address) || "—") + "</div>" +
+          "<div><small>طريقة التوصيل</small>" + (l.delivery === "office" ? "مكتب ZR Xpress" : "إلى المنزل") + "</div>" +
+          "<div><small>ملاحظات</small>" + (esc(l.notes) || "—") + "</div>" +
+          (l.orderId ? "<div><small>رقم الطلب</small><span dir=\"ltr\">" + esc(l.orderId) + "</span></div>" : "") +
+          (l.dev ? "<div><small>الجهاز</small>" + esc(l.dev) + "</div>" : "") + "</div>" +
+        '<div class="xw-oi">' + (l.items || []).map((i) => "<div><span>" + esc(i.name) + (i.color ? " (" + esc(i.color) + ")" : "") + " × " + esc(i.qty) + "</span><span>" + fmt((i.price || 0) * (i.qty || 0)) + " دج</span></div>").join("") +
+          "<div><span>التوصيل</span><span>" + fmt(l.shipping || 0) + " دج</span></div>" +
+          (l.discount > 0 ? "<div><span>خصم العرض</span><span>−" + fmt(l.discount) + " دج</span></div>" : "") +
+          '<div style="font-weight:800;border-top:1px dashed var(--line-2);margin-top:4px;padding-top:6px"><span>المجموع</span><span style="color:#FF6B00">' + fmt(l.total || 0) + " دج</span></div></div>" +
+        '<div class="xw-oa">' +
+          '<a class="xw-btn sm" href="tel:+' + esc(nat) + '">📞 اتصال</a>' +
+          '<a class="xw-btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/' + esc(nat) + "?text=" + encodeURIComponent(msg) + '">💬 واتساب</a>' +
+          (sold ? "" : (l.ok ? '<button class="xw-btn ghost sm" data-lok="' + esc(l.phone) + '" data-ok="0">↩ إلغاء التأكيد</button>'
+                             : '<button class="xw-btn sm" data-lok="' + esc(l.phone) + '" data-ok="1">✅ تأكيد</button>')) +
+          '<button class="xw-btn ghost sm" data-ledit="' + esc(l.phone) + '">✏️ تعديل</button>' +
+          '<button class="xw-btn danger sm" data-ldel="' + esc(l.phone) + '">🗑 حذف</button></div></div>';
+    };
+    body.innerHTML =
+      '<div class="xw-card"><h3>📞 طلبات متروكة</h3>' +
+      '<p class="xw-note" style="margin:-6px 0 14px">هادو زبائن كتبو رقمهم في الاستمارة وخرجو بلا ما يأكدو الطلب. اتصل بيهم، عطيهم تخفيض ولا شجّعهم، ورجّعهم يكملو. <b>هاد اللائحة كتبان غير ليك</b> (قواعد قاعدة البيانات كتمنع أي زبون آخر يقراها)، وما كيوصل للزبون حتى إشعار ولا كتتسجّل حتى إشارة بيكسل.</p>' +
+      '<div class="xw-tabs" style="position:static;margin:0 0 14px;padding:0">' +
+        chip("all", "الكل", all.length) + chip("open", "غير مؤكد", open.length) + chip("ok", "مؤكد", okd.length) +
+        '<button class="xw-tab" id="leadPull" style="margin-inline-start:auto">↻ جيب من السحابة</button></div>' +
+      (show.length ? show.map(row).join("") : '<div class="xw-empty">' + (all.length ? "ما كاينش في هاد الحالة." : "ما كاينش طلبات متروكة دروك.") + "</div>") +
+      (!online ? '<div class="xw-note" style="margin-top:12px">⚠ ماشي متصل بقاعدة البيانات: هاد اللائحة غير اللي تسجّل على هاد الهاتف.</div>' : "") +
+      "</div>";
+    if (db && !leadsPulled) {
+      leadsPulled = true;
+      xwLeadsPull().then(() => { if (adminTab === "leads") tabLeads(); });
+    }
+    paintLeadBadge();
+  };
+  /* ================= شركة التوصيل ZR Xpress =================
+     كل الاتصال يمر عبر دالة السيرفر /api/zr — المفتاح السرّي هناك فقط، لا يظهر في هذا الملف. */
+  const zrCall = async (action, data, admin) => {
+    const headers = { "Content-Type": "application/json" };
+    if (admin) {
+      let tok = "";
+      try { tok = xwAuth && xwAuth.currentUser ? await xwAuth.currentUser.getIdToken() : ""; } catch (e) {}
+      if (!tok) throw new Error("سجّل الدخول للوحة التحكم (حساب Firebase) أولاً.");
+      headers.Authorization = "Bearer " + tok;
+    }
+    let res;
+    try { res = await tmo(fetch("/api/zr", { method: "POST", headers, body: JSON.stringify(Object.assign({ action }, data || {})) }), 28000); }
+    catch (e) { throw new Error("تعذّر الوصول للسيرفر. تحقق من الاتصال."); }
+    let j = null; try { j = await res.json(); } catch (e) {}
+    if (!j) throw new Error(res.status === 404 ? "دالة الشحن غير منشورة بعد على Netlify." : "رد غير مفهوم من السيرفر.");
+    if (!res.ok || j.ok === false) throw new Error(j.error || "خطأ " + res.status);
+    return j;
+  };
+
+  /* ----- الزبون: تتبّع طلب برقم التتبع ----- */
+  const trackBoxHTML = (num) =>
+    '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><h3>📦 تتبّع طلبك</h3>' +
+    '<p style="color:var(--muted);margin:-6px 0 14px;font-size:14px">اكتب رقم التتبع الذي وصلك من شركة التوصيل.</p>' +
+    '<form id="trkForm" novalidate><div class="xw-field"><input id="trkNum" value="' + esc(num || "") + '" placeholder="مثال: 13-eujcONdAIbV-DZ" dir="ltr" style="text-align:left" autocomplete="off" autocapitalize="off" spellcheck="false"></div>' +
+    '<button class="xw-btn" type="submit" id="trkGo" style="width:100%">تتبّع</button></form><div id="trkOut" aria-live="polite"></div>';
+  const trackResultHTML = (r) => {
+    const steps = (r.steps || []).slice().reverse();
+    const fmtD = (d) => { try { return new Date(d).toLocaleString("ar-DZ", { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return ""; } };
+    return '<div class="trk-card"><small>رقم التتبع</small><b dir="ltr">' + esc(r.tracking) + '</b><span class="trk-st">' + esc(r.status) + "</span></div>" +
+      (steps.length ? '<ol class="trk-tl">' + steps.map((s, i) => '<li class="' + (i === 0 ? "now" : "") + '"><b>' + esc(s.label) + "</b>" +
+        (s.note ? '<em>' + esc(s.note) + "</em>" : "") +
+        "<small>" + esc(fmtD(s.at)) + (s.place ? " · " + esc(s.place) : "") + "</small></li>").join("") + "</ol>" : "");
+  };
+  const openTrack = (num, auto) => {
+    const m = $("#xwTrack"), box = $("#xwTrackBox"); if (!m || !box) return;
+    box.innerHTML = trackBoxHTML(num);
+    openModal(m);
+    const form = $("#trkForm", box), out = $("#trkOut", box), inp = $("#trkNum", box), go = $("#trkGo", box);
+    const run = async () => {
+      const v = inp.value.trim();
+      if (!/^[A-Za-z0-9-]{5,48}$/.test(v)) { out.innerHTML = '<div class="xw-err">اكتب رقم التتبع كما وصلك (حروف وأرقام و -).</div>'; return; }
+      go.disabled = true; go.textContent = "جاري البحث..."; out.innerHTML = "";
+      try { out.innerHTML = trackResultHTML(await zrCall("track", { tracking: v })); }
+      catch (e) { out.innerHTML = '<div class="xw-err">' + esc(e.message) + "</div>"; }
+      go.disabled = false; go.textContent = "تتبّع";
+    };
+    form.addEventListener("submit", (e) => { e.preventDefault(); run(); });
+    box.addEventListener("click", (e) => { if (e.target.closest("[data-xclose]")) closeModal(m); });
+    if (num && auto) run(); else setTimeout(() => { try { inp.focus(); } catch (e) {} }, 60);
+  };
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest && e.target.closest("[data-track]");
+    if (!t) return;
+    e.preventDefault();
+    openTrack("", false);
+  }, true);
+  const trackFromPath = () => { const m = /^\/track(?:\/([A-Za-z0-9-]{5,48}))?\/?$/.exec(location.pathname); return m ? (m[1] || "") : null; };
+
+  /* ================= صفحات الهبوط — غرفة الإدارة ================= */
+  const lpUI = { view: "list", draft: null, pageId: "all", sf: "all", q: "", ordersErr: false };
+  const lpSlugify = (s) => String(s || "").trim().toLowerCase().replace(/[^a-z0-9\u0600-\u06FF]+/g, "-").replace(/-+/g, "-").replace(/^-+|-+$/g, "");
+  const lpUrl = (slug) => String(INFO.site || location.origin).replace(/\/+$/, "") + "/lp/" + slug;
+  const lpBlank = () => ({
+    id: "lp-" + Date.now().toString(36), slug: "", title: "", productId: "", published: true,
+    hideNav: true, floatBtn: true, ctaText: "اطلب الآن", badge: "", headline: "", subhead: "", heroImg: "",
+    formTitle: "املأ المعلومات واطلب الآن — الدفع عند الاستلام", blocks: []
+  });
+  const lpStatusOf = (o) => (o.status === "cancelled" ? "cancelled" : (o.confirmed === true || o.status === "confirmed") ? "confirmed" : "unconfirmed");
+  const LP_ST = { unconfirmed: "⏳ غير مؤكد", confirmed: "✅ مؤكد", cancelled: "❌ ملغى" };
+  const lpOrdersOf = (pid) => (pid === "all" ? XW_LP_ORDERS : pid === "__gone" ? XW_LP_ORDERS.filter((o) => !XW_LANDING.some((l) => l.id === o.landingId)) : XW_LP_ORDERS.filter((o) => o.landingId === pid));
+  const lpCnt = (list) => ({
+    all: list.length,
+    unconfirmed: list.filter((o) => lpStatusOf(o) === "unconfirmed").length,
+    confirmed: list.filter((o) => lpStatusOf(o) === "confirmed").length,
+    cancelled: list.filter((o) => lpStatusOf(o) === "cancelled").length
+  });
+  const lpF = (label, inner, note) => '<div class="xw-field"><label>' + label + "</label>" + inner + (note ? '<div class="xw-note">' + note + "</div>" : "") + "</div>";
+
+  const tabLanding = async () => {
+    const body = $("#xwBody");
+    if (lpUI.view === "edit") { lpPaintEdit(); return; }
+    body.innerHTML = '<div class="xw-empty">جاري تحميل صفحات الهبوط...</div>';
+    try { await loadLandings(); } catch (e) {}
+    lpUI.ordersErr = false;
+    try { await loadLandingOrders(); } catch (e) { lpUI.ordersErr = true; }
+    if (adminTab !== "landing") return;
+    if (lpUI.view === "orders") lpPaintOrders(); else lpPaintList();
+  };
+
+  /* ----- القائمة ----- */
+  const lpPaintList = () => {
+    const body = $("#xwBody");
+    const pages = XW_LANDING.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    const all = lpCnt(XW_LP_ORDERS);
+    const row = (lp) => {
+      const p = findProduct(lp.productId);
+      const c = lpCnt(lpOrdersOf(lp.id));
+      return '<div class="xw-prow lp-row"><div class="i"><b>' + esc(lp.title || lp.slug) + "</b>" +
+        '<span dir="ltr" style="text-align:right">/lp/' + esc(lp.slug) + "</span>" +
+        "<span>" + (p ? "🛍️ " + esc(p.name) : "⚠ المنتج محذوف — اختر منتجاً آخر") + " · " + (lp.published !== false ? "🟢 منشورة" : "⚪ مسودة") + " · القائمة العلوية: " + (lp.hideNav ? "مخفية" : "ظاهرة") + "</span>" +
+        "<span>📦 " + c.all + " طلب · ✅ " + c.confirmed + " مؤكد · ⏳ " + c.unconfirmed + " غير مؤكد</span></div>" +
+        '<div class="lp-acts">' +
+        '<button class="xw-btn sm" data-lp="orders" data-id="' + esc(lp.id) + '">📥 الطلبيات</button>' +
+        '<button class="xw-btn ghost sm" data-lp="edit" data-id="' + esc(lp.id) + '">✏️ تعديل</button>' +
+        '<a class="xw-btn ghost sm" href="/lp/' + encodeURIComponent(lp.slug) + '?preview=1" target="_blank" rel="noopener">👁 معاينة</a>' +
+        '<button class="xw-btn ghost sm" data-lp="copy" data-id="' + esc(lp.id) + '">🔗 نسخ الرابط</button>' +
+        '<button class="xw-btn ghost sm" data-lp="dup" data-id="' + esc(lp.id) + '">⧉ نسخة</button>' +
+        '<button class="xw-btn danger sm" data-lp="del" data-id="' + esc(lp.id) + '">حذف</button></div></div>';
+    };
+    body.innerHTML = '<div class="xw-card"><div class="lp-top"><h3>🛬 صفحات الهبوط</h3><div class="lp-acts">' +
+      '<button class="xw-btn ghost sm" data-lp="orders" data-id="all">📥 كل الطلبيات' + (all.unconfirmed ? '<em class="lp-em">' + all.unconfirmed + "</em>" : "") + "</button>" +
+      '<button class="xw-btn sm" data-lp="new">➕ صفحة جديدة</button></div></div>' +
+      '<p class="xw-note" style="margin:0 0 8px">لكل صفحة منتج واحد واستمارة طلب خاصة بها. طلباتها تُحفظ منفصلة عن الطلبات العادية والمتروكة.</p>' +
+      (pages.length ? pages.map(row).join("") : '<div class="xw-empty">ما كاينش صفحات هبوط بعد — اضغط «صفحة جديدة».</div>') + "</div>";
+  };
+
+  /* ----- المحرّر ----- */
+  const lpImgField = (url, inputAttrs, fileKey) =>
+    '<div class="lp-imgf">' + (url ? '<img src="' + esc(url) + '" alt="">' : "") +
+    '<div class="lp-imgf-b"><label class="xw-btn ghost sm" style="cursor:pointer">📷 رفع صورة<input type="file" accept="image/*" data-lpfile="' + fileKey + '" hidden></label>' +
+    '<input ' + inputAttrs + ' value="' + esc(url || "") + '" placeholder="أو الصق رابط صورة" dir="ltr" style="text-align:left">' +
+    (url ? '<button type="button" class="xw-btn danger sm" data-lp="imgclear" data-k="' + fileKey + '">إزالة</button>' : "") + "</div></div>";
+  const lpBlockEdit = (b, i, n) => {
+    const head = (ic, name) => '<div class="lp-bk-h"><b>' + ic + " " + name + '</b><span class="lp-bk-c">' +
+      '<button type="button" class="xw-btn ghost sm" data-lp="bmove" data-i="' + i + '" data-d="-1"' + (i === 0 ? " disabled" : "") + ">↑</button>" +
+      '<button type="button" class="xw-btn ghost sm" data-lp="bmove" data-i="' + i + '" data-d="1"' + (i === n - 1 ? " disabled" : "") + ">↓</button>" +
+      '<button type="button" class="xw-btn danger sm" data-lp="bdel" data-i="' + i + '">✕</button></span></div>';
+    const open = '<div class="lp-bk" data-bi="' + i + '" data-bt="' + esc(b.type) + '" data-bid="' + esc(b.id || "") + '">';
+    if (b.type === "text") return open + head("📝", "نص") +
+      lpF("العنوان <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '">') +
+      lpF("النص", '<textarea data-bf="body" style="min-height:110px">' + esc(b.body || "") + "</textarea>") + "</div>";
+    if (b.type === "image") return open + head("🖼️", "صورة") +
+      lpImgField(b.url, 'data-bf="url"', "b" + i) +
+      lpF("تعليق تحت الصورة <small>(اختياري)</small>", '<input data-bf="caption" value="' + esc(b.caption || "") + '">') + "</div>";
+    if (b.type === "video") {
+      const id = ytIdOf(b.url);
+      return open + head("🎬", "فيديو YouTube") +
+        lpF("رابط الفيديو", '<input data-bf="url" value="' + esc(b.url || "") + '" placeholder="https://www.youtube.com/watch?v=..." dir="ltr" style="text-align:left" spellcheck="false">',
+          id ? "✓ رابط صحيح" : (b.url ? '<span style="color:#ef4444">الرابط غير صالح — الصق رابط YouTube كامل</span>' : "")) +
+        lpF("عنوان فوق الفيديو <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '">') + "</div>";
+    }
+    return open + head("✔️", "مميزات (نقاط)") +
+      lpF("العنوان <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '">') +
+      lpF("النقاط", '<textarea data-bf="items" style="min-height:110px" placeholder="كل نقطة في سطر">' + esc((b.items || []).join("\n")) + "</textarea>") + "</div>";
+  };
+  const lpPaintEdit = () => {
+    const d = lpUI.draft; if (!d) { lpUI.view = "list"; lpPaintList(); return; }
+    const isNew = !XW_LANDING.some((x) => x.id === d.id);
+    const prods = (window.PRODUCTS || []).map((p) => '<option value="' + esc(p.id) + '"' + (p.id === d.productId ? " selected" : "") + ">" + esc(p.name) + " — " + fmt(sellPrice(p)) + " دج</option>").join("");
+    const sel = (id, v, a, b) => '<select id="' + id + '"><option value="1"' + (v ? " selected" : "") + ">" + a + '</option><option value="0"' + (v ? "" : " selected") + ">" + b + "</option></select>";
+    $("#xwBody").innerHTML = '<div class="xw-card" style="max-width:860px"><div class="lp-top"><h3>' + (isNew ? "➕ صفحة هبوط جديدة" : "✏️ تعديل صفحة الهبوط") + '</h3><button class="xw-btn ghost sm" data-lp="cancel">← رجوع</button></div>' +
+      '<div class="lp-sect">الإعدادات</div>' +
+      lpF("اسم الصفحة <i>*</i>", '<input id="lpTitle" value="' + esc(d.title) + '" placeholder="مثال: مروحة تبريد الآيباد">') +
+      '<div class="xw-row">' + lpF("الرابط <i>*</i> <small>حروف وأرقام و - فقط</small>", '<input id="lpSlug" value="' + esc(d.slug) + '" dir="ltr" style="text-align:left" placeholder="fan-ipad">', 'الرابط الكامل: <b dir="ltr" id="lpFull">' + esc(lpUrl(d.slug || "...")) + "</b>") +
+      lpF("المنتج <i>*</i>", '<select id="lpProd"><option value="">— اختر المنتج —</option>' + prods + "</select>", "السعر والصور واللون والمخزون تُقرأ من المنتج مباشرة.") + "</div>" +
+      '<div class="xw-row">' + lpF("حالة الصفحة", sel("lpPub", d.published !== false, "🟢 منشورة", "⚪ مسودة (مخفية)")) +
+      lpF("القائمة العلوية للمتجر", sel("lpNav", !d.hideNav, "ظاهرة (يقدر الزبون يتصفح المتجر)", "مخفية (الزبون يركّز على الطلب فقط)")) + "</div>" +
+      '<div class="xw-row">' + lpF("زر «اطلب الآن» العائم", sel("lpFloat", d.floatBtn !== false, "ظاهر أثناء النزول", "مخفي")) +
+      lpF("نص الأزرار", '<input id="lpCta" value="' + esc(d.ctaText || "") + '" placeholder="اطلب الآن">', "يختفي الزر العائم تلقائياً عند الوصول للاستمارة.") + "</div>" +
+      '<div class="lp-sect">أعلى الصفحة</div>' +
+      '<div class="xw-row">' + lpF("شارة صغيرة <small>(اختياري)</small>", '<input id="lpBadge" value="' + esc(d.badge || "") + '" placeholder="🔥 عرض محدود">') +
+      lpF("العنوان الرئيسي", '<input id="lpHead" value="' + esc(d.headline || "") + '" placeholder="فارغ = اسم الصفحة">') + "</div>" +
+      lpF("عنوان فرعي <small>(اختياري)</small>", '<input id="lpSub" value="' + esc(d.subhead || "") + '">') +
+      lpF("الصورة الرئيسية <small>(فارغة = صورة المنتج)</small>", lpImgField(d.heroImg, 'id="lpHero"', "hero")) +
+      '<div class="lp-sect">محتوى الصفحة</div><div id="lpBlocks">' + (d.blocks || []).map((b, i, a) => lpBlockEdit(b, i, a.length)).join("") + "</div>" +
+      '<div class="lp-add">' + [["text", "📝 نص"], ["image", "🖼️ صورة"], ["video", "🎬 فيديو YouTube"], ["features", "✔️ مميزات"]].map((t) => '<button type="button" class="xw-btn ghost sm" data-lp="badd" data-t="' + t[0] + '">➕ ' + t[1] + "</button>").join("") + "</div>" +
+      '<div class="lp-sect">الاستمارة</div>' + lpF("عنوان الاستمارة", '<input id="lpFormT" value="' + esc(d.formTitle || "") + '">') +
+      '<div class="xw-err" id="lpErr"></div>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><button class="xw-btn" data-lp="save">💾 حفظ</button><button class="xw-btn ghost" data-lp="cancel">إلغاء</button>' +
+      (isNew ? "" : '<a class="xw-btn ghost" href="/lp/' + encodeURIComponent(d.slug) + '?preview=1" target="_blank" rel="noopener">👁 معاينة</a><button class="xw-btn ghost" data-lp="orders" data-id="' + esc(d.id) + '">📥 طلبيات هذه الصفحة</button>') + "</div></div>";
+  };
+  /* يقرا الحقول الظاهرة ويحطّها في المسودة قبل أي إعادة رسم */
+  const lpCollect = () => {
+    const d = lpUI.draft; if (!d || !$("#lpTitle")) return;
+    const g = (id) => { const el = document.getElementById(id); return el ? el.value : ""; };
+    d.title = g("lpTitle").trim(); d.slug = lpSlugify(g("lpSlug")); d.productId = g("lpProd");
+    d.published = g("lpPub") !== "0"; d.hideNav = g("lpNav") === "0"; d.floatBtn = g("lpFloat") !== "0";
+    d.ctaText = g("lpCta").trim(); d.badge = g("lpBadge").trim(); d.headline = g("lpHead").trim(); d.subhead = g("lpSub").trim();
+    d.heroImg = g("lpHero").trim(); d.formTitle = g("lpFormT").trim();
+    d.blocks = Array.from($$("#lpBlocks .lp-bk")).map((el) => {
+      const b = { id: el.dataset.bid || "b" + Math.random().toString(36).slice(2, 8), type: el.dataset.bt };
+      Array.from($$("[data-bf]", el)).forEach((x) => { b[x.dataset.bf] = x.value; });
+      if (b.type === "features") b.items = String(b.items || "").split(/\n+/).map((s) => s.trim()).filter(Boolean);
+      else Object.keys(b).forEach((k) => { if (typeof b[k] === "string" && k !== "id" && k !== "type") b[k] = k === "body" ? b[k].replace(/\s+$/, "") : b[k].trim(); });
+      return b;
+    });
+  };
+
+  /* ----- المالك: إرسال طلب مؤكد إلى ZR Xpress + تتبّع حالته ----- */
+  const ZR_MAP_KEY = "xw-zr-map";   /* بلدية المتجر ← بلدية ZR، تُحفظ بعد أول مرة */
+  const zrWilayaCode = (name) => { const w = XW_WILAYAS.find((x) => x[1] === name); return w ? Number(w[0]) : 0; };
+  const zrDone = (o) => !!(o.ship && /^(livre|encaisse|recouvert)$/.test(o.ship.code || ""));
+  const zrShipBlock = (o, st) => {
+    const sh = o.ship;
+    const btn = (a, label) => '<button class="xw-btn ghost sm" data-lp="' + a + '" data-id="' + esc(o.id) + '">' + label + "</button>";
+    if (sh && sh.parcelId) {
+      return '<div class="lp-ship"><b>🚚 أُرسل إلى ZR Xpress</b> ' +
+        (sh.tracking ? '<span class="lp-trk" dir="ltr">' + esc(sh.tracking) + "</span> " + btn("zcopy", "نسخ") : '<span class="lp-warn">رقم التتبع لم يصل بعد</span>') +
+        (sh.status ? ' <span class="lp-st confirmed">' + esc(sh.status) + "</span>" : "") + " " + btn("zsync", "↻ تحديث الحالة") + "</div>";
+    }
+    if (st !== "confirmed") return "";
+    if (o.delivery === "office") return '<div class="lp-ship"><small>🏢 طلب لمكتب ZR: الإرسال التلقائي يدعم «إلى المنزل» فقط حالياً — أرسله من لوحة ZR يدوياً.</small></div>';
+    return '<div class="lp-ship">' + btn("zsend", "🚚 إرسال للتوصيل") + "</div>";
+  };
+  const zrModal = () => {
+    let m = $("#lpShipModal");
+    if (!m) {
+      m = document.createElement("div"); m.className = "xw-modal"; m.id = "lpShipModal";
+      m.innerHTML = '<div class="xw-box" id="lpShipBox"></div>';
+      m.addEventListener("mousedown", (e) => { if (e.target === m) closeModal(m); });
+      document.body.appendChild(m);
+    }
+    return m;
+  };
+  const zrOpenSend = async (id) => {
+    const o = XW_LP_ORDERS.find((x) => x.id === id); if (!o) return;
+    const c = o.customer || {}, m = zrModal(), box = $("#lpShipBox");
+    const code = zrWilayaCode(c.wilaya);
+    openModal(m);
+    box.innerHTML = '<button class="xw-x" data-zx aria-label="إغلاق">×</button><h3>🚚 إرسال إلى ZR Xpress</h3><div class="xw-empty">جاري تحميل بلديات الولاية...</div>';
+    box.onclick = (e) => { if (e.target.closest("[data-zx]")) closeModal(m); };
+    let info;
+    try { if (!code) throw new Error("ولاية الزبون غير معروفة: " + (c.wilaya || "—")); info = await zrCall("communes", { wilayaCode: code }, true); }
+    catch (e) { box.innerHTML = '<button class="xw-x" data-zx aria-label="إغلاق">×</button><h3>🚚 إرسال إلى ZR Xpress</h3><div class="xw-err">' + esc(e.message) + "</div>"; return; }
+    const mapKey = code + "|" + (c.commune || ""), saved = (lsGet(ZR_MAP_KEY, {}) || {})[mapKey] || "";
+    const opts = info.districts.map((d) => '<option value="' + esc(d.id) + '"' + (d.id === saved ? " selected" : "") + ">" + esc(d.name) + "</option>").join("");
+    box.innerHTML = '<button class="xw-x" data-zx aria-label="إغلاق">×</button><h3>🚚 إرسال إلى ZR Xpress</h3>' +
+      '<div class="lp-oc-g" style="margin-bottom:12px"><div><small>الزبون</small>' + esc(c.name || "") + " · " + esc(c.phone || "") + "</div>" +
+      "<div><small>المبلغ عند الاستلام</small><b>" + fmt(o.total || 0) + " دج</b></div>" +
+      '<div style="grid-column:1/-1"><small>العنوان</small>' + esc(c.wilaya || "") + " — " + esc(c.commune || "") + " — " + esc(c.address || "") + "</div></div>" +
+      '<div class="xw-field"><label for="zrDist">بلدية الزبون عند ZR Xpress <i>*</i></label><select id="zrDist"><option value="">— اختر البلدية —</option>' + opts + "</select>" +
+      '<div class="xw-note">بلدية الزبون: <b>' + esc(c.commune || "—") + "</b> — اختر ما يقابلها (أسماء ZR بالحروف اللاتينية). ستُحفظ للمرات القادمة.</div></div>" +
+      '<div class="xw-err" id="zrErr"></div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="xw-btn" id="zrGo">🚚 إرسال الآن</button><button class="xw-btn ghost" data-zx>إلغاء</button></div>';
+    $("#zrGo", box).onclick = async () => {
+      const dist = $("#zrDist", box).value, err = $("#zrErr", box), go = $("#zrGo", box);
+      if (!dist) { err.textContent = "اختر بلدية الزبون."; return; }
+      go.disabled = true; go.textContent = "جاري الإرسال..."; err.textContent = "";
+      try {
+        const r = await zrCall("create", { order: {
+          orderId: o.id, name: c.name, phone: c.phone, address: [c.commune, c.address].filter(Boolean).join(" - "),
+          cityId: info.cityId, districtId: dist, total: o.total,
+          items: (o.items || []).map((i) => ({ name: i.name, color: i.color || "", price: i.price, quantity: i.quantity }))
+        } }, true);
+        const map = lsGet(ZR_MAP_KEY, {}) || {}; map[mapKey] = dist; lsSet(ZR_MAP_KEY, map);
+        await updateLandingOrder(o.id, { ship: { parcelId: r.parcelId, tracking: r.tracking || "", status: r.status || "", code: "", sentAt: new Date().toISOString() } });
+        closeModal(m); toast(r.tracking ? "أُرسل — رقم التتبع: " + r.tracking : "أُرسل إلى ZR Xpress", true); lpPaintOrders();
+      } catch (e) { go.disabled = false; go.textContent = "🚚 إرسال الآن"; err.textContent = e.message; }
+    };
+  };
+  const zrSyncOne = async (o) => {
+    const r = await zrCall("sync", { parcelId: o.ship && o.ship.parcelId, tracking: o.ship && o.ship.tracking }, true);
+    await updateLandingOrder(o.id, { ship: Object.assign({}, o.ship, { tracking: r.tracking || (o.ship && o.ship.tracking) || "", status: r.status || "", code: r.code || "", syncedAt: new Date().toISOString() }) });
+  };
+
+  /* ----- الطلبيات ----- */
+  const lpOrderCard = (o) => {
+    const st = lpStatusOf(o), c = o.customer || {}, ph = String(c.phone || "");
+    const wa = "https://wa.me/213" + ph.replace(/\D/g, "").replace(/^0/, "");
+    const btn = (a, label, cls) => '<button class="xw-btn ' + (cls || "ghost") + ' sm" data-lp="' + a + '" data-id="' + esc(o.id) + '">' + label + "</button>";
+    return '<div class="xw-card lp-oc ' + st + '"><div class="lp-oc-h"><b>#' + esc(o.id) + '</b><span class="lp-st ' + st + '">' + LP_ST[st] + "</span>" +
+      '<span class="lp-chip">🛬 ' + esc(o.landingTitle || o.landingSlug || "—") + "</span><small>" + esc(fmtDate(o.createdAt)) + "</small></div>" +
+      '<div class="lp-oc-g"><div><small>الاسم</small>' + esc(c.name || "") + "</div>" +
+      '<div><small>الهاتف</small><a href="tel:' + esc(ph) + '" dir="ltr">' + esc(ph) + '</a> · <a href="' + wa + '" target="_blank" rel="noopener">واتساب</a></div>' +
+      "<div><small>الولاية / البلدية</small>" + esc((c.wilaya || "") + " — " + (c.commune || "")) + "</div>" +
+      "<div><small>طريقة التوصيل</small>" + (o.delivery === "office" ? "مكتب ZR Xpress" : "إلى المنزل") + "</div>" +
+      '<div style="grid-column:1/-1"><small>العنوان</small>' + esc(c.address || "") + "</div>" +
+      (c.notes ? '<div style="grid-column:1/-1"><small>ملاحظات</small>' + esc(c.notes) + "</div>" : "") + "</div>" +
+      '<div class="lp-oc-i">' + (o.items || []).map((i) => "<div>" + esc(i.name) + (i.color ? " · " + esc(i.color) : "") + " × <b>" + esc(i.quantity) + "</b></div>").join("") + "</div>" +
+      '<div class="lp-oc-t"><span>المنتجات ' + fmt(o.subtotal || 0) + " · التوصيل " + fmt(o.shipping || 0) + (o.discount ? " · خصم −" + fmt(o.discount) : "") + "</span><b>" + fmt(o.total || 0) + " دج</b></div>" +
+      zrShipBlock(o, st) +
+      '<div class="lp-acts">' + (st !== "confirmed" ? btn("oc", "✅ تأكيد", "") : btn("ou", "↩ غير مؤكد")) + (st !== "cancelled" ? btn("ox", "❌ إلغاء") : (st === "cancelled" ? btn("ou", "↩ استرجاع") : "")) + btn("od", "🗑 حذف", "danger") + "</div></div>";
+  };
+  const lpFilterRows = () => {
+    const q = lpUI.q.trim().toLowerCase();
+    return lpOrdersOf(lpUI.pageId).filter((o) => {
+      if (lpUI.sf !== "all" && lpStatusOf(o) !== lpUI.sf) return false;
+      if (!q) return true;
+      const c = o.customer || {};
+      return (String(o.id) + " " + (c.name || "") + " " + (c.phone || "") + " " + (c.wilaya || "")).toLowerCase().indexOf(q) >= 0;
+    });
+  };
+  const lpDrawOrderList = () => {
+    const el = $("#lpOList"); if (!el) return;
+    const rows = lpFilterRows();
+    el.innerHTML = rows.length ? rows.map(lpOrderCard).join("") : '<div class="xw-empty">ما كاينش طلبيات في هاد الحالة.</div>';
+  };
+  const lpPaintOrders = () => {
+    const pool = lpOrdersOf(lpUI.pageId), c = lpCnt(pool);
+    const chip = (k, label) => '<button type="button" class="xw-stat' + (lpUI.sf === k ? " on" : "") + '" data-lp="sf" data-v="' + k + '"><b>' + c[k] + "</b>" + label + "</button>";
+    const known = new Set(XW_LANDING.map((l) => l.id));
+    const orphan = XW_LP_ORDERS.some((o) => !known.has(o.landingId));
+    $("#xwBody").innerHTML = '<div class="xw-card"><div class="lp-top"><h3>📥 طلبيات صفحات الهبوط</h3><div class="lp-acts"><button class="xw-btn ghost sm" data-lp="zsyncall">🚚 تحديث حالات الشحن</button><button class="xw-btn ghost sm" data-lp="reload">↻ تحديث</button><button class="xw-btn ghost sm" data-lp="back">← الصفحات</button></div></div>' +
+      (lpUI.ordersErr ? '<div class="xw-note" style="margin:0 0 12px;color:#b45309">⚠ تعذّر قراءة الطلبيات من السحابة — تأكد من قواعد Firestore لمجموعة <b dir="ltr">xw_landing_orders</b> وأنك مسجّل الدخول.</div>' : "") +
+      '<div class="xw-row"><div class="xw-field"><label for="lpPageF">الصفحة</label><select id="lpPageF"><option value="all">كل صفحات الهبوط · ' + XW_LP_ORDERS.length + "</option>" +
+      XW_LANDING.map((l) => '<option value="' + esc(l.id) + '"' + (lpUI.pageId === l.id ? " selected" : "") + ">" + esc(l.title || l.slug) + " · " + lpOrdersOf(l.id).length + "</option>").join("") +
+      (orphan ? '<option value="__gone"' + (lpUI.pageId === "__gone" ? " selected" : "") + ">صفحات محذوفة</option>" : "") + "</select></div>" +
+      '<div class="xw-field"><label for="lpQ">بحث</label><input id="lpQ" value="' + esc(lpUI.q) + '" placeholder="اسم، هاتف، رقم الطلب..."></div></div>' +
+      '<div class="xw-stats">' + chip("all", "الكل") + chip("unconfirmed", "غير مؤكد") + chip("confirmed", "مؤكد") + chip("cancelled", "ملغى") + "</div></div>" +
+      '<div id="lpOList"></div>';
+    lpDrawOrderList();
+  };
+
+  const lpCopy = async (text) => {
+    try { await navigator.clipboard.writeText(text); toast("تم نسخ الرابط", true); }
+    catch (e) { window.prompt("انسخ الرابط:", text); }
+  };
+  const lpUploadTo = async (file, key) => {
+    toast("جاري رفع الصورة...", true);
+    let url = "";
+    try { url = await uploadImage(file); } catch (e) {}
+    if (!url) { toast("تعذّر رفع الصورة"); return; }
+    lpCollect();
+    const d = lpUI.draft;
+    if (key === "hero") d.heroImg = url; else { const i = +String(key).slice(1); if (d.blocks[i]) d.blocks[i].url = url; }
+    lpPaintEdit();
+    toast("تم رفع الصورة", true);
+  };
+
+  adminEl.addEventListener("click", async (e) => {
+    if (adminTab !== "landing") return;
+    const t = e.target.closest("[data-lp]"); if (!t) return;
+    const act = t.dataset.lp, id = t.dataset.id;
+    const page = (pid) => XW_LANDING.find((x) => x.id === pid);
+    try {
+      if (act === "new") { lpUI.draft = lpBlank(); lpUI.view = "edit"; lpPaintEdit(); return; }
+      if (act === "edit") { const p = page(id); if (!p) return; lpUI.draft = JSON.parse(JSON.stringify(p)); lpUI.view = "edit"; lpPaintEdit(); return; }
+      if (act === "cancel" || act === "back") { lpUI.view = "list"; lpUI.draft = null; tabLanding(); return; }
+      if (act === "orders") { lpUI.view = "orders"; lpUI.pageId = id || "all"; lpUI.sf = "all"; lpUI.q = ""; lpUI.draft = null; tabLanding(); return; }
+      if (act === "reload") { tabLanding(); return; }
+      if (act === "sf") { lpUI.sf = t.dataset.v; lpPaintOrders(); return; }
+      if (act === "copy") { const p = page(id); if (p) lpCopy(lpUrl(p.slug)); return; }
+      if (act === "dup") {
+        const p = page(id); if (!p) return;
+        const c = JSON.parse(JSON.stringify(p)); c.id = "lp-" + Date.now().toString(36);
+        let s = p.slug + "-copy", n = 2; while (XW_LANDING.some((x) => x.slug === s)) s = p.slug + "-copy" + n++;
+        c.slug = s; c.title = (p.title || p.slug) + " (نسخة)"; c.published = false;
+        await saveLanding(c); toast("تم إنشاء نسخة (مسودة)", true); tabLanding(); return;
+      }
+      if (act === "del") {
+        const p = page(id); if (!p || !confirm("تحذف صفحة «" + (p.title || p.slug) + "» نهائياً؟\nطلباتها تبقى محفوظة.")) return;
+        await deleteLanding(id); toast("تم الحذف", true); tabLanding(); return;
+      }
+      if (act === "badd") { lpCollect(); lpUI.draft.blocks.push({ id: "b" + Math.random().toString(36).slice(2, 8), type: t.dataset.t, items: [] }); lpPaintEdit(); return; }
+      if (act === "bdel") { lpCollect(); lpUI.draft.blocks.splice(+t.dataset.i, 1); lpPaintEdit(); return; }
+      if (act === "bmove") {
+        lpCollect(); const i = +t.dataset.i, j = i + +t.dataset.d, bl = lpUI.draft.blocks;
+        if (j >= 0 && j < bl.length) { const x = bl[i]; bl[i] = bl[j]; bl[j] = x; }
+        lpPaintEdit(); return;
+      }
+      if (act === "imgclear") {
+        lpCollect(); const k = t.dataset.k, d = lpUI.draft;
+        if (k === "hero") d.heroImg = ""; else { const i = +k.slice(1); if (d.blocks[i]) d.blocks[i].url = ""; }
+        lpPaintEdit(); return;
+      }
+      if (act === "save") {
+        lpCollect(); const d = lpUI.draft, err = $("#lpErr");
+        const bad = (m, f) => { if (err) err.textContent = m; toast(m); const el = f && document.getElementById(f); if (el) { try { el.scrollIntoView({ block: "center", behavior: "smooth" }); el.focus({ preventScroll: true }); } catch (x) {} } };
+        if (!d.title) return bad("اكتب اسم الصفحة.", "lpTitle");
+        if (!d.slug) d.slug = lpSlugify(d.title);
+        if (!d.slug) return bad("اكتب رابطاً صحيحاً (حروف وأرقام).", "lpSlug");
+        if (XW_LANDING.some((x) => x.id !== d.id && String(x.slug).toLowerCase() === d.slug)) return bad("هذا الرابط مستعمل في صفحة أخرى.", "lpSlug");
+        if (!d.productId || !findProduct(d.productId)) return bad("اختر المنتج الذي تُباع به هذه الصفحة.", "lpProd");
+        if (err) err.textContent = "";
+        t.disabled = true;
+        try { await saveLanding(d); toast("حُفظت صفحة الهبوط", true); lpUI.view = "list"; lpUI.draft = null; tabLanding(); }
+        catch (x) { t.disabled = false; toast("تعذّر الحفظ: " + (x.code || x.message)); if (err) err.textContent = "تعذّر الحفظ: " + (x.code || x.message); }
+        return;
+      }
+      /* شحن ZR Xpress */
+      if (act === "zsend") { zrOpenSend(id); return; }
+      if (act === "zcopy") { const o = XW_LP_ORDERS.find((x) => x.id === id); if (o && o.ship) lpCopy(o.ship.tracking); return; }
+      if (act === "zsync") {
+        const o = XW_LP_ORDERS.find((x) => x.id === id); if (!o || !o.ship) return;
+        t.disabled = true; t.textContent = "...";
+        try { await zrSyncOne(o); toast("تم تحديث الحالة", true); } catch (x) { toast(x.message); }
+        lpPaintOrders(); return;
+      }
+      if (act === "zsyncall") {
+        const list = XW_LP_ORDERS.filter((o) => o.ship && o.ship.parcelId && !zrDone(o) && lpStatusOf(o) !== "cancelled").slice(0, 30);
+        if (!list.length) { toast("لا توجد شحنات للتحديث", true); return; }
+        t.disabled = true; let ok = 0, bad = "";
+        for (let k = 0; k < list.length; k++) { t.textContent = "تحديث " + (k + 1) + "/" + list.length; try { await zrSyncOne(list[k]); ok++; } catch (x) { bad = x.message; } }
+        toast(ok + " من " + list.length + " تم تحديثها" + (bad ? " — " + bad : ""), ok > 0); lpPaintOrders(); return;
+      }
+      /* طلبيات */
+      if (act === "oc" || act === "ou" || act === "ox") {
+        const st = act === "oc" ? "confirmed" : act === "ox" ? "cancelled" : "unconfirmed";
+        await updateLandingOrder(id, { status: st, confirmed: st === "confirmed", statusAt: new Date().toISOString() });
+        toast(st === "confirmed" ? "تم التأكيد" : st === "cancelled" ? "تم الإلغاء" : "رجع غير مؤكد", true); lpPaintOrders(); return;
+      }
+      if (act === "od") {
+        if (!confirm("تحذف هذا الطلب نهائياً؟")) return;
+        await deleteLandingOrder(id); toast("تم الحذف", true); lpPaintOrders(); return;
+      }
+    } catch (x) { toast("تعذّر التنفيذ: " + (x.code || x.message)); }
+  });
+  adminEl.addEventListener("change", (e) => {
+    if (adminTab !== "landing") return;
+    const f = e.target.closest("[data-lpfile]");
+    if (f) { const file = f.files && f.files[0]; if (file) lpUploadTo(file, f.dataset.lpfile); return; }
+    if (e.target.id === "lpPageF") { lpUI.pageId = e.target.value; lpPaintOrders(); }
+  });
+  adminEl.addEventListener("input", (e) => {
+    if (adminTab !== "landing") return;
+    if (e.target.id === "lpQ") { lpUI.q = e.target.value; lpDrawOrderList(); return; }
+    if (e.target.id === "lpSlug" || e.target.id === "lpTitle") {
+      const s = $("#lpSlug"), full = $("#lpFull");
+      if (e.target.id === "lpTitle" && s && !s.dataset.touched && lpUI.draft && !XW_LANDING.some((x) => x.id === lpUI.draft.id)) s.value = lpSlugify(e.target.value);
+      if (e.target.id === "lpSlug") e.target.dataset.touched = "1";
+      if (full && s) full.textContent = lpUrl(lpSlugify(s.value) || "...");
+    }
+  });
+
+
   /* ----- Products list ----- */
   const tabProducts = () => {
     const body = $("#xwBody");
@@ -5511,7 +6410,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const tabPass = () => {
     $("#xwBody").innerHTML =
       '<form class="xw-card" id="xwPassForm" style="max-width:560px" autocomplete="off"><h3>\u{1F510} كلمة سر غرفة الإدارة</h3>' +
-      '<p class="xw-note" style="margin:-6px 0 16px">كلمة السر <b>لا تُكتب في الكود ولا كنص واضح في قاعدة البيانات</b> — نحفظ فقط بصمة مشفّرة منها. لازم <b>6 أحرف أو أرقام على الأقل</b> — الرقم وحدو مقبول، والخلطة مع حروف أقوى. عند الحفظ تتغيّر كلمة السر في <b>Firebase Authentication</b> تلقائياً أيضاً (وإذا الحساب غير موجود يُنشأ بها).</p>' +
+      '<p class="xw-note" style="margin:-6px 0 16px">كلمة السر محفوظة عند <b>Firebase Authentication</b> مباشرة — لا تُكتب في الكود ولا في قاعدة البيانات ولا على الجهاز. لازم <b>6 أحرف أو أرقام على الأقل</b>. عند الحفظ تتغيّر في Firebase فوراً، ولا تُفتح لوحة التحكم إلا باتصال بالإنترنت.</p>' +
       '<div class="xw-field"><label>كلمة السر الحالية <i>*</i></label><div class="pw-wrap"><input type="password" id="pCur" autocomplete="current-password" spellcheck="false" placeholder="حروف وأرقام"></div></div>' +
       '<div class="xw-field"><label>كلمة السر الجديدة <i>*</i></label><div class="pw-wrap"><input type="password" id="pNew1" autocomplete="new-password" spellcheck="false" placeholder="مثال: Xstore2026"></div>' +
       '<div class="xw-meter"><i id="pBar"></i></div><div class="xw-meter-txt" id="pMeter"></div></div>' +
@@ -5542,38 +6441,30 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (m.len < 6) return err("كلمة السر الجديدة لازم تكون 6 أرقام أو أحرف على الأقل.");
       if (n1 !== n2) return err("تأكيد كلمة السر لا يطابق.");
       if (n1 === cur) return err("كلمة السر الجديدة مطابقة للقديمة.");
+      if (!navigator.onLine) return err("لا يوجد اتصال بالإنترنت — لا يمكن تغيير كلمة السر الآن.");
+      if (!(xwAuth && xwAuth.currentUser)) return err("انتهت جلسة Firebase — سجّل الخروج ثم الدخول من جديد.");
       const btn = $("#xwPassForm button[type=submit]"); btn.disabled = true; err("");
-      /* signed in: Google owns the password now. Re-authenticate with the current one, then
-         set the new one - and mirror it on-device so an offline visit still opens the room. */
-      if (xwAuth && xwAuth.currentUser) {
-        const cred = firebase.auth.EmailAuthProvider.credential(XW_ADMIN_EMAIL, cur);
-        xwAuth.currentUser.reauthenticateWithCredential(cred)
-          .then(() => xwAuth.currentUser.updatePassword(n1))
-          .then(() => saveAdminPass(n1).catch(() => {}))
-          .then(() => { toast("تم تغيير كلمة السر وتزامنت مع Firebase ✓", true); renderAdmin(); })
-          .catch((ex) => {
-            btn.disabled = false;
-            const c = (ex && ex.code) || "";
-            if (c === "auth/wrong-password" || c === "auth/invalid-credential") return err("كلمة السر الحالية غير صحيحة.");
-            if (c === "auth/requires-recent-login") return err("سجّل الخروج ثم الدخول من جديد قبل تغيير كلمة السر.");
-            err("تعذّر الحفظ: " + (c || (ex && ex.message)));
-          });
-        return;
-      }
-      if (!adminPassOk(cur)) { btn.disabled = false; return err("كلمة السر الحالية غير صحيحة."); }
-      /* لا جلسة Firebase: نحدّث حساب Firebase أولاً (ينشئه إن لم يوجد) — فتصير الكتابة في قاعدة البيانات بجلسة حقيقية */
-      xwSyncFirebasePass(cur, n1).then((fb) =>
-        saveAdminPass(n1).then(() => null, (ex) => ex || new Error("save")).then((saveErr) => {
-          const fbOk = fb.state === "changed" || fb.state === "created";
-          const why = fb.state === "mismatch" ? "حساب Firebase موجود بكلمة سر مختلفة — غيّرها يدوياً من Firebase Console ← Authentication ← Users"
-            : fb.state === "error" ? "تعذّر التحديث في Firebase (" + fb.code + ")"
-            : fb.state === "off" ? "Firebase غير متصل" : "";
-          if (saveErr && !fbOk) { btn.disabled = false; return err("تعذّر الحفظ: " + (saveErr.code || saveErr.message) + (why ? " — " + why : "")); }
-          toast(fbOk
-            ? (fb.state === "created" ? "تم تغيير كلمة السر وأُنشئ حساب Firebase بها ✓" : "تم تغيير كلمة السر وتزامنت مع Firebase ✓") + (saveErr ? " (النسخة المحلية ما تحدّثتش)" : "")
-            : "تغيّرت كلمة السر على الموقع فقط — ما تزامنتش مع Firebase: " + why, fbOk);
-          renderAdmin();
-        }));
+      /* the password lives at Firebase Authentication and nowhere else: re-authenticate with
+         the current one, then set the new one. Nothing about it is stored in the page or in Firestore. */
+      const cred = firebase.auth.EmailAuthProvider.credential(XW_ADMIN_EMAIL, cur);
+      xwAuth.currentUser.reauthenticateWithCredential(cred)
+        .then(() => xwAuth.currentUser.updatePassword(n1))
+        .then(() => {
+          /* the old on-device / Firestore copy is now a stale hash of a dead password: remove it */
+          try { localStorage.removeItem("xw-admincred"); localStorage.removeItem("xw-adminpass"); } catch (x) {}
+          adminCred = null; adminLegacy = null;
+          try { if (db && online) db.collection(XW_COL.settings).doc("admin").delete().catch(() => {}); } catch (x) {}
+          toast("تم تغيير كلمة السر في Firebase ✓", true); renderAdmin();
+        })
+        .catch((ex) => {
+          btn.disabled = false;
+          const c = (ex && ex.code) || "";
+          if (c === "auth/wrong-password" || c === "auth/invalid-credential") return err("كلمة السر الحالية غير صحيحة.");
+          if (c === "auth/requires-recent-login") return err("سجّل الخروج ثم الدخول من جديد قبل تغيير كلمة السر.");
+          if (c === "auth/weak-password") return err("كلمة السر ضعيفة — اختر 6 أحرف أو أرقام على الأقل.");
+          if (c === "auth/network-request-failed") return err("انقطع الاتصال — لم تتغيّر كلمة السر.");
+          err("تعذّر الحفظ: " + (c || (ex && ex.message)));
+        });
     });
   };
 
@@ -5740,9 +6631,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     openModal($("#xwAnnounce"));
   };
   const autoAnnounce = () => {
-    if (atAdminURL() || hashProduct() || lsGet(XW_ANN_SEEN, null)) return;
+    /* صفحة الهبوط: الزبون جاي للمنتج والطلب فقط — ما نطلعش له نافذة إشعارات المتجر */
+    if (atAdminURL() || hashProduct() || lsGet(XW_ANN_SEEN, null) || /^\/lp\//.test(location.pathname)) return;
     if ($(".xw-modal.open") || announceData().empty) return;
-    setTimeout(() => { if (!$(".xw-modal.open")) openAnnounce(); }, 1500);
+    setTimeout(() => { if (!$(".xw-modal.open") && !document.body.classList.contains("lp-mode")) openAnnounce(); }, 1500);
   };
   xwAfterRender = () => { updateAnnBadge(); autoAnnounce(); };
   $("#annBtn").addEventListener("click", openAnnounce);
@@ -5877,6 +6769,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (!m) return "";
     try { return decodeURIComponent(m[1]).toLowerCase(); } catch (e) { return m[1].toLowerCase(); }
   };
+  const landingSlugFromPath = () => {
+    const m = /^\/lp\/([^/?#]+)\/?$/.exec(location.pathname);
+    if (m) try { return decodeURIComponent(m[1]).toLowerCase(); } catch (e) { return m[1].toLowerCase(); }
+    return "";
+  };
   const slugTaken = (s, except) => PRODUCTS.some((p) => p.id !== except && slugOf(p) === s);
   const findBySlug = (s) => (s ? PRODUCTS.find((p) => slugOf(p) === s) || null : null);
   const openSlugsProduct = (tries) => {
@@ -5890,6 +6787,132 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       return;
     }
     if (tries > 0) setTimeout(() => openSlugsProduct(tries - 1), 400);
+  };
+  /* ================= صفحات الهبوط — صفحة الزبون =================
+     الرابط: /lp/<slug>. الصفحة تُبنى كلها من البيانات التي تكتبها في لوحة التحكم
+     (نصوص، صور، فيديو YouTube، مميزات) + المنتج المربوط + استمارة الطلب في الأسفل.
+     كل النصوص تمر عبر esc() — لا HTML خام من أي حقل. */
+  let lpIO = null, lpShownSig = "", lpTouched = false, lpNavBound = false;
+  const lpIsPreview = () => /(?:^|[?&])preview(?:[=&]|$)/.test(location.search);
+  const lpBlockHTML = (b) => {
+    if (b.type === "text") {
+      if (!b.title && !b.body) return "";
+      return '<section class="lp-sec">' + (b.title ? "<h2>" + esc(b.title) + "</h2>" : "") + (b.body ? '<p class="lp-p">' + esc(b.body) + "</p>" : "") + "</section>";
+    }
+    if (b.type === "image") {
+      if (!b.url) return "";
+      return '<figure class="lp-sec lp-fig"><img src="' + esc(cld(b.url, 960)) + '" alt="' + esc(b.caption || "") + '" loading="lazy" decoding="async">' + (b.caption ? "<figcaption>" + esc(b.caption) + "</figcaption>" : "") + "</figure>";
+    }
+    if (b.type === "video") {
+      const id = ytIdOf(b.url); if (!id) return "";
+      return '<section class="lp-sec">' + (b.title ? "<h2>" + esc(b.title) + "</h2>" : "") +
+        '<div class="xw-video"><button type="button" class="xw-vplay" data-yt="' + id + '" aria-label="تشغيل الفيديو"><img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" decoding="async"><span aria-hidden="true">▶</span></button></div></section>';
+    }
+    if (b.type === "features") {
+      const items = (b.items || []).filter(Boolean); if (!items.length) return "";
+      return '<section class="lp-sec">' + (b.title ? "<h2>" + esc(b.title) + "</h2>" : "") + '<ul class="lp-feat">' + items.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></section>";
+    }
+    return "";
+  };
+  const lpSig = (lp, p) => [lp.updatedAt || 0, p.price, p.old, p.stock, JSON.stringify(p.colors || "")].join("|");
+
+  const lpRender = (lp, p) => {
+    lpTouched = false;
+    const body = document.body;
+    body.classList.add("lp-mode"); body.classList.toggle("lp-nav-off", !!lp.hideNav);
+    body.classList.toggle("lp-has-float", lp.floatBtn !== false && inStock(p));
+    body.style.overflow = "";
+    if (lpIO) { try { lpIO.disconnect(); } catch (e) {} lpIO = null; }
+    let box = $("#xwLandingBox");
+    if (!box) {
+      box = document.createElement("div"); box.id = "xwLandingBox";
+      const m = $("main.page"); if (m && m.parentNode) m.parentNode.insertBefore(box, m.nextSibling); else body.appendChild(box);
+    }
+    const cta = lp.ctaText || "اطلب الآن";
+    const hero = lp.heroImg || (p.images && p.images[0]) || p.img || "";
+    const sp = sellPrice(p), old = listPrice(p), inS = inStock(p);
+    const cols = pColors(p);
+    const items = [{ id: p.id, qty: 1 }];
+    if (cols.length === 1 && Number(cols[0].stock) > 0) items[0].color = cols[0].name;
+    const chips = cols.length > 1
+      ? '<div class="lp-colors" id="lpColors"><b>اختر اللون <i>*</i></b><div>' + cols.map((c) => '<button type="button" class="lp-col" data-lp-col="' + esc(c.name) + '"' + (Number(c.stock) > 0 ? "" : " disabled") + ">" + esc(c.name) + (Number(c.stock) > 0 ? "" : " (نفذ)") + "</button>").join("") + "</div></div>"
+      : "";
+    box.innerHTML = '<div class="lp-page">' +
+      '<header class="lp-hero">' + (lp.badge ? '<span class="lp-badge">' + esc(lp.badge) + "</span>" : "") +
+      "<h1>" + esc(lp.headline || lp.title) + "</h1>" + (lp.subhead ? '<p class="lp-sub">' + esc(lp.subhead) + "</p>" : "") +
+      (hero ? '<div class="lp-heroimg"><img src="' + esc(cld(hero, 960)) + '" alt="' + esc(p.name) + '" decoding="async" fetchpriority="high"></div>' : "") +
+      '<div class="lp-price"><b>' + fmt(sp) + ' دج</b>' + (old ? "<s>" + fmt(old) + " دج</s>" : "") + "</div>" +
+      (inS ? '<button type="button" class="lp-cta" data-lp-go>' + esc(cta) + "</button>" : '<div class="lp-out">نفذ المخزون حالياً</div>') + "</header>" +
+      (lp.blocks || []).map(lpBlockHTML).join("") +
+      '<section class="lp-formwrap" id="lpFormWrap"><h2>' + esc(lp.formTitle || "اطلب الآن") + "</h2>" +
+      (inS ? chips + '<div class="lp-chk" id="lpCheckoutBox"></div>' : '<div class="lp-out">نفذ المخزون حالياً — تواصل معنا عبر واتساب.</div>') + "</section>" +
+      '<footer class="lp-foot"><span class="brand">X<b> STORE</b></span> · الدفع عند الاستلام · <button type="button" class="lp-trk-link" data-track>📦 تتبّع طلبك</button>' + (lp.hideNav ? "" : ' · <a href="/#shop">تصفح المتجر</a>') + "</footer></div>" +
+      (inS && lp.floatBtn !== false ? '<div class="lp-float" id="lpFloat"><button type="button" data-lp-go>' + esc(cta) + "</button></div>" : "");
+
+    /* الاستمارة الحقيقية للمتجر، لكن داخل الصفحة، وتحفظ في طلبيات صفحات الهبوط */
+    if (inS) {
+      const cbox = $("#lpCheckoutBox", box);
+      const api = openCheckout(items, { landing: { id: lp.id, slug: lp.slug, title: lp.title }, container: cbox });
+      cbox.addEventListener("input", () => { lpTouched = true; }, true);
+      cbox.addEventListener("focusin", () => xwTrack("InitiateCheckout", { ids: [p.id], value: sp }), { once: true });
+      box.onclick = (e) => {
+        const c = e.target.closest("[data-lp-col]");
+        if (c && !c.disabled) {
+          items[0].color = c.dataset.lpCol;
+          Array.from($$(".lp-col", box)).forEach((x) => x.classList.toggle("on", x === c));
+          const cc = $("#lpColors", box); if (cc) cc.classList.remove("bad");
+          if (api && api.refresh) api.refresh();
+          return;
+        }
+        if (e.target.closest("[data-lp-go]")) {
+          const w = $("#lpFormWrap", box); if (w) w.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      };
+      /* الزر العائم: ظاهر طول النزول، يختفي كي يوصل الزبون للاستمارة حتى ما يغطيها */
+      const fl = $("#lpFloat");
+      if (fl && "IntersectionObserver" in window) {
+        lpIO = new IntersectionObserver((en) => { en.forEach((x) => fl.classList.toggle("off", x.isIntersecting)); }, { rootMargin: "0px 0px -30% 0px", threshold: 0 });
+        lpIO.observe($("#lpFormWrap", box));
+      }
+    }
+    document.title = (lp.headline || lp.title) + " — X Store";
+    const md = document.querySelector('meta[name="description"]'); if (md) md.setAttribute("content", lp.subhead || lp.headline || lp.title);
+    xwTrack("ViewContent", { ids: [p.id], value: sp });
+    if (!lpNavBound) {
+      lpNavBound = true;
+      /* القائمة ظاهرة: روابطها (#shop...) ترجع للمتجر بدل ما تختفي في صفحة مخبّاة */
+      document.addEventListener("click", (e) => {
+        if (!document.body.classList.contains("lp-mode")) return;
+        const a = e.target.closest && e.target.closest('#navbar a[href^="#"]:not([data-lang]), #mobileMenu a[href^="#"]:not([data-lang])');
+        if (!a || a.getAttribute("href").length < 2) return;
+        e.preventDefault(); e.stopPropagation(); location.assign("/" + a.getAttribute("href"));
+      }, true);
+    }
+  };
+  const lpNotFound = () => {
+    document.body.classList.add("lp-mode", "lp-nav-off");
+    let box = $("#xwLandingBox");
+    if (!box) { box = document.createElement("div"); box.id = "xwLandingBox"; const m = $("main.page"); if (m && m.parentNode) m.parentNode.insertBefore(box, m.nextSibling); else document.body.appendChild(box); }
+    box.innerHTML = '<div class="lp-page"><div class="lp-out" style="margin-top:40px">هذه الصفحة غير متوفرة.<br><a href="/" style="color:#FF6B00;font-weight:800">الذهاب إلى المتجر</a></div></div>';
+  };
+  /* الصفحة والمنتج يصلان من السحابة بعد التحميل: ننتظرهم، ونرسم من النسخة المحفوظة فوراً إن وُجدت */
+  const openLandingWhenReady = (slug) => {
+    let n = 0, pulled = false;
+    const tick = async () => {
+      n++;
+      if (db && !pulled) { pulled = true; try { await loadLandings(); } catch (e) {} }
+      const lp = findLanding(slug, lpIsPreview());
+      const p = lp ? findProduct(lp.productId) : null;
+      if (lp && p) {
+        const sig = lpSig(lp, p);
+        if (sig !== lpShownSig && !lpTouched) { lpShownSig = sig; lpRender(lp, p); }
+      }
+      const settled = lpShownSig && (pulled || n > 8);
+      if (settled || n >= 45) { if (!lpShownSig) lpNotFound(); return; }
+      setTimeout(tick, 350);
+    };
+    if (!XW_LANDING.length) XW_LANDING = lpLocalPages();
+    tick();
   };
 
   /* ---------- Boot ---------- */
@@ -5944,6 +6967,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   };
   if (!atAdminURL() && hashRoute()) setTimeout(() => openHashedProduct(12), 120);
   if (!atAdminURL() && slugFromPath()) setTimeout(() => openSlugsProduct(14), 160);
+  if (!atAdminURL() && landingSlugFromPath()) openLandingWhenReady(landingSlugFromPath());
+  { const tn = trackFromPath(); if (!atAdminURL() && tn !== null) setTimeout(() => openTrack(tn, !!tn), 600); }
+  loadLandings();
   window.addEventListener("hashchange", () => {
     const id = hashProduct();
     if (id && pvEaten === id) { pvEaten = null; return; }
