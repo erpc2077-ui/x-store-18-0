@@ -1,0 +1,240 @@
+/* ============================================================
+   X STORE — ZR Express bridge (Netlify Function)
+   ------------------------------------------------------------
+   The ZR Express key lives ONLY here, in Netlify environment
+   variables. The browser never sees it.
+
+   Environment variables (Netlify → Site configuration → Environment variables):
+     ZR_API_KEY          the secret key from the ZR Express portal
+     ZR_TENANT_ID        the tenant id from the same portal
+     FIREBASE_PROJECT_ID the Firebase project id (to verify the admin's sign-in)
+     ADMIN_EMAIL         the admin account's email (the one used to enter the admin room)
+     ZR_READY_STATE_ID   optional — the "pret_a_expedier" state id
+                         (defaults to the id shown in ZR's docs)
+
+   Endpoint:  POST /api/zr      body: { "action": "...", ... }
+     Public  : track            → the customer's order tracking (limited fields only)
+     Admin   : communes         → ZR communes of a wilaya
+               create           → send an order to ZR Express
+               sync             → refresh a sent parcel's tracking number + status
+               (admin = needs "Authorization: Bearer <Firebase ID token>")
+   ============================================================ */
+const crypto = require("crypto");
+
+const BASE = "https://api.zrexpress.app/api/v1.0";
+const JWK_URL = "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
+const READY_STATE_DEFAULT = "8a948c66-1ab7-4433-aeb0-94219125d134"; /* pret_a_expedier */
+const HEAD = { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" };
+const reply = (code, obj) => ({ statusCode: code, headers: HEAD, body: JSON.stringify(obj) });
+
+/* ---------- ZR Express calls ---------- */
+const zrHeaders = () => ({
+  accept: "application/json",
+  "content-type": "application/json",
+  "X-Tenant": process.env.ZR_TENANT_ID,
+  "X-Api-Key": process.env.ZR_API_KEY
+});
+const zr = async (method, path, body) => {
+  const res = await fetch(BASE + path, { method, headers: zrHeaders(), body: body ? JSON.stringify(body) : undefined });
+  let data = null;
+  const txt = await res.text();
+  try { data = txt ? JSON.parse(txt) : null; } catch (e) { data = { raw: txt.slice(0, 300) }; }
+  return { ok: res.ok, status: res.status, data };
+};
+/* a short, safe error for the admin screen — never echoes headers or keys */
+const zrError = (r) => {
+  const d = r.data || {};
+  const list = Array.isArray(d.errors) ? d.errors.map((e) => e.description).filter(Boolean).join(" · ") : "";
+  return (list || d.detail || d.title || "HTTP " + r.status).toString().slice(0, 400);
+};
+
+/* ---------- admin check: a real Firebase ID token, signed by Google ---------- */
+let jwkCache = { at: 0, keys: [] };
+const getJwks = async () => {
+  if (Date.now() - jwkCache.at < 3600e3 && jwkCache.keys.length) return jwkCache.keys;
+  const res = await fetch(JWK_URL);
+  const j = await res.json();
+  jwkCache = { at: Date.now(), keys: j.keys || [] };
+  return jwkCache.keys;
+};
+const b64 = (s) => Buffer.from(s.replace(/-/g, "+").replace(/_/g, "/"), "base64");
+const verifyAdmin = async (event) => {
+  const h = event.headers || {};
+  const auth = h.authorization || h.Authorization || "";
+  const tok = auth.replace(/^Bearer\s+/i, "");
+  const parts = tok.split(".");
+  if (parts.length !== 3) return false;
+  try {
+    const head = JSON.parse(b64(parts[0]).toString());
+    const claims = JSON.parse(b64(parts[1]).toString());
+    if (head.alg !== "RS256") return false;
+    const jwk = (await getJwks()).find((k) => k.kid === head.kid);
+    if (!jwk) return false;
+    const key = crypto.createPublicKey({ key: jwk, format: "jwk" });
+    const okSig = crypto.verify("RSA-SHA256", Buffer.from(parts[0] + "." + parts[1]), key, b64(parts[2]));
+    if (!okSig) return false;
+    const pid = process.env.FIREBASE_PROJECT_ID, now = Math.floor(Date.now() / 1000);
+    if (!pid || claims.aud !== pid || claims.iss !== "https://securetoken.google.com/" + pid) return false;
+    if (!claims.sub || claims.exp <= now || (claims.iat && claims.iat > now + 300)) return false;
+    const mail = String(process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+    return !!mail && String(claims.email || "").toLowerCase() === mail;
+  } catch (e) { return false; }
+};
+
+/* ---------- territories (wilayas + communes), cached ---------- */
+let terrCache = { at: 0, list: null };
+const loadTerritories = async () => {
+  if (terrCache.list && Date.now() - terrCache.at < 6 * 3600e3) return terrCache.list;
+  let all = [], page = 1;
+  for (;;) {
+    const r = await zr("POST", "/territories/search", { pageNumber: page, pageSize: 1000, orderBy: ["code asc"] });
+    if (!r.ok) throw new Error("territories: " + zrError(r));
+    all = all.concat((r.data && r.data.items) || []);
+    if (!r.data || !r.data.hasNext || page >= 6) break;
+    page++;
+  }
+  terrCache = { at: Date.now(), list: all };
+  return all;
+};
+const wilayaOf = (list, code) => list.find((t) => String(t.level || "").toLowerCase() === "wilaya" && Number(t.code) === Number(code));
+
+/* ---------- small helpers ---------- */
+const trimTo = (s, n) => String(s == null ? "" : s).replace(/\s+/g, " ").trim().slice(0, n);
+const phoneIntl = (p) => {
+  let d = String(p || "").replace(/[^\d+]/g, "");
+  if (d.startsWith("+")) return d;
+  if (d.startsWith("00")) return "+" + d.slice(2);
+  if (d.startsWith("213")) return "+" + d;
+  return "+213" + d.replace(/^0/, "");
+};
+const isUuid = (s) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(s || ""));
+const validTracking = (s) => /^[A-Za-z0-9-]{5,48}$/.test(String(s || ""));
+
+/* customer-facing wording for ZR's state slugs. Only these are ever shown to a
+   customer: internal / finance states (encaisse, recouvert...) are never exposed
+   as such — they read as "delivered". */
+const STATE_AR = {
+  commande_recue: "تم استلام الطلب", en_traitement: "قيد المعالجة", appel_confirmation: "اتصال التأكيد",
+  commande_confirmee: "تم تأكيد الطلب", en_preparation: "قيد التحضير", pret_a_expedier: "جاهز للشحن",
+  confirme_au_bureau: "وصل إلى مكتب التوصيل", dispatch: "قيد الفرز", vers_wilaya: "في الطريق إلى ولايتك",
+  en_livraison: "قيد التوصيل", sortie_en_livraison: "خرج للتوصيل", livre: "تم التسليم",
+  encaisse: "تم التسليم", recouvert: "تم التسليم"
+};
+const SITUATION_AR = { reporte: "تأجيل التسليم", ne_repond_pas: "لم يتم الرد على الاتصال", injoignable: "تعذّر الاتصال", commune_erronee: "تصحيح العنوان", changement_bureau: "تحويل إلى مكتب التوصيل", en_attente_du_client: "بانتظار الزبون في المكتب", commande_annulee: "الطلب ملغى" };
+const stateLabel = (s) => (s && STATE_AR[s.name]) || "قيد المعالجة";
+const situationLabel = (slug) => {
+  const k = String(slug || "").replace(/_\d+$/, "");
+  return SITUATION_AR[k] || "";
+};
+
+/* ---------- actions ---------- */
+const actTrack = async (b) => {
+  const tn = String(b.tracking || "").trim();
+  if (!validTracking(tn)) return reply(400, { ok: false, error: "رقم التتبع غير صحيح." });
+  const p = await zr("GET", "/parcels/" + encodeURIComponent(tn));
+  if (p.status === 404 || !p.data || !p.data.id) return reply(404, { ok: false, error: "ما لقينا طلباً بهذا الرقم. تأكد من الرقم وحاول مرة أخرى." });
+  if (!p.ok) return reply(502, { ok: false, error: "تعذّر الاتصال بشركة التوصيل. حاول بعد قليل." });
+  const parcel = p.data;
+  let steps = [];
+  const h = await zr("GET", "/parcels/" + encodeURIComponent(parcel.id) + "/state-history");
+  if (h.ok && Array.isArray(h.data)) {
+    h.data.forEach((x) => {
+      if (!x.newState || !STATE_AR[x.newState.name]) return;
+      const label = STATE_AR[x.newState.name];
+      if (steps.length && steps[steps.length - 1].label === label) return;   /* livré + encaissé = une seule étape */
+      const sit = x.situations && x.situations.length ? x.situations[x.situations.length - 1] : null;
+      steps.push({ label, at: x.createdAt, place: x.location && x.location.hubCity ? x.location.hubCity : "", note: sit ? situationLabel(sit.situationSlug) : "" });
+    });
+  }
+  /* nothing personal leaves this function: no name, phone, address or price */
+  return reply(200, {
+    ok: true, tracking: parcel.trackingNumber || tn,
+    status: stateLabel(parcel.state), code: parcel.state && parcel.state.name || "",
+    updatedAt: parcel.lastStateUpdateAt || null, steps
+  });
+};
+
+const actCommunes = async (b) => {
+  const code = Number(b.wilayaCode);
+  if (!code || code < 1 || code > 69) return reply(400, { ok: false, error: "ولاية غير صالحة." });
+  const list = await loadTerritories();
+  const w = wilayaOf(list, code);
+  if (!w) return reply(404, { ok: false, error: "الولاية غير موجودة عند شركة التوصيل." });
+  const districts = list.filter((t) => t.parentId === w.id)
+    .map((t) => ({ id: t.id, name: t.name, home: !t.delivery || t.delivery.hasHomeDelivery !== false }))
+    .sort((a, c) => String(a.name).localeCompare(String(c.name)));
+  return reply(200, { ok: true, cityId: w.id, cityName: w.name, districts });
+};
+
+const actCreate = async (b) => {
+  const o = b.order || {};
+  const missing = [];
+  if (trimTo(o.name, 100).length < 2) missing.push("الاسم");
+  if (!o.phone) missing.push("الهاتف");
+  if (!isUuid(o.cityId)) missing.push("الولاية");
+  if (!isUuid(o.districtId)) missing.push("البلدية");
+  if (!Array.isArray(o.items) || !o.items.length) missing.push("المنتجات");
+  if (!o.orderId) missing.push("رقم الطلب");
+  if (missing.length) return reply(400, { ok: false, error: "ناقص: " + missing.join("، ") });
+  const amount = Number(o.total);
+  if (!(amount > 0) || amount > 150000) return reply(400, { ok: false, error: "المبلغ يجب أن يكون بين 1 و150,000 دج." });
+  const items = o.items.map((i) => ({
+    productName: trimTo(i.name + (i.color ? " (" + i.color + ")" : ""), 200) || "منتج",
+    unitPrice: Number(i.price) || 0, quantity: Math.max(1, parseInt(i.quantity, 10) || 1), stockType: "none"
+  }));
+  const payload = {
+    customer: { customerId: crypto.randomUUID(), name: trimTo(o.name, 100), phone: { number1: phoneIntl(o.phone) } },
+    deliveryAddress: { street: trimTo(o.address, 250), cityTerritoryId: o.cityId, districtTerritoryId: o.districtId },
+    orderedProducts: items,
+    amount, deliveryType: "home",
+    description: trimTo(items.map((i) => i.productName).join(" + "), 250) || "طلب",
+    stateId: process.env.ZR_READY_STATE_ID || READY_STATE_DEFAULT,
+    externalId: trimTo(o.orderId, 100)
+  };
+  const r = await zr("POST", "/parcels", payload);
+  if (!r.ok || !r.data || !r.data.id) return reply(r.status === 404 ? 404 : 400, { ok: false, error: zrError(r) });
+  const out = { ok: true, parcelId: r.data.id, tracking: null, status: "" };
+  /* the creation reply carries only the id; read the parcel for its tracking number */
+  const g = await zr("GET", "/parcels/" + r.data.id);
+  if (g.ok && g.data) { out.tracking = g.data.trackingNumber || null; out.status = stateLabel(g.data.state); }
+  return reply(200, out);
+};
+
+const actSync = async (b) => {
+  const key = isUuid(b.parcelId) ? b.parcelId : (validTracking(b.tracking) ? b.tracking : "");
+  if (!key) return reply(400, { ok: false, error: "لا يوجد معرّف للطرد." });
+  const g = await zr("GET", "/parcels/" + encodeURIComponent(key));
+  if (!g.ok || !g.data) return reply(g.status === 404 ? 404 : 502, { ok: false, error: zrError(g) });
+  return reply(200, { ok: true, parcelId: g.data.id || null, tracking: g.data.trackingNumber || null, status: stateLabel(g.data.state), code: g.data.state && g.data.state.name || "", updatedAt: g.data.lastStateUpdateAt || null });
+};
+
+/* light per-instance throttle for the public endpoint */
+const hits = new Map();
+const tooMany = (ip) => {
+  const now = Date.now(), arr = (hits.get(ip) || []).filter((t) => now - t < 60e3);
+  arr.push(now); hits.set(ip, arr);
+  if (hits.size > 500) hits.clear();
+  return arr.length > 20;
+};
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== "POST") return reply(405, { ok: false, error: "POST only" });
+  if (!process.env.ZR_API_KEY || !process.env.ZR_TENANT_ID) return reply(500, { ok: false, error: "إعدادات شركة التوصيل غير مكتملة على السيرفر." });
+  let b = {};
+  try { b = JSON.parse(event.body || "{}"); } catch (e) { return reply(400, { ok: false, error: "bad json" }); }
+  try {
+    if (b.action === "track") {
+      const ip = (event.headers && (event.headers["x-nf-client-connection-ip"] || event.headers["x-forwarded-for"])) || "x";
+      if (tooMany(String(ip).split(",")[0])) return reply(429, { ok: false, error: "محاولات كثيرة، انتظر دقيقة." });
+      return await actTrack(b);
+    }
+    if (!(await verifyAdmin(event))) return reply(401, { ok: false, error: "غير مصرّح — سجّل الدخول للوحة التحكم من جديد." });
+    if (b.action === "communes") return await actCommunes(b);
+    if (b.action === "create") return await actCreate(b);
+    if (b.action === "sync") return await actSync(b);
+    return reply(400, { ok: false, error: "action غير معروف" });
+  } catch (e) {
+    return reply(502, { ok: false, error: "تعذّر الاتصال بشركة التوصيل." });
+  }
+};
+exports._test = { phoneIntl, stateLabel, validTracking };
