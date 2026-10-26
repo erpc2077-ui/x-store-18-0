@@ -1,5 +1,5 @@
-
 /api/cloudinary-sign  /.netlify/functions/cloudinary-sign  200
+/api/zr  /.netlify/functions/zr  200
 /firebase.json  /404.html  404!
 /_headers  /404.html  404!
 /_redirects  /404.html  404!
