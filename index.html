@@ -1783,6 +1783,60 @@ button.nav-link { background: none; border: 0; cursor: pointer; }
 .lp-ship { margin: 0 0 12px; padding: 10px 12px; border-radius: 10px; background: var(--fill); border: 1px dashed var(--line-2); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; }
 .lp-trk { font-weight: 800; letter-spacing: .02em; background: var(--card); padding: 3px 10px; border-radius: 8px; border: 1px solid var(--line-2); }
 .lp-warn { color: #b45309; font-weight: 700; }
+
+/* ============ وصف المنتج: سطران + عرض الكامل ============ */
+.xw-desc.clamp { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 4px; }
+.xw-descw { margin: 14px 0; }
+.xw-descw .xw-desc { margin: 0; }
+.xw-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 6px 2px; background: none; border: 0; color: #FF6B00; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
+.xw-more[hidden] { display: none; }
+.xw-more svg { transition: transform .25s ease; }
+.xw-more[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* ============ إرسال جماعي ============ */
+.lp-bulk { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 10px 14px; margin: 0 0 12px; background: var(--card); border: 1px solid var(--line-2); border-radius: 12px; }
+.lp-bulk[hidden] { display: none; }
+.lp-selall { display: flex; gap: 8px; align-items: center; font-weight: 800; font-size: 14px; cursor: pointer; }
+.lp-selall small { color: var(--muted); font-weight: 600; }
+.lp-sel { display: inline-flex; cursor: pointer; }
+.lp-sel input, .lp-selall input { width: 20px; height: 20px; accent-color: #FF6B00; cursor: pointer; }
+.lp-brows { display: grid; gap: 10px; max-height: 50vh; overflow: auto; margin-bottom: 12px; padding-left: 2px; }
+.lp-brow { padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--fill); display: grid; gap: 6px; }
+.lp-brow small { color: var(--muted); }
+.lp-brow select { width: 100%; }
+.lp-bst { font-size: 13px; font-weight: 700; }
+.lp-bst:empty { display: none; }
+.lp-bst.warn { color: #b45309; } .lp-bst.okk { color: #15803d; } .lp-bst.err { color: #dc2626; }
+
+.xw-oh .lp-sel { margin-inline-end: 8px; }
+
+/* ===== p60 - الوضع الليلي: الأزرار السوداء + سلايدر البانر ===== */
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .add-btn,
+html[data-theme="dark"] .tab.active { background: #0A0604; color: #fff; border: 1.5px solid #FF6B00; }
+html[data-theme="dark"] .btn-primary:hover,
+html[data-theme="dark"] .add-btn:hover { box-shadow: 0 0 26px -6px rgba(255, 107, 0, .65); }
+html[data-theme="dark"] .ptag,
+html[data-theme="dark"] .xw-prow-tags i,
+html[data-theme="dark"] .toast { background: #0A0604; color: #fff; }
+.bn { position: relative; max-width: 1280px; margin: 0 auto; padding: 84px 16px 0; }
+.bn[hidden] { display: none; }
+.bn-view { position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 21 / 8; min-height: 190px; background: #0A0604; border: 1px solid rgba(255, 107, 0, .25); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, .5); touch-action: pan-y; }
+.bn-slide { position: absolute; inset: 0; display: block; opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility .6s; color: #fff; }
+.bn-slide.on { opacity: 1; visibility: visible; z-index: 1; }
+.bn-slide > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.bn-ov { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 8px; padding: 4% 6%; background: linear-gradient(to left, rgba(0, 0, 0, .72), rgba(0, 0, 0, 0) 68%); }
+html[dir="ltr"] .bn-ov { background: linear-gradient(to right, rgba(0, 0, 0, .72), rgba(0, 0, 0, 0) 68%); }
+.bn-badge { background: #E11D2E; color: #fff; font-family: var(--what-font); font-weight: 800; font-size: clamp(10px, 2.4vw, 14px); padding: 5px 12px; border-radius: 8px; }
+.bn-title { font-family: var(--what-font); font-weight: 900; font-size: clamp(18px, 4.6vw, 42px); line-height: 1.2; max-width: 60%; color: #fff; }
+.bn-desc { font-size: clamp(11px, 2.4vw, 16px); color: #FFD9C2; max-width: 56%; line-height: 1.6; }
+.bn-price { font-family: var(--what-font); font-weight: 900; font-size: clamp(16px, 3.6vw, 30px); color: #FF8A3D; }
+.bn-btn { margin-top: 4px; background: linear-gradient(90deg, #FF6B00, #FF2D55); color: #fff; font-family: var(--what-font); font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); padding: 8px 18px; border-radius: 10px; box-shadow: 0 10px 24px -10px rgba(255, 90, 20, .7); }
+.bn-dots { position: absolute; z-index: 2; bottom: 10px; inset-inline: 0; display: flex; justify-content: center; gap: 7px; }
+.bn-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .45); cursor: pointer; transition: all .25s; }
+.bn-dots button.on { width: 22px; border-radius: 6px; background: #FF6B00; }
+.bn:not([hidden]) + .hero { min-height: auto; padding-top: 24px; }
+@media (max-width: 640px) { .bn { padding-top: 76px; } .bn-view { aspect-ratio: 2 / 1; border-radius: 16px; } .bn-title, .bn-desc { max-width: 66%; } }
 </style>
 
   <!-- the card Google shows when someone shares a link to the shop -->
@@ -1901,6 +1955,9 @@ button.nav-link { background: none; border: 0; cursor: pointer; }
   <div id="mmOverlay" class="mm-overlay"></div>
 
   <main class="page">
+    <!-- سلايدر البانر (يُملأ من لوحة الإدارة › البانر؛ مخفي لو فارغ) -->
+    <section class="bn" id="bnSlider" hidden aria-label="العروض"></section>
+
     <!-- HERO -->
     <section id="home" class="hero">
       <div class="hero-bg">
@@ -2777,6 +2834,7 @@ window.REVIEWS = [
     site: location.origin,
     /* the owner's own pictures for the top of the page; null = the three that shipped */
     hero: null,
+    banners: null,
     /* p52 - the four policies, writable from the admin room. Empty means "the text
        that shipped in this page", so a policy can never vanish by accident. */
     polShipping: "", polReturns: "", polTerms: "", polPrivacy: "",
@@ -2786,7 +2844,9 @@ window.REVIEWS = [
     /* إيميل استقبال التقييمات: كل تقييم جديد ينبعت لهذا العنوان عبر FormSubmit */
     revEmail: "",
     /* معرّفات التتبع (تُكتب من غرفة الإدارة): ما والو ما يتحمّل حتى تُعمَّر خانة */
-    pxMeta: "", pxTikTok: "", pxGoogle: ""
+    pxMeta: "", pxTikTok: "", pxGoogle: "",
+    /* كود التحقق من ملكية الموقع عند جوجل (Search Console) — يُكتب من تبويب «الظهور في جوجل» */
+    gsv: ""
   };
   /* these four are empty on purpose: nothing shows until the shop owner writes it */
   const XW_SOCIAL_OPTIONAL = ["tiktok", "whatsapp", "facebook"];
@@ -2895,6 +2955,31 @@ window.REVIEWS = [
   };
   const xwPxScript = (src) => {
     try { const s = document.createElement("script"); s.async = true; s.src = src; (document.head || document.documentElement).appendChild(s); } catch (e) {}
+  };
+  /* ---------- Google Search Console: ownership tag, injected from the admin box ----------
+     What the owner pastes is reduced to the bare code (letters, digits, - and _) and then set
+     with setAttribute on a real <meta> element - never as markup - so nothing else a person
+     pastes there can ever reach the page. The tag sits first in <head>, on every public page;
+     the owner's own room is skipped. */
+  const xwGsvCode = (raw) => {
+    const s = String(raw == null ? "" : raw).trim();
+    if (!s) return "";
+    const m = s.match(/content\s*=\s*["']\s*([A-Za-z0-9_-]{20,120})\s*["']/i);
+    const code = m ? m[1] : s;
+    return /^[A-Za-z0-9_-]{20,120}$/.test(code) ? code : "";
+  };
+  const xwGoogleVerify = () => {
+    if (/\/admin\/?$/.test(location.pathname) || /(?:^|[?&])admin(?:[=&]|$)/.test(location.search)) return;
+    const code = xwGsvCode(INFO.gsv);
+    let el = document.head.querySelector('meta[name="google-site-verification"]');
+    if (!code) { if (el && el.dataset.xw) el.parentNode.removeChild(el); return; }
+    if (!el) {
+      el = document.createElement("meta");
+      el.setAttribute("name", "google-site-verification");
+      el.dataset.xw = "1";
+      document.head.insertBefore(el, document.head.firstChild);
+    }
+    if (el.getAttribute("content") !== code) el.setAttribute("content", code);
   };
   const xwPixels = () => {
     /* the owner's own room is never counted */
@@ -3029,8 +3114,39 @@ window.REVIEWS = [
       : HERO_ORIG;
   };
 
+  /* ---------- سلايدر البانر: صورة + شارة + عنوان + وصف + سعر + زر، يتبدّل لحاله ---------- */
+  let bnTimer = null;
+  const paintBanners = () => {
+    const box = document.getElementById("bnSlider"); if (!box) return;
+    const list = Array.isArray(INFO.banners) ? INFO.banners.filter((b) => b && b.img).slice(0, 8) : [];
+    clearInterval(bnTimer);
+    if (!list.length) { box.hidden = true; box.innerHTML = ""; return; }
+    box.innerHTML = '<div class="bn-view">' + list.map((b, i) => {
+      const txt = b.badge || b.title || b.desc || b.price || b.btn;
+      return '<a class="bn-slide' + (i ? "" : " on") + '" href="' + esc(b.href || "#shop") + '">' +
+        '<img src="' + esc(cld(b.img, 1200, 560)) + '" alt="' + esc(b.title || "") + '"' + (i ? ' loading="lazy"' : ' fetchpriority="high"') + ' decoding="async">' +
+        (txt ? '<div class="bn-ov">' + (b.badge ? '<span class="bn-badge">' + esc(b.badge) + "</span>" : "") +
+          (b.title ? '<div class="bn-title">' + esc(b.title) + "</div>" : "") +
+          (b.desc ? '<div class="bn-desc">' + esc(b.desc) + "</div>" : "") +
+          (b.price ? '<div class="bn-price">' + esc(b.price) + "</div>" : "") +
+          (b.btn ? '<span class="bn-btn">' + esc(b.btn) + "</span>" : "") + "</div>" : "") + "</a>";
+    }).join("") + (list.length > 1 ? '<div class="bn-dots">' + list.map((_, i) => '<button type="button" aria-label="' + (i + 1) + '"' + (i ? "" : ' class="on"') + ' data-bi="' + i + '"></button>').join("") + "</div>" : "") + "</div>";
+    box.hidden = false;
+    if (list.length < 2) return;
+    const slides = box.querySelectorAll(".bn-slide"), dots = box.querySelectorAll("[data-bi]"), view = box.querySelector(".bn-view");
+    let cur = 0;
+    const go = (n) => { cur = (n + slides.length) % slides.length; slides.forEach((s, i) => s.classList.toggle("on", i === cur)); dots.forEach((d, i) => d.classList.toggle("on", i === cur)); };
+    const run = () => { clearInterval(bnTimer); bnTimer = setInterval(() => go(cur + 1), 5000); };
+    dots.forEach((d) => d.addEventListener("click", (e) => { e.preventDefault(); go(+d.dataset.bi); run(); }));
+    let x0 = null;
+    view.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    view.addEventListener("touchend", (e) => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 40) { go(cur + (dx < 0 ? 1 : -1)); run(); } }, { passive: true });
+    run();
+  };
+
   const applyInfo = () => {
     paintHero();
+    paintBanners();
     $$(".nav-word, .pre-word").forEach((el) => { el.innerHTML = "X<b> STORE</b>"; });
     renderSocials();
     $$('a[href^="https://wa.me/"]:not(.fs-wa)').forEach((a) => { a.href = "https://wa.me/" + waNumber(); });
@@ -3041,6 +3157,7 @@ window.REVIEWS = [
     applyLang(lang);
     /* the pixels ride with the shop info: a saved id starts them, an empty one keeps them off */
     xwPixels();
+    xwGoogleVerify();
   };
 
   /* ---------- Caching: paint the products instantly, then re-check the cloud ----------
@@ -3720,7 +3837,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
          والوصف (المواصفات) يبقى تحتهم فيقرأ من أراد بعد ما شاف الثمن */
       '<div class="xw-pbtns"><button class="xw-btn ghost" data-add="' + esc(p.id) + '"' + dis + ">" + CART_SVG.replace("<svg ", '<svg width="18" height="18" ') + " أضف للسلة</button>" +
       '<button class="xw-btn" data-buy="' + esc(p.id) + '"' + dis + ">اشترِ الآن</button></div>" +
-      (p.desc ? '<p class="xw-desc">' + esc(p.desc) + "</p>" : '<div style="height:14px"></div>') +
+      (p.desc ? '<div class="xw-descw"><p class="xw-desc clamp" id="xwDesc">' + esc(p.desc) + '</p><button type="button" class="xw-more" id="xwMore" data-more aria-expanded="false" hidden><span>عرض الوصف الكامل</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button></div>' : '<div style="height:14px"></div>') +
       (ytIdOf(p.video) ? '<div class="xw-vid"><h4>🎬 فيديو توضيحي</h4><div class="xw-video"><button type="button" class="xw-vplay" data-yt="' + ytIdOf(p.video) + '" aria-label="تشغيل الفيديو"><img src="https://i.ytimg.com/vi/' + ytIdOf(p.video) + '/hqdefault.jpg" alt="" loading="lazy" decoding="async"><span aria-hidden="true">▶</span></button></div></div>' : "") + "</div></div>";
     const show = (i) => {
       i = (i + imgs.length) % imgs.length;
@@ -3737,6 +3854,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     $("#xwProductBox").onclick = (e) => {
       const ch = e.target.closest(".xw-chip");
       if (ch) { if (!ch.disabled) $$(".xw-chip", $("#xwProductBox")).forEach((x) => x.classList.toggle("on", x === ch)); return; }
+      const mo = e.target.closest("[data-more]");
+      if (mo) {
+        const d = $("#xwDesc"); if (!d) return;
+        const open = d.classList.toggle("clamp") === false;          /* بلا clamp = معروض كاملاً */
+        mo.setAttribute("aria-expanded", open ? "true" : "false");
+        mo.firstElementChild.textContent = open ? "عرض أقل" : "عرض الوصف الكامل";
+        if (!open) { try { mo.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (x) {} }
+        return;
+      }
       const t = e.target.closest("[data-gi]");
       if (t) { stop(); cur = show(+t.dataset.gi); start(); return; }
       if (e.target.closest("#xwGalPrev")) { stop(); cur = show(cur - 1); start(); return; }
@@ -3750,6 +3876,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     lbList = imgs; lbName = p.name;
     lbBack = () => { cur = show(lbi); start(); };
     openModal($("#xwProduct"));
+    /* القياس بعد ظهور النافذة (قبلها العرض صفر): الزر يظهر فقط إذا الوصف أطول من سطرين فعلاً */
+    const fitDesc = () => {
+      const d = $("#xwDesc"), b = $("#xwMore"); if (!d || !b || !d.classList.contains("clamp")) return;
+      b.hidden = !(d.clientHeight === 0 || d.scrollHeight > d.clientHeight + 2);
+    };
+    requestAnimationFrame(() => { fitDesc(); setTimeout(fitDesc, 250); });
   };
 
   /* ---------- the big picture ---------- */
@@ -4315,7 +4447,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["banner", "🎞️ البانر"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "leads" && leadCount ? "<em>" + leadCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -4329,7 +4461,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, banner: tabBanner, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -4471,7 +4603,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       ? '<i class="xwr">🔁 نفس الجهاز · ' + (prior.length + 1) + " طلب</i>" + (xwDayFull(o) ? '<i class="xwl">🚫 وصل للحد اليومي</i>' : "")
       : (o.uid ? '<i class="xwx">جهاز جديد</i>' : "");
     return '<div class="xw-order ' + (isNewOrder(o) ? "new" : "") + (logged ? " done" : "") + (prior.length ? " back" : "") + '" data-oid="' + esc(o.id) + '">' +
-      '<div class="xw-oh"><b>' + esc(o.id) + "</b><span>" + esc(fmtDate(o.createdAt)) + "</span>" + '<span class="xwc">' + chip +
+      '<div class="xw-oh">' + (logged && zrEligible(o) ? '<label class="lp-sel"><input type="checkbox" data-zrsel="' + esc(o.id) + '"' + (zrShopSel.has(o.id) ? " checked" : "") + ' aria-label="تحديد الطلب"></label>' : "") + "<b>" + esc(o.id) + "</b><span>" + esc(fmtDate(o.createdAt)) + "</span>" + '<span class="xwc">' + chip +
       (logged ? '<i class="xws ' + esc(o.status || "confirmed") + '">' + esc(XW_STATUS[o.status] || o.status || "—") + "</i>" : "") + "</span></div>" +
       '<div class="xw-og">' +
       "<div><small>الاسم الكامل</small>" + esc(c.name) + "</div>" +
@@ -4488,6 +4620,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       (o.discount > 0 ? "<div><span>خصم العرض</span><span>−" + fmt(o.discount) + " دج</span></div>" : "") +
       '<div style="font-weight:800;border-top:1px dashed var(--line-2);margin-top:4px;padding-top:6px"><span>المجموع</span><span style="color:#FF6B00">' + fmt(o.total) + " دج</span></div></div>" +
       '<div class="xw-fo"><small>حالة المتابعة</small><span>' + Object.keys(XW_FOLLOW).map((k) => '<button type="button" class="xw-fb' + ((o.follow || "new") === k ? " on" : "") + '" data-fv="' + k + '">' + XW_FOLLOW[k] + "</button>").join("") + "</span></div>" +
+      (logged ? zrShipBlock(o, o.status, "shop") : "") +
       '<div class="xw-oa"><select data-os="' + esc(o.id) + '">' + Object.keys(XW_STATUS).map((k) => '<option value="' + k + '"' + (o.status === k ? " selected" : "") + ">" + XW_STATUS[k] + "</option>").join("") + "</select>" +
       '<a class="xw-btn ghost sm" href="tel:' + esc(c.phone) + '">📞 اتصال</a>' +
       '<a class="xw-btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/213' + esc(String(c.phone).replace(/^0/, "")) + '">واتساب</a>' +
@@ -4571,7 +4704,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<button type="button" class="xw-fb' + (logFilter === "all" ? " on" : "") + '" data-fl="all">الكل · ' + all.length + "</button>" +
       Object.keys(XW_FOLLOW).map((k) => '<button type="button" class="xw-fb' + (logFilter === k ? " on" : "") + '" data-fl="' + k + '">' + XW_FOLLOW[k] + " · " + fcnt(k) + "</button>").join("") +
       "</div>" +
-      '<div class="xw-card">' + catFilterBar(all) + '<div class="xw-field"><input id="xwLogQ" placeholder="🔍 ابحث بالاسم أو الهاتف أو رقم الطلب..."></div><div id="xwLogList"></div></div>';
+      '<div class="xw-card">' + catFilterBar(all) + '<div class="xw-field"><input id="xwLogQ" placeholder="🔍 ابحث بالاسم أو الهاتف أو رقم الطلب..."></div><div id="zrShopBar" class="lp-bulk" hidden></div><div id="xwLogList"></div></div>';
     const list = $("#xwLogList");
     const draw = () => {
       const q = ($("#xwLogQ").value || "").trim().toLowerCase();
@@ -4579,6 +4712,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const rows = base.filter((o) => { const c = o.customer || {}; return (!statusFilter || o.status === statusFilter) && orderInCat(o, catFilter) && (!q || (o.id + " " + c.name + " " + c.phone + " " + c.wilaya + " " + c.commune).toLowerCase().indexOf(q) >= 0); });
       list.innerHTML = rows.length ? rows.map((o) => orderCard(o, true)).join("") :
         '<div class="xw-empty">' + (all.length || logFilter !== "all" ? "لا نتيجة." : "السجل فارغ — كل طلب تؤكّده ينتقل تلقائياً إلى هنا.") + "</div>";
+      zrShopRows = rows; zrDrawShopBar();
     };
     draw();
     $("#xwLogQ").addEventListener("input", draw);
@@ -5273,8 +5407,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   /* ----- الزبون: تتبّع طلب برقم التتبع ----- */
   const trackBoxHTML = (num) =>
     '<button class="xw-x" data-xclose aria-label="إغلاق">×</button><h3>📦 تتبّع طلبك</h3>' +
-    '<p style="color:var(--muted);margin:-6px 0 14px;font-size:14px">اكتب رقم التتبع الذي وصلك من شركة التوصيل.</p>' +
-    '<form id="trkForm" novalidate><div class="xw-field"><input id="trkNum" value="' + esc(num || "") + '" placeholder="مثال: 13-eujcONdAIbV-DZ" dir="ltr" style="text-align:left" autocomplete="off" autocapitalize="off" spellcheck="false"></div>' +
+    '<p style="color:var(--muted);margin:-6px 0 14px;font-size:14px">اكتب <b>رقم طلبك</b> (مثل LP-12345678) أو رقم التتبع الذي وصلك من شركة التوصيل.</p>' +
+    '<form id="trkForm" novalidate><div class="xw-field"><input id="trkNum" value="' + esc(num || "") + '" placeholder="رقم الطلب أو رقم التتبع" dir="ltr" style="text-align:left" autocomplete="off" autocapitalize="off" spellcheck="false"></div>' +
     '<button class="xw-btn" type="submit" id="trkGo" style="width:100%">تتبّع</button></form><div id="trkOut" aria-live="polite"></div>';
   const trackResultHTML = (r) => {
     const steps = (r.steps || []).slice().reverse();
@@ -5293,7 +5427,19 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const v = inp.value.trim();
       if (!/^[A-Za-z0-9-]{5,48}$/.test(v)) { out.innerHTML = '<div class="xw-err">اكتب رقم التتبع كما وصلك (حروف وأرقام و -).</div>'; return; }
       go.disabled = true; go.textContent = "جاري البحث..."; out.innerHTML = "";
-      try { out.innerHTML = trackResultHTML(await zrCall("track", { tracking: v })); }
+      try {
+        let tn = v;
+        /* رقم طلب المتجر (LP-... / XS-...) ← رقم التتبع المنشور عند الشحن */
+        if (/^(?:LP|XS)-\d{5,12}$/i.test(v)) {
+          if (!db) throw new Error("تعذّر الاتصال الآن. حاول بعد قليل.");
+          let d = null;
+          try { d = await tmo(db.collection("xw_track").doc(v.toUpperCase()).get(), 10000); }
+          catch (e) { throw new Error("تعذّر البحث برقم الطلب الآن. جرّب رقم التتبع أو حاول لاحقاً."); }
+          if (!d || !d.exists || !d.data().tracking) throw new Error("طلبك لم يُشحن بعد، أو رقم الطلب غير صحيح. سيصلك رقم التتبع عند الشحن.");
+          tn = d.data().tracking;
+        }
+        out.innerHTML = trackResultHTML(await zrCall("track", { tracking: tn }));
+      }
       catch (e) { out.innerHTML = '<div class="xw-err">' + esc(e.message) + "</div>"; }
       go.disabled = false; go.textContent = "تتبّع";
     };
@@ -5379,6 +5525,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<button type="button" class="xw-btn ghost sm" data-lp="bmove" data-i="' + i + '" data-d="1"' + (i === n - 1 ? " disabled" : "") + ">↓</button>" +
       '<button type="button" class="xw-btn danger sm" data-lp="bdel" data-i="' + i + '">✕</button></span></div>';
     const open = '<div class="lp-bk" data-bi="' + i + '" data-bt="' + esc(b.type) + '" data-bid="' + esc(b.id || "") + '">';
+    if (b.type === "form") return open + '<div class="lp-bk-h"><b>🛒 استمارة الطلب</b><span class="lp-bk-c">' +
+      '<button type="button" class="xw-btn ghost sm" data-lp="bmove" data-i="' + i + '" data-d="-1"' + (i === 0 ? " disabled" : "") + ">↑</button>" +
+      '<button type="button" class="xw-btn ghost sm" data-lp="bmove" data-i="' + i + '" data-d="1"' + (i === n - 1 ? " disabled" : "") + ">↓</button></span></div>" +
+      '<p class="xw-note" style="margin:0 0 10px">هنا تظهر استمارة الطلب (الاسم، الهاتف، الولاية…). حرّكها بالسهمين لتضعها في أي مكان بين البلوكات، أو استعمل الزرين:</p>' +
+      '<div class="lp-acts" style="margin-bottom:12px"><button type="button" class="xw-btn ghost sm" data-lp="fpos" data-v="top">⬆ ضعها في الأعلى (بعد الصورة والسعر)</button><button type="button" class="xw-btn ghost sm" data-lp="fpos" data-v="bottom">⬇ ضعها في الأسفل</button></div></div>';
     if (b.type === "text") return open + head("📝", "نص") +
       lpF("العنوان <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '">') +
       lpF("النص", '<textarea data-bf="body" style="min-height:110px">' + esc(b.body || "") + "</textarea>") + "</div>";
@@ -5398,6 +5549,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   };
   const lpPaintEdit = () => {
     const d = lpUI.draft; if (!d) { lpUI.view = "list"; lpPaintList(); return; }
+    /* استمارة الطلب بلوك قابل للتحريك؛ الصفحات القديمة بلا بلوك استمارة تحصل عليه في الأسفل (مكانها السابق) */
+    if (!(d.blocks || (d.blocks = [])).some((b) => b.type === "form")) d.blocks.push({ id: "bform", type: "form" });
     const isNew = !XW_LANDING.some((x) => x.id === d.id);
     const prods = (window.PRODUCTS || []).map((p) => '<option value="' + esc(p.id) + '"' + (p.id === d.productId ? " selected" : "") + ">" + esc(p.name) + " — " + fmt(sellPrice(p)) + " دج</option>").join("");
     const sel = (id, v, a, b) => '<select id="' + id + '"><option value="1"' + (v ? " selected" : "") + ">" + a + '</option><option value="0"' + (v ? "" : " selected") + ">" + b + "</option></select>";
@@ -5443,9 +5596,20 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const ZR_MAP_KEY = "xw-zr-map";   /* بلدية المتجر ← بلدية ZR، تُحفظ بعد أول مرة */
   const zrWilayaCode = (name) => { const w = XW_WILAYAS.find((x) => x[1] === name); return w ? Number(w[0]) : 0; };
   const zrDone = (o) => !!(o.ship && /^(livre|encaisse|recouvert)$/.test(o.ship.code || ""));
-  const zrShipBlock = (o, st) => {
-    const sh = o.ship;
-    const btn = (a, label) => '<button class="xw-btn ghost sm" data-lp="' + a + '" data-id="' + esc(o.id) + '">' + label + "</button>";
+  /* الإرسال إلى ZR يخدم مصدرين بنفس الكود: طلبيات صفحات الهبوط (landing) وطلبات المتجر العادية (shop) */
+  const zrShopSel = new Set();
+  let zrShopRows = [];
+  const zrSrc = {
+    landing: { find: (id) => XW_LP_ORDERS.find((x) => x.id === id), update: (id, p) => updateLandingOrder(id, p), refresh: () => lpPaintOrders(), sel: () => lpUI.sel, pool: () => XW_LP_ORDERS },
+    shop: {
+      find: (id) => ordersCache.find((x) => x.id === id),
+      update: async (id, p) => { await updateOrder(id, p); ordersCache = ordersCache.map((x) => (x.id === id ? Object.assign({}, x, p) : x)); },
+      refresh: () => tabLog(), sel: () => zrShopSel, pool: () => ordersCache
+    }
+  };
+  const zrShipBlock = (o, st, src) => {
+    const sh = o.ship, attr = src === "shop" ? "data-zrs" : "data-lp";
+    const btn = (a, label) => '<button class="xw-btn ghost sm" ' + attr + '="' + a + '" data-id="' + esc(o.id) + '">' + label + "</button>";
     if (sh && sh.parcelId) {
       return '<div class="lp-ship"><b>🚚 أُرسل إلى ZR Xpress</b> ' +
         (sh.tracking ? '<span class="lp-trk" dir="ltr">' + esc(sh.tracking) + "</span> " + btn("zcopy", "نسخ") : '<span class="lp-warn">رقم التتبع لم يصل بعد</span>') +
@@ -5465,8 +5629,23 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     }
     return m;
   };
-  const zrOpenSend = async (id) => {
-    const o = XW_LP_ORDERS.find((x) => x.id === id); if (!o) return;
+  /* ما يُرسل إلى ZR لطلب واحد، وما يُحفظ بعد نجاح الإرسال: مشترك بين الإرسال الفردي والجماعي */
+  const zrOrderBody = (o, cityId, distId) => {
+    const c = o.customer || {};
+    return {
+      orderId: o.id, name: c.name, phone: c.phone, address: [c.commune, c.address].filter(Boolean).join(" - "),
+      cityId: cityId, districtId: distId, total: o.total,
+      items: (o.items || []).map((i) => ({ name: i.name, color: i.color || "", price: i.price, quantity: i.quantity }))
+    };
+  };
+  const zrRecord = async (o, r, mapKey, dist, src) => {
+    const map = lsGet(ZR_MAP_KEY, {}) || {}; map[mapKey] = dist; lsSet(ZR_MAP_KEY, map);
+    await zrSrc[src || "landing"].update(o.id, { ship: { parcelId: r.parcelId, tracking: r.tracking || "", status: r.status || "", code: "", sentAt: new Date().toISOString() } });
+    zrPublishTrack(o.id, r.tracking);
+  };
+  const zrOpenSend = async (id, src) => {
+    src = src || "landing";
+    const o = zrSrc[src].find(id); if (!o) return;
     const c = o.customer || {}, m = zrModal(), box = $("#lpShipBox");
     const code = zrWilayaCode(c.wilaya);
     openModal(m);
@@ -5489,28 +5668,158 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (!dist) { err.textContent = "اختر بلدية الزبون."; return; }
       go.disabled = true; go.textContent = "جاري الإرسال..."; err.textContent = "";
       try {
-        const r = await zrCall("create", { order: {
-          orderId: o.id, name: c.name, phone: c.phone, address: [c.commune, c.address].filter(Boolean).join(" - "),
-          cityId: info.cityId, districtId: dist, total: o.total,
-          items: (o.items || []).map((i) => ({ name: i.name, color: i.color || "", price: i.price, quantity: i.quantity }))
-        } }, true);
-        const map = lsGet(ZR_MAP_KEY, {}) || {}; map[mapKey] = dist; lsSet(ZR_MAP_KEY, map);
-        await updateLandingOrder(o.id, { ship: { parcelId: r.parcelId, tracking: r.tracking || "", status: r.status || "", code: "", sentAt: new Date().toISOString() } });
-        closeModal(m); toast(r.tracking ? "أُرسل — رقم التتبع: " + r.tracking : "أُرسل إلى ZR Xpress", true); lpPaintOrders();
+        const r = await zrCall("create", { order: zrOrderBody(o, info.cityId, dist) }, true);
+        await zrRecord(o, r, mapKey, dist, src);
+        closeModal(m); toast(r.tracking ? "أُرسل — رقم التتبع: " + r.tracking : "أُرسل إلى ZR Xpress", true); zrSrc[src].refresh();
       } catch (e) { go.disabled = false; go.textContent = "🚚 إرسال الآن"; err.textContent = e.message; }
     };
   };
-  const zrSyncOne = async (o) => {
-    const r = await zrCall("sync", { parcelId: o.ship && o.ship.parcelId, tracking: o.ship && o.ship.tracking }, true);
-    await updateLandingOrder(o.id, { ship: Object.assign({}, o.ship, { tracking: r.tracking || (o.ship && o.ship.tracking) || "", status: r.status || "", code: r.code || "", syncedAt: new Date().toISOString() }) });
+  /* رقم الطلب ← رقم التتبع: وثيقة صغيرة تحمل رقم التتبع فقط (لا اسم ولا هاتف ولا عنوان)،
+     ليقدر الزبون يتتبع برقم طلبه. تُكتب بعد الإرسال إلى ZR وعند كل تحديث. */
+  const zrPublishTrack = (orderId, tracking) => {
+    try { if (db && online && orderId && tracking) db.collection("xw_track").doc(String(orderId).toUpperCase()).set({ tracking: tracking, t: Date.now() }).catch(() => {}); } catch (e) {}
   };
+  const zrSyncOne = async (o, src) => {
+    const r = await zrCall("sync", { parcelId: o.ship && o.ship.parcelId, tracking: o.ship && o.ship.tracking }, true);
+    await zrSrc[src || "landing"].update(o.id, { ship: Object.assign({}, o.ship, { tracking: r.tracking || (o.ship && o.ship.tracking) || "", status: r.status || "", code: r.code || "", syncedAt: new Date().toISOString() }) });
+    zrPublishTrack(o.id, r.tracking || (o.ship && o.ship.tracking));
+  };
+
+  /* ----- إرسال جماعي: تحديد الكل ثم إرسال ----- */
+  lpUI.sel = new Set();
+  /* يُرسل فقط: طلب مؤكد، لم يُرسل من قبل، وللمنزل (طلبات المكتب تحتاج معرّف المكتب) */
+  const zrEligible = (o) => lpStatusOf(o) === "confirmed" && !o.binned && !(o.ship && o.ship.parcelId) && o.delivery !== "office";
+  const zrSelected = (src) => zrSrc[src || "landing"].pool().filter((o) => zrSrc[src || "landing"].sel().has(o.id) && zrEligible(o));
+  const lpDrawBulk = () => {
+    const el = $("#lpBulkBar"); if (!el) return;
+    Array.from(lpUI.sel).forEach((id) => { if (!XW_LP_ORDERS.some((o) => o.id === id && zrEligible(o))) lpUI.sel.delete(id); });
+    const rows = lpFilterRows().filter(zrEligible), picked = rows.filter((o) => lpUI.sel.has(o.id)).length, n = lpUI.sel.size;
+    if (!rows.length && !n) { el.hidden = true; el.innerHTML = ""; return; }
+    el.hidden = false;
+    el.innerHTML = '<label class="lp-selall"><input type="checkbox" id="lpSelAll"' + (rows.length && picked === rows.length ? " checked" : "") + (rows.length ? "" : " disabled") + '> تحديد الكل <small>(' + rows.length + " جاهزة للإرسال)</small></label>" +
+      '<button class="xw-btn sm" data-lp="zbulk"' + (n ? "" : " disabled") + ">🚚 إرسال المحدد إلى ZR (" + n + ")</button>";
+  };
+  const zrOpenBulk = async (src) => {
+    src = src || "landing";
+    const all = zrSelected(src), list = all.slice(0, 30);
+    if (!list.length) return;
+    const m = zrModal(), box = $("#lpShipBox"), head = '<button class="xw-x" data-zx aria-label="إغلاق">×</button><h3>🚚 إرسال ' + list.length + " طلب إلى ZR Xpress</h3>";
+    let busy = false;
+    openModal(m);
+    box.innerHTML = head + '<div class="xw-empty">جاري تحميل بلديات الولايات...</div>';
+    box.onclick = (e) => { if (e.target.closest("[data-zx]") && !busy) { closeModal(m); zrSrc[src].refresh(); } };
+    const codeOf = (o) => zrWilayaCode((o.customer || {}).wilaya);
+    const infos = {}, bad = {};
+    for (const code of Array.from(new Set(list.map(codeOf).filter(Boolean)))) {
+      try { infos[code] = await zrCall("communes", { wilayaCode: code }, true); }
+      catch (e) {
+        if (/مصرّح|سجّل الدخول/.test(e.message)) { box.innerHTML = head + '<div class="xw-err">' + esc(e.message) + "</div>"; return; }
+        bad[code] = e.message;
+      }
+    }
+    const map = lsGet(ZR_MAP_KEY, {}) || {};
+    const rowHTML = (o) => {
+      const c = o.customer || {}, code = codeOf(o), info = infos[code];
+      let pick;
+      if (!code) pick = '<div class="lp-bst err">ولاية غير معروفة: ' + esc(c.wilaya || "—") + "</div>";
+      else if (!info) pick = '<div class="lp-bst err">' + esc(bad[code] || "تعذّر تحميل البلديات") + "</div>";
+      else {
+        const saved = map[code + "|" + (c.commune || "")] || "";
+        pick = '<select data-bdist><option value="">— اختر بلدية ZR —</option>' + info.districts.map((d) => '<option value="' + esc(d.id) + '"' + (d.id === saved ? " selected" : "") + ">" + esc(d.name) + "</option>").join("") + "</select>";
+      }
+      return '<div class="lp-brow" data-bid="' + esc(o.id) + '"><div><b>' + esc(c.name || "") + "</b> <small>#" + esc(o.id) + " · " + fmt(o.total || 0) + " دج</small></div>" +
+        "<small>" + esc(c.wilaya || "") + " — " + esc(c.commune || "") + "</small>" + pick + '<div class="lp-bst"></div></div>';
+    };
+    box.innerHTML = head +
+      (all.length > list.length ? '<div class="xw-note" style="margin:0 0 10px">تم تحديد ' + all.length + " طلب — سنرسل أول " + list.length + " الآن، ثم كرّر للباقي.</div>" : "") +
+      '<div class="xw-note" style="margin:0 0 10px">البلديات المحفوظة من إرسال سابق مختارة تلقائياً. اختر بلدية ZR لما بقي — الطلب بلا بلدية يُتخطّى.</div>' +
+      '<div class="lp-brows">' + list.map(rowHTML).join("") + '</div><div class="xw-note" id="zrErr" style="margin:0 0 10px"></div>' +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="xw-btn" id="zrBulkGo"></button><button class="xw-btn ghost" data-zx>إلغاء</button></div>';
+    const go = $("#zrBulkGo", box);
+    const ready = () => Array.from($$("[data-bdist]", box)).filter((x) => x.value).length;
+    const label = () => { go.textContent = "🚚 إرسال (" + ready() + " جاهز من " + list.length + ")"; go.disabled = !ready(); };
+    box.onchange = (e) => { if (e.target.closest("[data-bdist]") && !busy) label(); };
+    label();
+    go.onclick = async () => {
+      busy = true; go.disabled = true;
+      Array.from($$("[data-bdist]", box)).forEach((x) => { x.disabled = true; });
+      let ok = 0, fail = 0, skip = 0, stop = false;
+      for (const o of list) {
+        const row = box.querySelector('[data-bid="' + o.id + '"]'), sel = row && row.querySelector("[data-bdist]"), st = row.querySelector(".lp-bst");
+        const dist = sel && sel.value;
+        if (!dist) { if (!st.textContent) { st.textContent = "⏭ تُخطّي — بلا بلدية"; st.className = "lp-bst warn"; } skip++; continue; }
+        const code = codeOf(o), c = o.customer || {};
+        st.className = "lp-bst"; st.textContent = "⏳ جاري الإرسال…";
+        try {
+          const r = await zrCall("create", { order: zrOrderBody(o, infos[code].cityId, dist) }, true);
+          await zrRecord(o, r, code + "|" + (c.commune || ""), dist, src);
+          zrSrc[src].sel().delete(o.id); ok++;
+          st.className = "lp-bst okk"; st.textContent = "✓ أُرسل" + (r.tracking ? " — " + r.tracking : "");
+        } catch (e) {
+          fail++; st.className = "lp-bst err"; st.textContent = "✗ " + e.message;
+          if (/مصرّح|سجّل الدخول/.test(e.message)) { stop = true; break; }
+        }
+      }
+      busy = false;
+      $("#zrErr", box).textContent = "انتهى: أُرسل " + ok + " · فشل " + fail + " · تُخطّي " + skip + (stop ? " — توقّف الإرسال (انتهت الجلسة)." : "");
+      go.disabled = false; go.textContent = "إغلاق";
+      go.onclick = () => { closeModal(m); zrSrc[src].refresh(); };
+    };
+  };
+
+  /* ----- نفس الإرسال داخل «سجل الطلبات» العادي ----- */
+  const zrDrawShopBar = () => {
+    const el = $("#zrShopBar"); if (!el) return;
+    Array.from(zrShopSel).forEach((id) => { if (!ordersCache.some((o) => o.id === id && zrEligible(o))) zrShopSel.delete(id); });
+    const rows = zrShopRows.filter(zrEligible), picked = rows.filter((o) => zrShopSel.has(o.id)).length, n = zrShopSel.size;
+    const sent = ordersCache.filter((o) => o.ship && o.ship.parcelId && !zrDone(o) && o.status !== "cancelled" && !o.binned).length;
+    if (!rows.length && !n && !sent) { el.hidden = true; el.innerHTML = ""; return; }
+    el.hidden = false;
+    el.innerHTML = '<label class="lp-selall"><input type="checkbox" id="zrShopAll"' + (rows.length && picked === rows.length ? " checked" : "") + (rows.length ? "" : " disabled") + '> تحديد الكل <small>(' + rows.length + " جاهزة للإرسال إلى ZR)</small></label>" +
+      '<span class="lp-acts">' + (sent ? '<button class="xw-btn ghost sm" data-zrs="zsyncall">🚚 تحديث حالات الشحن</button>' : "") +
+      '<button class="xw-btn sm" data-zrs="zbulk"' + (n ? "" : " disabled") + ">🚚 إرسال المحدد إلى ZR (" + n + ")</button></span>";
+  };
+  adminEl.addEventListener("click", async (e) => {
+    if (adminTab !== "log") return;
+    const t = e.target.closest("[data-zrs]"); if (!t) return;
+    const act = t.dataset.zrs, id = t.dataset.id;
+    try {
+      if (act === "zsend") { zrOpenSend(id, "shop"); return; }
+      if (act === "zbulk") { zrOpenBulk("shop"); return; }
+      if (act === "zcopy") { const o = ordersCache.find((x) => x.id === id); if (o && o.ship) lpCopy(o.ship.tracking); return; }
+      if (act === "zsync") {
+        const o = ordersCache.find((x) => x.id === id); if (!o || !o.ship) return;
+        t.disabled = true; t.textContent = "...";
+        try { await zrSyncOne(o, "shop"); toast("تم تحديث الحالة", true); } catch (x) { toast(x.message); }
+        zrSrc.shop.refresh(); return;
+      }
+      if (act === "zsyncall") {
+        const list = ordersCache.filter((o) => o.ship && o.ship.parcelId && !zrDone(o) && o.status !== "cancelled" && !o.binned).slice(0, 30);
+        if (!list.length) { toast("لا توجد شحنات للتحديث", true); return; }
+        t.disabled = true; let ok = 0, bad = "";
+        for (let k = 0; k < list.length; k++) { t.textContent = "تحديث " + (k + 1) + "/" + list.length; try { await zrSyncOne(list[k], "shop"); ok++; } catch (x) { bad = x.message; } }
+        toast(ok + " من " + list.length + " تم تحديثها" + (bad ? " — " + bad : ""), ok > 0); zrSrc.shop.refresh(); return;
+      }
+    } catch (x) { toast(x.message); }
+  });
+  adminEl.addEventListener("change", (e) => {
+    if (adminTab !== "log") return;
+    if (e.target.id === "zrShopAll") {
+      zrShopRows.filter(zrEligible).forEach((o) => { if (e.target.checked) zrShopSel.add(o.id); else zrShopSel.delete(o.id); });
+      const ls = $("#xwLogList"); if (ls) ls.innerHTML = zrShopRows.length ? zrShopRows.map((o) => orderCard(o, true)).join("") : ls.innerHTML;
+      zrDrawShopBar(); return;
+    }
+    const cb = e.target.closest("[data-zrsel]");
+    if (cb) { if (cb.checked) zrShopSel.add(cb.dataset.zrsel); else zrShopSel.delete(cb.dataset.zrsel); zrDrawShopBar(); }
+  });
 
   /* ----- الطلبيات ----- */
   const lpOrderCard = (o) => {
     const st = lpStatusOf(o), c = o.customer || {}, ph = String(c.phone || "");
     const wa = "https://wa.me/213" + ph.replace(/\D/g, "").replace(/^0/, "");
     const btn = (a, label, cls) => '<button class="xw-btn ' + (cls || "ghost") + ' sm" data-lp="' + a + '" data-id="' + esc(o.id) + '">' + label + "</button>";
-    return '<div class="xw-card lp-oc ' + st + '"><div class="lp-oc-h"><b>#' + esc(o.id) + '</b><span class="lp-st ' + st + '">' + LP_ST[st] + "</span>" +
+    return '<div class="xw-card lp-oc ' + st + '"><div class="lp-oc-h">' +
+      (zrEligible(o) ? '<label class="lp-sel"><input type="checkbox" data-lpsel="' + esc(o.id) + '"' + (lpUI.sel.has(o.id) ? " checked" : "") + ' aria-label="تحديد الطلب"></label>' : "") + '<b>#' + esc(o.id) + '</b><span class="lp-st ' + st + '">' + LP_ST[st] + "</span>" +
       '<span class="lp-chip">🛬 ' + esc(o.landingTitle || o.landingSlug || "—") + "</span><small>" + esc(fmtDate(o.createdAt)) + "</small></div>" +
       '<div class="lp-oc-g"><div><small>الاسم</small>' + esc(c.name || "") + "</div>" +
       '<div><small>الهاتف</small><a href="tel:' + esc(ph) + '" dir="ltr">' + esc(ph) + '</a> · <a href="' + wa + '" target="_blank" rel="noopener">واتساب</a></div>' +
@@ -5536,6 +5845,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const el = $("#lpOList"); if (!el) return;
     const rows = lpFilterRows();
     el.innerHTML = rows.length ? rows.map(lpOrderCard).join("") : '<div class="xw-empty">ما كاينش طلبيات في هاد الحالة.</div>';
+    lpDrawBulk();
   };
   const lpPaintOrders = () => {
     const pool = lpOrdersOf(lpUI.pageId), c = lpCnt(pool);
@@ -5549,7 +5859,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       (orphan ? '<option value="__gone"' + (lpUI.pageId === "__gone" ? " selected" : "") + ">صفحات محذوفة</option>" : "") + "</select></div>" +
       '<div class="xw-field"><label for="lpQ">بحث</label><input id="lpQ" value="' + esc(lpUI.q) + '" placeholder="اسم، هاتف، رقم الطلب..."></div></div>' +
       '<div class="xw-stats">' + chip("all", "الكل") + chip("unconfirmed", "غير مؤكد") + chip("confirmed", "مؤكد") + chip("cancelled", "ملغى") + "</div></div>" +
-      '<div id="lpOList"></div>';
+      '<div id="lpBulkBar" class="lp-bulk" hidden></div><div id="lpOList"></div>';
     lpDrawOrderList();
   };
 
@@ -5593,7 +5903,18 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         const p = page(id); if (!p || !confirm("تحذف صفحة «" + (p.title || p.slug) + "» نهائياً؟\nطلباتها تبقى محفوظة.")) return;
         await deleteLanding(id); toast("تم الحذف", true); tabLanding(); return;
       }
-      if (act === "badd") { lpCollect(); lpUI.draft.blocks.push({ id: "b" + Math.random().toString(36).slice(2, 8), type: t.dataset.t, items: [] }); lpPaintEdit(); return; }
+      if (act === "badd") {
+        lpCollect(); const bl = lpUI.draft.blocks, nb = { id: "b" + Math.random().toString(36).slice(2, 8), type: t.dataset.t, items: [] };
+        /* الاستمارة في آخر القائمة (الوضع الافتراضي) → البلوك الجديد يدخل قبلها؛ وإذا حرّكتها لمكان آخر يُضاف في النهاية */
+        if (bl.length && bl[bl.length - 1].type === "form") bl.splice(bl.length - 1, 0, nb); else bl.push(nb);
+        lpPaintEdit(); return;
+      }
+      if (act === "fpos") {
+        lpCollect(); const bl = lpUI.draft.blocks, k = bl.findIndex((b) => b.type === "form");
+        const f = k >= 0 ? bl.splice(k, 1)[0] : { id: "bform", type: "form" };
+        if (t.dataset.v === "top") bl.unshift(f); else bl.push(f);
+        lpPaintEdit(); toast(t.dataset.v === "top" ? "الاستمارة الآن في أعلى الصفحة" : "الاستمارة الآن في أسفل الصفحة", true); return;
+      }
       if (act === "bdel") { lpCollect(); lpUI.draft.blocks.splice(+t.dataset.i, 1); lpPaintEdit(); return; }
       if (act === "bmove") {
         lpCollect(); const i = +t.dataset.i, j = i + +t.dataset.d, bl = lpUI.draft.blocks;
@@ -5621,6 +5942,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       }
       /* شحن ZR Xpress */
       if (act === "zsend") { zrOpenSend(id); return; }
+      if (act === "zbulk") { zrOpenBulk(); return; }
       if (act === "zcopy") { const o = XW_LP_ORDERS.find((x) => x.id === id); if (o && o.ship) lpCopy(o.ship.tracking); return; }
       if (act === "zsync") {
         const o = XW_LP_ORDERS.find((x) => x.id === id); if (!o || !o.ship) return;
@@ -5649,6 +5971,12 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   });
   adminEl.addEventListener("change", (e) => {
     if (adminTab !== "landing") return;
+    if (e.target.id === "lpSelAll") {
+      lpFilterRows().filter(zrEligible).forEach((o) => { if (e.target.checked) lpUI.sel.add(o.id); else lpUI.sel.delete(o.id); });
+      lpDrawOrderList(); return;
+    }
+    const cb = e.target.closest("[data-lpsel]");
+    if (cb) { if (cb.checked) lpUI.sel.add(cb.dataset.lpsel); else lpUI.sel.delete(cb.dataset.lpsel); lpDrawBulk(); return; }
     const f = e.target.closest("[data-lpfile]");
     if (f) { const file = f.files && f.files[0]; if (file) lpUploadTo(file, f.dataset.lpfile); return; }
     if (e.target.id === "lpPageF") { lpUI.pageId = e.target.value; lpPaintOrders(); }
@@ -6222,6 +6550,53 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (rst) rst.addEventListener("click", () => save(null, "رجعت الصور الأصلية"));
   };
 
+  /* ----- البانر: شرائح تتبدّل فوق الصفحة الرئيسية — صورة، شارة، عنوان، وصف، سعر، زر ورابط ----- */
+  const tabBanner = () => {
+    const FIELDS = [["badge", "الشارة", "مثال: الأكثر مبيعاً"], ["title", "العنوان", "مثال: مبرد الهاتف للألعاب"], ["desc", "الوصف", "سطر قصير"], ["price", "السعر (اختياري)", "مثال: 2900 DZD"], ["btn", "نص الزر", "مثال: اطلب الآن"], ["href", "رابط الزر", "#shop"]];
+    let draft = (Array.isArray(INFO.banners) ? INFO.banners : []).slice(0, 8).map((b) => Object.assign({}, b));
+    const draw = () => {
+      $("#xwBody").innerHTML = '<div id="bnAdmin"><div class="xw-card" style="max-width:840px"><h3>🎞️ سلايدر البانر</h3>' +
+        '<p class="xw-note" style="margin:-6px 0 16px">شرائح كتتبدّل لحالها فوق الصفحة الرئيسية (حتى 8). لكل شريحة: صورة، وكلمات اختيارية فوقها. إذا خليت الكلمات فارغة تبان الصورة وحدها (مناسب لصورة فيها الكتابة جاهزة). الشريحة بلا صورة ما تبانش. مقاس الصورة الأحسن: عريضة نحو 1200×560.</p>' +
+        (draft.length ? draft.map((b, i) =>
+          '<div class="xw-line hero-slot"><div class="he-prev">' + (b.img ? '<img src="' + esc(cld(b.img, 500, 240)) + '" alt="">' : "<span>ما كايناش صورة</span>") + "</div>" +
+          '<div class="he-fields"><div style="display:flex;justify-content:space-between;align-items:center"><b>شريحة ' + (i + 1) + '</b><button type="button" class="xw-btn danger sm" data-bdel="' + i + '">حذف</button></div>' +
+          '<div class="xw-field"><label>رابط الصورة</label><input data-bs="' + i + '" data-bk="img" value="' + esc(b.img || "") + '" placeholder="https://… أو ارفعها من تحت" spellcheck="false"></div>' +
+          '<label class="xw-btn ghost sm he-up" style="cursor:pointer">📷 ارفع صورة<input type="file" accept="image/*" data-bs="' + i + '" data-bk="file" hidden></label>' +
+          '<div class="xw-row">' + FIELDS.map((f) => '<div class="xw-field"><label>' + f[1] + '</label><input data-bs="' + i + '" data-bk="' + f[0] + '" value="' + esc(b[f[0]] || "") + '" placeholder="' + f[2] + '"></div>').join("") + "</div></div></div>").join("")
+          : '<div class="xw-empty">ما كاين حتى شريحة. زيد وحدة.</div>') +
+        '<div class="xw-err" id="bnErr"></div><div style="display:flex;gap:10px;flex-wrap:wrap">' +
+        '<button type="button" class="xw-btn ghost" id="bnAdd"' + (draft.length >= 8 ? " disabled" : "") + '>+ إضافة شريحة</button>' +
+        '<button type="button" class="xw-btn" id="bnSave">حفظ البانر</button></div></div></div>';
+      const root = $("#bnAdmin"), say = (m) => { const e = $("#bnErr"); if (e) e.textContent = m; };
+      const collect = () => { root.querySelectorAll("[data-bs]").forEach((el) => { const i = +el.dataset.bs, k = el.dataset.bk; if (draft[i] && k !== "file") draft[i][k] = String(el.value || "").trim(); }); };
+      root.addEventListener("click", async (e) => {
+        const del = e.target.closest("[data-bdel]");
+        if (del) { collect(); draft.splice(+del.dataset.bdel, 1); draw(); return; }
+        if (e.target.closest("#bnAdd")) { collect(); if (draft.length < 8) draft.push({ img: "", badge: "", title: "", desc: "", price: "", btn: "", href: "#shop" }); draw(); return; }
+        if (e.target.closest("#bnSave")) {
+          collect();
+          const list = draft.filter((b) => b.img).map((b) => Object.assign({}, b, { href: b.href || "#shop" }));
+          try { await saveInfo(Object.assign({}, INFO, { banners: list.length ? list : null })); say(""); toast(list.length ? "تم حفظ البانر" : "تم إخفاء البانر", true); }
+          catch (ex) { say("تعذّر الحفظ: " + (ex.code || ex.message)); }
+        }
+      });
+      root.addEventListener("change", async (e) => {
+        const f = e.target.closest('input[type="file"][data-bs]'); if (!f) return;
+        const file = f.files && f.files[0]; if (!file) return;
+        const i = +f.dataset.bs, prev = root.querySelectorAll(".he-prev")[i];
+        if (prev) prev.innerHTML = "<span>⏳ جاري الرفع…</span>";
+        try {
+          const url = await uploadImage(file), t = root.querySelector('[data-bs="' + i + '"][data-bk="img"]');
+          if (t) t.value = url;
+          if (prev) prev.innerHTML = '<img src="' + esc(cld(url, 500, 240)) + '" alt="">';
+          say("");
+        } catch (ex) { if (prev) prev.innerHTML = "<span>ما رفعتش الصورة</span>"; say("تعذّر الرفع: " + (ex.message || "خطأ غير معروف")); }
+        f.value = "";
+      });
+    };
+    draw();
+  };
+
   /* ----- Store info ----- */
   /* ---------- the two files Google goes and reads ---------- */
   const xmlEsc = (s) => String(s)
@@ -6270,6 +6645,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const list = window.PRODUCTS || [];
     const out = list.filter(inStock).length;
     const bad = !/^https?:\/\/[^\s/]+/i.test(siteUrl());
+    const gsvNow = xwGsvCode(INFO.gsv);
     const note = list.length === 0
       ? `<b style="color:#E24A1B">ما كاين حتى منتج. سجّل المنتجات الأول.</b>`
       : `ما في sitemap فيه <b>${list.length + 1}</b> رابط — ${list.length} منتج${out !== list.length ? `، منهم ${list.length - out} نافد المخزون` : ""} — زائد الصفحة الرئيسية.`;
@@ -6288,6 +6664,18 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       `</div>`,
       `<div class="xw-note" style="margin-top:10px">${note}</div>`,
       `</div>`,
+      `<div class="xw-card" style="max-width:900px;margin-top:16px">`,
+      `<h3>🔐 إثبات ملكية الموقع عند جوجل</h3>`,
+      `<p class="xw-note" style="margin:-6px 0 14px">باش تقبل جوجل الـ Sitemap لازم تثبت أنك صاحب الموقع. في <b>Google Search Console</b> اختر <b>URL prefix</b> واكتب عنوان موقعك، ثم اختر طريقة <b>HTML tag</b> وانسخ الوسم، والصقه هنا. يُزرع تلقائياً في أول <b>&lt;head&gt;</b> للصفحة الرئيسية. بعد الحفظ ارجع لجوجل واضغط <b>Verify</b>.</p>`,
+      `<div class="xw-field"><label>كود التحقق <small>(الصق الوسم كامل، أو الكود فقط)</small></label>`,
+      `<textarea data-si="gsv" rows="3" placeholder='<meta name="google-site-verification" content="..." />' spellcheck="false" dir="ltr" style="text-align:left;min-height:84px"></textarea>`,
+      `<div class="xw-note" style="margin-top:8px" id="gsvNote">${gsvNow ? `<b style="color:#16a34a">✓ مفعّل</b> — الكود المحفوظ: <span dir="ltr">${esc(gsvNow.slice(0, 6))}…${esc(gsvNow.slice(-4))}</span> — يُضاف إلى <b>&lt;head&gt;</b> الصفحة الرئيسية.` : `ما كاين كود محفوظ.`}</div></div>`,
+      `<div class="xw-row" style="margin-top:6px">`,
+      `<button type="button" class="xw-btn" id="gsvSave">حفظ كود التحقق</button>`,
+      gsvNow ? `<button type="button" class="xw-btn danger" id="gsvDel">حذف الكود</button>` : ``,
+      `</div>`,
+      `<div class="xw-note" style="margin-top:10px">الوسم يُضاف بجافاسكربت عند تحميل الصفحة. إذا رفضت جوجل التحقق، ثبّته يدوياً مباشرة داخل <b>&lt;head&gt;</b> في ملف index.html.</div>`,
+      `</div>`,
       `</form>`,
     ].join("");
     /* read at use time, never cached - the same lesson as the hero tab */
@@ -6305,6 +6693,24 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         await saveInfo(Object.assign({}, INFO, { site: v }));
         INFO.site = v;
         toast("تّبعت — راه محفوظ", true);
+      } catch (e) { toast("ما تّبعتش — تحقّق من الاتصال"); }
+    });
+    on("gsvSave", async () => {
+      const f = box.querySelector('[data-si="gsv"]'), raw = f ? f.value : "";
+      const code = xwGsvCode(raw);
+      if (!code) return toast("الكود غير صالح — الصق الوسم كاملاً كما أعطته جوجل، أو الكود فقط (حروف وأرقام و - _)");
+      try {
+        await saveInfo(Object.assign({}, INFO, { gsv: code }));
+        toast("حُفظ كود التحقق — صار في <head> الصفحة الرئيسية", true);
+        tabSeo();
+      } catch (e) { toast("ما تّبعتش — تحقّق من الاتصال"); }
+    });
+    on("gsvDel", async () => {
+      if (!confirm("تحذف كود التحقق من جوجل؟ سيختفي الوسم من الصفحة الرئيسية.")) return;
+      try {
+        await saveInfo(Object.assign({}, INFO, { gsv: "" }));
+        toast("تم حذف الكود", true);
+        tabSeo();
       } catch (e) { toast("ما تّبعتش — تحقّق من الاتصال"); }
     });
   };
@@ -6326,6 +6732,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       if (mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) { $("#iErr").textContent = "الإيميل غير صحيح — اكتبه بصيغة name@example.com أو اتركه فارغاً."; return; }
       /* saving the shop info must leave the top-of-page pictures alone */
       next.hero = Array.isArray(INFO.hero) ? INFO.hero : null;
+      next.banners = Array.isArray(INFO.banners) ? INFO.banners : null;
       /* the SEO tab owns the domain */
       next.site = INFO.site || XW_INFO_DEFAULTS.site;
       Object.keys(XW_INFO_DEFAULTS).forEach((k) => { if (!next[k] && XW_SOCIAL_OPTIONAL.indexOf(k) < 0) next[k] = XW_INFO_DEFAULTS[k]; });
@@ -6837,15 +7244,20 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const chips = cols.length > 1
       ? '<div class="lp-colors" id="lpColors"><b>اختر اللون <i>*</i></b><div>' + cols.map((c) => '<button type="button" class="lp-col" data-lp-col="' + esc(c.name) + '"' + (Number(c.stock) > 0 ? "" : " disabled") + ">" + esc(c.name) + (Number(c.stock) > 0 ? "" : " (نفذ)") + "</button>").join("") + "</div></div>"
       : "";
+    const formHTML = '<section class="lp-formwrap" id="lpFormWrap"><h2>' + esc(lp.formTitle || "اطلب الآن") + "</h2>" +
+      (inS ? chips + '<div class="lp-chk" id="lpCheckoutBox"></div>' : '<div class="lp-out">نفذ المخزون حالياً — تواصل معنا عبر واتساب.</div>') + "</section>";
+    let formUsed = false;
+    const bodyHTML = (lp.blocks || []).map((b) => {
+      if (b.type === "form") { if (formUsed) return ""; formUsed = true; return formHTML; }
+      return lpBlockHTML(b);
+    }).join("") + (formUsed ? "" : formHTML);
     box.innerHTML = '<div class="lp-page">' +
       '<header class="lp-hero">' + (lp.badge ? '<span class="lp-badge">' + esc(lp.badge) + "</span>" : "") +
       "<h1>" + esc(lp.headline || lp.title) + "</h1>" + (lp.subhead ? '<p class="lp-sub">' + esc(lp.subhead) + "</p>" : "") +
       (hero ? '<div class="lp-heroimg"><img src="' + esc(cld(hero, 960)) + '" alt="' + esc(p.name) + '" decoding="async" fetchpriority="high"></div>' : "") +
       '<div class="lp-price"><b>' + fmt(sp) + ' دج</b>' + (old ? "<s>" + fmt(old) + " دج</s>" : "") + "</div>" +
       (inS ? '<button type="button" class="lp-cta" data-lp-go>' + esc(cta) + "</button>" : '<div class="lp-out">نفذ المخزون حالياً</div>') + "</header>" +
-      (lp.blocks || []).map(lpBlockHTML).join("") +
-      '<section class="lp-formwrap" id="lpFormWrap"><h2>' + esc(lp.formTitle || "اطلب الآن") + "</h2>" +
-      (inS ? chips + '<div class="lp-chk" id="lpCheckoutBox"></div>' : '<div class="lp-out">نفذ المخزون حالياً — تواصل معنا عبر واتساب.</div>') + "</section>" +
+      bodyHTML +
       '<footer class="lp-foot"><span class="brand">X<b> STORE</b></span> · الدفع عند الاستلام · <button type="button" class="lp-trk-link" data-track>📦 تتبّع طلبك</button>' + (lp.hideNav ? "" : ' · <a href="/#shop">تصفح المتجر</a>') + "</footer></div>" +
       (inS && lp.floatBtn !== false ? '<div class="lp-float" id="lpFloat"><button type="button" data-lp-go>' + esc(cta) + "</button></div>" : "");
 
