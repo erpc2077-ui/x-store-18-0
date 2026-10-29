@@ -1867,6 +1867,23 @@ html[dir="ltr"] .bn-ov { background: linear-gradient(to right, rgba(0, 0, 0, .72
 .lp-ofrow label.lp-ck { display: flex; align-items: center; gap: 6px; font-size: 13px; padding-bottom: 12px; white-space: nowrap; }
 @media (max-width: 640px) { .lp-ofrow { grid-template-columns: 1fr 1fr; } }
 
+/* ===== عروض الاختيار: مربعات (شبكة) أو قائمة + صورة إعلان اختيارية ===== */
+.lp-og { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 12px; }
+.lp-og > b, .lp-og > .lp-offad { grid-column: 1 / -1; }
+.lp-offad { width: 100%; border-radius: 16px; display: block; border: 1px solid var(--line-2); }
+.lp-og .lp-of { flex-direction: column; align-items: stretch; gap: 8px; padding: 10px; text-align: center; margin-top: 8px; }
+.lp-og .lp-of img { width: 100%; height: auto; aspect-ratio: 1 / 1; border-radius: 12px; }
+.lp-og .lp-of-n { flex: none; font-size: 13px; line-height: 1.45; }
+.lp-og .lp-of-p { align-items: center; }
+.lp-og .lp-of-p b { font-size: 16px; }
+.lp-og .lp-of-best { top: -11px; inset-inline-end: auto; inset-inline-start: 50%; transform: translateX(-50%); white-space: nowrap; }
+html[dir="rtl"] .lp-og .lp-of-best { transform: translateX(50%); }
+@media (max-width: 640px) {
+  .lp-og { grid-template-columns: repeat(2, 1fr); }
+  .lp-og .lp-of.wide { grid-column: 1 / -1; }
+  .lp-og .lp-of.wide img { aspect-ratio: 16 / 9; }
+}
+
 /* ===== p62 - المميزات على الهاتف: شبكة 2×2 مثل الحاسوب ===== */
 @media (max-width: 720px) {
   .features { padding: 44px 14px; }
@@ -2264,7 +2281,7 @@ html[data-theme="dark"] .xws.off { color: #D4D4D8; border-color: rgba(212, 212, 
         <h4 data-i18n="shopCol">المتجر</h4>
         <ul>
           <li><a href="#shop">المتجر</a></li>
-          <li><a href="#products">العروض الحصرية</a></li>
+          <li><a href="#products" data-i18n="dealsBtn">العروض المجمّعة</a></li>
         </ul>
       </div>
     </div>
@@ -4531,7 +4548,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const renderAdmin = () => {
     const newCount = ordersCache.filter((o) => o.status === "new" && !o.binned).length;
     const binCount = ordersCache.filter((o) => o.binned).length;
-    const leadCount = xwLeadList().filter((l) => !l.converted && !l.ok).length;
+    const leadCount = xwLeadNewCount();
     adminEl.innerHTML =
       '<div class="xw-ah"><div class="xw-ah-in"><h2>' + GEAR_SVG + " غرفة الإدارة</h2><div style=\"display:flex;gap:10px;align-items:center;flex-wrap:wrap\">" +
       '<span class="xw-badge ' + (online || !db ? "" : "off") + '" id="xwConn"></span>' +
@@ -5399,7 +5416,28 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   let leadFilter = "all", leadEdit = null, leadsPulled = false;
   /* العدّاد على التبويب يتبع نفس تعريف «غير مؤكد» اللي في الفلتر */
   const xwLeadSt = (l) => l.st || (l.ok ? "ok" : "");
+  /* رقم واحد = سطر واحد (آخر نسخة)، والقرار اليدوي (st) يُؤخذ من أي نسخة للرقم نفسه */
   const xwLeadGroups = () => {
+    const sorted = xwLeadList().filter((l) => l && l.phone).slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    const seen = new Map();
+    sorted.forEach((l) => {
+      if (!seen.has(l.phone)) { seen.set(l.phone, Object.assign({ tries: 1 }, l)); return; }
+      const cur = seen.get(l.phone); cur.tries = (cur.tries || 1) + 1;
+      if (!cur.st && l.st) { cur.st = l.st; cur.ok = l.st === "ok"; }
+    });
+    return Array.from(seen.values());
+  };
+  /* العدّاد على التبويب = الأرقام اللي ما قرّرتش فيها بعد (بلا تحديد) */
+  const xwLeadNewCount = () => xwLeadGroups().filter((l) => !xwLeadSt(l)).length;
+  const paintLeadBadge = () => {
+    const b = document.querySelector('#xwAdmin [data-at="leads"], [data-at="leads"]'); if (!b) return;
+    const n = xwLeadNewCount();
+    let em = b.querySelector("em");
+    if (!n) { if (em) em.remove(); return; }
+    if (!em) { em = document.createElement("em"); b.appendChild(em); }
+    em.textContent = n;
+  };
+  const tabLeads = () => {
     const all = xwLeadGroups();
     /* معلومة فقط: هل أرسل هذا الرقم طلباً فعلاً — لا تغيّر تصنيفه */
     const handed = new Set(ordersCache.map((o) => String((o.customer || {}).phone || "").replace(/\D/g, "")).filter(Boolean));
@@ -5669,6 +5707,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="lp-sect">عروض الاختيار (الباكات)</div>' +
       '<p class="xw-note" style="margin:-4px 0 10px">اختياري: زيد باكات أو منتجات أخرى في نفس الصفحة، والزبون يختار واحد (مثل «اختر العرض») والسعر يتبدّل لحاله. المنتج الأساسي فوق يبقى أول خيار. الباكة تتصنع من تبويب «العروض المجمّعة».</p>' +
       lpF("عنوان القسم", '<input id="lpOffTitle" value="' + esc(d.offersTitle || "") + '" placeholder="اختر العرض">') +
+      lpF("شكل العروض", '<select id="lpOffLayout"><option value="grid"' + (d.offersLayout !== "list" ? " selected" : "") + '>▦ مربعات (عمودين على الهاتف)</option><option value="list"' + (d.offersLayout === "list" ? " selected" : "") + '>☰ قائمة (سطر لكل عرض)</option></select>') +
+      lpF("صورة إعلان للعروض <small>(اختياري — صورة واحدة تظهر فوق العروض)</small>", lpImgField(d.offersAd, 'id="lpOffAd"', "offad")) +
       '<div class="lp-ofrow"><div class="xw-field"><label>المنتج الأساسي — اسم يبان <small>(اختياري)</small></label><input id="lpMainLabel" value="' + esc(d.mainLabel || "") + '" placeholder="فارغ = اسم المنتج"></div><div class="xw-field"><label>&nbsp;</label><input disabled value="(المنتج المختار فوق)"></div><label class="lp-ck"><input type="checkbox" id="lpMainBest"' + (d.mainBest ? " checked" : "") + '> ⭐ أفضل عرض</label><span></span></div>' +
       '<div id="lpOffers">' + (d.offers || []).map((o, i) => '<div class="lp-ofrow" data-oi="' + i + '"><div class="xw-field"><label>عرض ' + (i + 1) + '</label><select data-of="pid"><option value="">— اختر منتج/باكة —</option>' + (window.PRODUCTS || []).map((q) => '<option value="' + esc(q.id) + '"' + (q.id === o.pid ? " selected" : "") + ">" + (q.bundle ? "📦 " : "") + esc(q.name) + " — " + fmt(sellPrice(q)) + " دج</option>").join("") + '</select></div><div class="xw-field"><label>اسم يبان <small>(اختياري)</small></label><input data-of="label" value="' + esc(o.label || "") + '" placeholder="فارغ = اسم المنتج"></div><label class="lp-ck"><input type="checkbox" data-of="best"' + (o.best ? " checked" : "") + '> ⭐ أفضل عرض</label><button type="button" class="xw-btn danger sm" data-lp="odel" data-i="' + i + '">✕</button></div>').join("") + "</div>" +
       '<button type="button" class="xw-btn ghost sm" data-lp="oadd">➕ إضافة عرض</button>' +
@@ -5685,7 +5725,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     d.published = g("lpPub") !== "0"; d.hideNav = g("lpNav") === "0"; d.floatBtn = g("lpFloat") !== "0"; d.heroBtn = g("lpHeroBtn") !== "0";
     d.ctaText = g("lpCta").trim(); d.badge = g("lpBadge").trim(); d.headline = g("lpHead").trim(); d.subhead = g("lpSub").trim();
     d.heroImg = g("lpHero").trim(); d.formTitle = g("lpFormT").trim();
-    d.offersTitle = g("lpOffTitle").trim(); d.mainLabel = g("lpMainLabel").trim();
+    d.offersTitle = g("lpOffTitle").trim(); d.offersLayout = g("lpOffLayout") === "list" ? "list" : "grid"; d.offersAd = g("lpOffAd").trim(); d.mainLabel = g("lpMainLabel").trim();
     { const mb = document.getElementById("lpMainBest"); d.mainBest = !!(mb && mb.checked); }
     d.offers = Array.from($$("#lpOffers [data-oi]")).map((row) => {
       const f = (k) => row.querySelector('[data-of="' + k + '"]');
@@ -5982,7 +6022,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     if (!url) { toast("تعذّر رفع الصورة"); return; }
     lpCollect();
     const d = lpUI.draft;
-    if (key === "hero") d.heroImg = url; else { const i = +String(key).slice(1); if (d.blocks[i]) d.blocks[i].url = url; }
+    if (key === "hero") d.heroImg = url; else if (key === "offad") d.offersAd = url; else { const i = +String(key).slice(1); if (d.blocks[i]) d.blocks[i].url = url; }
     lpPaintEdit();
     toast("تم رفع الصورة", true);
   };
@@ -7467,9 +7507,11 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const chipsOf = (pr) => { const cols = pColors(pr); return cols.length > 1
       ? '<div class="lp-colors" id="lpColors"><b>اختر اللون <i>*</i></b><div>' + cols.map((c) => '<button type="button" class="lp-col" data-lp-col="' + esc(c.name) + '"' + (Number(c.stock) > 0 ? "" : " disabled") + ">" + esc(c.name) + (Number(c.stock) > 0 ? "" : " (نفذ)") + "</button>").join("") + "</div></div>"
       : ""; };
-    const offersHTML = opts.length ? '<div class="lp-offers" id="lpOffers"><b>' + esc(lp.offersTitle || "اختر العرض") + "</b>" + opts.map((x) => {
+    const ogGrid = lp.offersLayout !== "list", ogOdd = opts.length % 2 === 1;
+    const offersHTML = opts.length ? '<div class="lp-offers' + (ogGrid ? " lp-og" : "") + '" id="lpOffers"><b>' + esc(lp.offersTitle || "اختر العرض") + "</b>" +
+      (/^https?:\/\//i.test(lp.offersAd || "") ? '<img class="lp-offad" src="' + esc(cld(lp.offersAd, 900)) + '" alt="" loading="lazy" decoding="async">' : "") + opts.map((x, oi) => {
       const im = (x.q.images && x.q.images[0]) || x.q.img || "", ok = inStock(x.q), ol = listPrice(x.q);
-      return '<button type="button" class="lp-of' + (x.q.id === cur.id ? " on" : "") + '" data-lp-of="' + esc(x.q.id) + '"' + (ok ? "" : " disabled") + ">" +
+      return '<button type="button" class="lp-of' + (x.q.id === cur.id ? " on" : "") + (ogGrid && ogOdd && oi === opts.length - 1 ? " wide" : "") + '" data-lp-of="' + esc(x.q.id) + '"' + (ok ? "" : " disabled") + ">" +
         (x.best ? '<span class="lp-of-best">⭐ أفضل عرض</span>' : "") +
         (im ? '<img src="' + esc(cld(im, 120)) + '" alt="" loading="lazy" decoding="async">' : "") +
         '<span class="lp-of-n">' + esc(x.label || x.q.name) + (ok ? "" : " (نفذ)") + "</span>" +
