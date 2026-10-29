@@ -1667,7 +1667,7 @@ button.xw-stat.on { border-color: #FF6B00; box-shadow: 0 0 0 3px rgba(255, 107, 
 
 
 /* ============ صفحات الهبوط ============ */
-body.lp-mode main.page, body.lp-mode #footer { display: none !important; }
+body.lp-mode main.page, body.lp-mode #footer, body.lp-mode #reviews, body.lp-mode #rate { display: none !important; }
 body.lp-mode #xwLandingBox { display: block; }
 #xwLandingBox { display: none; }
 /* القائمة العلوية مخفية: يبقى الشعار فقط، بدون روابط وبدون زر تصفح */
@@ -1696,6 +1696,19 @@ body.lp-mode.lp-nav-off .nav-logo { pointer-events: none; }
 .lp-fig img { width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--line); display: block; }
 .lp-fig figcaption { color: var(--muted); font-size: 14px; text-align: center; margin-top: 8px; }
 .lp-feat { display: grid; gap: 10px; }
+.lp-rev h2 { text-align: center; }
+.lp-rev-sub { text-align: center; color: var(--muted); font-size: 14px; margin: -4px 0 14px; }
+.lp-rev-grid { columns: 2; column-gap: 10px; }
+.lp-rev-grid button { display: block; width: 100%; padding: 0; margin: 0 0 10px; break-inside: avoid; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); cursor: zoom-in; box-shadow: 0 8px 22px -14px rgba(0,0,0,.35); position: relative; }
+.lp-rev-grid img { width: 100%; height: auto; display: block; }
+.lp-rev-badge { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 4px auto 14px; padding: 8px 16px; width: fit-content; border-radius: 999px; background: #dcfce7; color: #15803d; font-weight: 900; font-size: 14px; }
+html[data-theme="dark"] .lp-rev-badge { background: rgba(16,185,129,.18); color: #34D399; }
+@media (min-width: 700px) { .lp-rev-grid { columns: 3; } }
+#xwRevLb { position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,.92); display: flex; align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; }
+#xwRevLb img { max-width: 100%; max-height: 100%; border-radius: 10px; }
+#xwRevLb span { position: absolute; top: 14px; right: 16px; color: #fff; font-size: 30px; line-height: 1; }
+.lp-rev-ed { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; margin: 8px 0; }
+.lp-rev-ed img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid var(--line); }
 .lp-feat li { position: relative; padding: 13px 48px 13px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); font-size: 16px; line-height: 1.7; font-weight: 600; }
 .lp-feat li::before { content: "✓"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 26px; height: 26px; border-radius: 50%; background: #dcfce7; color: #16a34a; font-weight: 900; display: flex; align-items: center; justify-content: center; }
 .lp-sec .xw-video { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: #000; }
@@ -1821,7 +1834,7 @@ html[data-theme="dark"] .xw-prow-tags i,
 html[data-theme="dark"] .toast { background: #0A0604; color: #fff; }
 .bn { position: relative; max-width: 1280px; margin: 0 auto; padding: 84px 16px 0; }
 .bn[hidden] { display: none; }
-.bn-view { position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 21 / 8; min-height: 190px; background: #0A0604; border: 1px solid rgba(255, 107, 0, .25); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, .5); touch-action: pan-y; }
+.bn-view { position: relative; width: 100%; max-width: 100%; overflow: hidden; border-radius: 20px; aspect-ratio: 21 / 8; min-height: 190px; background: #0A0604; border: 1px solid rgba(255, 107, 0, .25); box-shadow: 0 18px 44px -20px rgba(0, 0, 0, .5); touch-action: pan-y; }
 .bn-slide { position: absolute; inset: 0; display: block; opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility .6s; color: #fff; }
 .bn-slide.on { opacity: 1; visibility: visible; z-index: 1; }
 .bn-slide > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -1831,12 +1844,63 @@ html[dir="ltr"] .bn-ov { background: linear-gradient(to right, rgba(0, 0, 0, .72
 .bn-title { font-family: var(--what-font); font-weight: 900; font-size: clamp(18px, 4.6vw, 42px); line-height: 1.2; max-width: 60%; color: #fff; }
 .bn-desc { font-size: clamp(11px, 2.4vw, 16px); color: #FFD9C2; max-width: 56%; line-height: 1.6; }
 .bn-price { font-family: var(--what-font); font-weight: 900; font-size: clamp(16px, 3.6vw, 30px); color: #FF8A3D; }
-.bn-btn { margin-top: 4px; background: linear-gradient(90deg, #FF6B00, #FF2D55); color: #fff; font-family: var(--what-font); font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); padding: 8px 18px; border-radius: 10px; box-shadow: 0 10px 24px -10px rgba(255, 90, 20, .7); }
+.bn-btn { display: inline-block; cursor: pointer; margin-top: 4px; background: linear-gradient(90deg, #FF6B00, #FF2D55); color: #fff; font-family: var(--what-font); font-weight: 800; font-size: clamp(11px, 2.6vw, 15px); padding: 8px 18px; border-radius: 10px; box-shadow: 0 10px 24px -10px rgba(255, 90, 20, .7); }
 .bn-dots { position: absolute; z-index: 2; bottom: 10px; inset-inline: 0; display: flex; justify-content: center; gap: 7px; }
 .bn-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .45); cursor: pointer; transition: all .25s; }
 .bn-dots button.on { width: 22px; border-radius: 6px; background: #FF6B00; }
 .bn:not([hidden]) + .hero { min-height: auto; padding-top: 24px; }
-@media (max-width: 640px) { .bn { padding-top: 76px; } .bn-view { aspect-ratio: 2 / 1; border-radius: 16px; } .bn-title, .bn-desc { max-width: 66%; } }
+@media (max-width: 640px) { .bn { padding-top: 76px; padding-left: 14px; padding-right: 14px; } .bn-view { aspect-ratio: 2 / 1; border-radius: 16px; } .bn-title, .bn-desc { max-width: 66%; } }
+
+/* ===== p61 - صفحات الهبوط: اختر العرض (باكات متعددة في صفحة واحدة) ===== */
+.lp-offers { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.lp-offers > b { font-size: 17px; text-align: start; }
+.lp-of { position: relative; display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 16px; border: 2px solid var(--line-2); background: var(--card); color: var(--ink); text-align: start; cursor: pointer; transition: border-color .2s, box-shadow .2s, background .2s; }
+.lp-of.on { border-color: #FF6B00; background: rgba(255, 107, 0, .08); box-shadow: 0 0 0 3px rgba(255, 107, 0, .14); }
+.lp-of[disabled] { opacity: .45; cursor: not-allowed; }
+.lp-of img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex: none; background: var(--fill); }
+.lp-of-n { flex: 1; font-weight: 800; font-size: 15px; line-height: 1.5; }
+.lp-of-p { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex: none; }
+.lp-of-p b { font-family: var(--what-font); font-weight: 900; font-size: 17px; color: #FF6B00; white-space: nowrap; }
+.lp-of-p s { color: var(--faint); font-size: 12px; }
+.lp-of-best { position: absolute; top: -13px; inset-inline-end: 14px; background: linear-gradient(90deg, #FF6B00, #E11D2E); color: #fff; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 999px; box-shadow: 0 6px 16px -6px rgba(225, 29, 46, .6); }
+.lp-ofrow { display: grid; grid-template-columns: 1.4fr 1fr auto auto; gap: 8px; align-items: end; margin-bottom: 8px; }
+.lp-ofrow label.lp-ck { display: flex; align-items: center; gap: 6px; font-size: 13px; padding-bottom: 12px; white-space: nowrap; }
+@media (max-width: 640px) { .lp-ofrow { grid-template-columns: 1fr 1fr; } }
+
+/* ===== p62 - المميزات على الهاتف: شبكة 2×2 مثل الحاسوب ===== */
+@media (max-width: 720px) {
+  .features { padding: 44px 14px; }
+  .feat-grid { grid-template-columns: repeat(2, 1fr); gap: 30px 12px; }
+  .feat-icon { width: 66px; height: 72px; }
+  .feat-svg { width: 28px; height: 28px; }
+  .feat-card h3 { font-size: 15px; margin-top: 12px; padding-bottom: 6px; }
+  .feat-card p { font-size: 12px; line-height: 1.65; margin-top: 8px; max-width: 100%; }
+}
+
+/* ===== p63 - حالات المتابعة صارت حالات طلب بتبويبات في سجل الطلبات ===== */
+.xws.noans { color: #B45309; border-color: #B45309; background: rgba(180, 83, 9, .12); }
+.xws.deferred { color: #7C3AED; border-color: #7C3AED; background: rgba(124, 58, 237, .12); }
+.xws.off { color: #52525B; border-color: #52525B; background: rgba(82, 82, 91, .14); }
+html[data-theme="dark"] .xws.noans { color: #FCD34D; border-color: rgba(252, 211, 77, .6); background: rgba(252, 211, 77, .14); }
+html[data-theme="dark"] .xws.deferred { color: #C4B5FD; border-color: rgba(196, 181, 253, .6); background: rgba(196, 181, 253, .14); }
+html[data-theme="dark"] .xws.off { color: #D4D4D8; border-color: rgba(212, 212, 216, .5); background: rgba(212, 212, 216, .12); }
+
+/* ===== p64 - البطاقات العائمة (مراوح تبريد، سماعات، قفازات): تظهر على الحاسوب وتختفي على الهاتف ===== */
+@media (max-width: 900px) {
+  .hero-visual { display: none; }
+  .hero { min-height: auto; padding-top: 92px; }
+  .hero-inner { padding: 16px 20px 44px; gap: 0; }
+  .hero-title { margin-top: 16px; }
+}
+/* Hide 'view all products' band on mobile */
+@media (max-width: 768px) {
+  .cta-band { display: none !important; }
+}
+/* Mobile: category chips packed tightly, each row stretches to fill the width (no empty gaps) */
+@media (max-width: 768px) {
+  .shop-tabs { gap: 8px; justify-content: stretch; margin-bottom: 28px; }
+  .shop-tabs .tab { flex: 1 1 auto; text-align: center; padding: 10px 14px; font-size: 13px; white-space: nowrap; }
+}
 </style>
 
   <!-- the card Google shows when someone shares a link to the shop -->
@@ -2817,7 +2881,7 @@ window.REVIEWS = [
 
   const XW_COMMUNES = {"10":["آث منصور","الأخضرية","الأسنام","أعمر","أغبالو","أمشدالة","أهل القصر","أولاد راشد","أيت لعزيز","بئر غبالو","برج أوخريص","بشلول","بودربالة","بوكرم","البويرة","تاغزوت","تاقديت","جباحية","الحاكمية","الحجرة الزرقاء","حنيف","حيزر","الخبوزية","الدشمية","ديرة","روراوة","ريدان","زبربر","سحاريج","سور الغزلان","سوق الخميس","شرفة","العجيبة","عين الترك","عين الحجر","عين العلوي","عين بسام","قادرية","قرومة","مزدور","معلة","المعمورة","المقراني","الهاشمية","وادي البردي"],"11":["ابلسة","أدلس","تاظروك","تمنراست","عين امقل"],"12":["أم علي","بئر الذهب","بئر العاتر","بئر مقدم","بجن","بكارية","بوخضرة","بولحاف الدير","تبسة","ثليجان","الحمامات","الحويجبات","سطح قنطيس","الشريعة","صفصاف الوسرى","العقلة","العقلة المالحة","العوينات","عين الزرقاء","فركان","قريقر","الكويف","الماء الابيض","مرسط","المريج","المزرعة","نقرين","الونزة"],"13":["أولاد رياح","أولاد ميمون","باب العسة","بن سكران","بني بهدل","بني بوسعيد","بني خلاد","بني سنوس","بني صميل","بني مستر","بني وارسوس","بوحلو","البويهي","تلمسان","تيانت","تيرني بني هديل","جبالة","حمام بوغرارة","الحناية","دار يغمراسن","الرمشي","زناتة","سبدو","سبعة شيوخ","السواحلية","السواني","سوق الثلاثاء","سيدي الجيلالي","سيدي العبدلي","سيدي مجاهد","شتوان","صبرة","العريشة","العزايل","عمير","عين الكبيرة","عين النحالة","عين تالوت","عين غرابة","عين فتاح","عين فزة","عين يوسف","الغزوات","الفحول","فلاوسن","القور","مرسى بن مهيدي","مسيردة الفواقة","مغنية","منصورة","ندرومة","هنين","وادي الخضر"],"14":["بوقرة","تاقدمت","تخمرت","توسنينة","تيارت","تيدة","جبيلات الرصفاء","جيلالي بن عمار","حمادية","دحموني","الرحوية","الرشايقة","زمالة الأمير عبد القادر","السبت","السبعين","سرغين","السوقر","سي عبد الغني","سيدي بختي","سيدي حسني","سيدي عبد الرحمن","سيدي علي ملال","شحيمة","عين الحديد","عين الذهب","عين بوشقيف","عين دزاريت","عين كرمس","الفايجة","فرندة","قرطوفة","قصر الشلالة","مادنة","مدروسة","مدريسة","مشرع الصفا","مغيلة","ملاكو","مهدية","الناظورة","النعيمة","وادي ليلي"],"15":["إبودرارن","أبي يوسف","الأربعــاء ناث إيراثن","أزفون","أسي يوسف","إعــكورن","أغريب","إفــرحــونان","إفليـــسن","اقبيل","أقرو","أقني قغران","إمســوحال","أيت أومالو","أيت بــوادو","أيت بومهدي","أيت تودرت","أيت خليلي","أيت شافع","أيت عقـواشة","أيت عيسى ميمون","أيت محمود","أيت يحي موسى","أيت يحيى","إيجــار","إيرجـــن","إيفيغاء","إيلولة أومـــالو","إيلـيــلتـن","بني دوالة","بنــــي زمنزار","بني زيكــي","بني عيسي","بني يني","بوجيمة","بوزقــن","بوغني","بونوح","تادمايت","تيرمتين","تيزي راشد","تيزي غنيف","تيزي نثلاثة","تيزي وزو","تيقـزيرت","تيمـيزار","ذراع الميزان","ذراع بن خدة","زكري","سوق الإثنين","سيدي نعمان","صوامـــع","عزازقة","عين الحمام","عين الزاوية","فريحة","فريقات","ماكودة","مشطراس","معـــاتقة","مقــلع","مكيرة","ميزرانـــة","واسيف","واضية","واقنون","يطــافن"],"16":["ابن عكنون","الابيار","اولاد شبل","اولاد فايت","باب الزوار","باب الوادي","بابا حسن","بئر توتة","بئر خادم","بئر مراد رايس","باش جراح","براقي","برج البحري","برج الكيفان","بني مسوس","بوروبة","بوزريعة","بولوغين بن زيري","تسالة المرجة","الجزائر الوسطى","جسر قسنطينة","الحراش","حسين داي","الحمامات","حيدرة","الخرايسية","الدار البيضاء","دالي ابراهيم","الدرارية","الدويرة","الرايس حميدو","الرحمانية","رغاية","الرويبة","زرالدة","السحاولة","سطاوالي","سويدانية","سيدي امحمد","سيدي موسى","الشراقة","العاشور","عين بنيان","عين طاية","القبة","القصبة","الكاليتوس","محمد بلوزداد","المحمدية","المدنية","المرادية","المرسى","المعالمة","المغارية","هراوة","وادي السمار","وادي قريش"],"17":["الادريسية","أم العظام","بن يعقوب","بنهار","بويرة الأحداب","بيرين","تعظميت","الجلفة","حاسي العش","حاسي بحبح","حاسي فدول","حد الصحاري","الخميس","دار الشيوخ","دلدول","دويس","زعفران","زكار","سد الرحال","سلمانة","سيدي بايزيد","سيدي لعجال","الشارف","عمورة","عين الإبل","عين الشهداء","عين فقه","عين معبد","عين وسارة","فيض البطمة","القديد","قرنيني","قطارة","مجبارة","مسعد","مليليحة"],"18":["أراقن سويسي","الامير عبد القادر","أولاد رابح","أولاد يحيى خدروش","برج الطهر","بودريعة بني ياجيس","بوراوي بلهادف","بوسيف أولاد عسكر","تاكسنة","الجمعة بني حبيبي","جيجل","جيملة","خيري واد عجول","زيامة منصورية","السطارة","سلمى بن زيادة","سيدي عبد العزيز","سيدي معروف","الشحنة","الشقفة","الطاهير","العنصر","العوانة","غبالة","قاوس","القنار نشفي","الميلية","وجانة"],"19":["أوريسيا","أولاد تبان","أولاد سي أحمد","أولاد صابر","أولاد عدوان","ايت تيزي","أيت نوال مزادة","بابور","بئر العرش","بئر حدادة","بازر سكرة","بلاعة","بني شبانة","بني عزيز","بني فودة","بني موحلي","بني ورتيلان","بني وسين","بوسلام","بوطالب","بوعنداس","بوقاعة","بيضاء برج","تاشودة","تالة إيفاسن","التلة","تيزي نبشار","جميلة","الحامة","حربيل","حمام السخنة","حمام قرقور","الدهامشة","ذراع قبيلة","الرصفة","سرج الغول","سطيف","صالح باي","الطاية","العلمة","عموشة","عين أرنات","عين أزال","عين الحجر","عين الروى","عين السبت","عين الكبيرة","عين عباسة","عين لقراج","عين ولمان","قجال","قصر الابطال","قلال","قلتة زرقاء","قنزات","ماوكلان","مزلوق","معاوية","واد البارد","الولجة"],"20":["أولاد إبراهيم","أولاد خالد","تيرسين","الحساسنة","دوي ثابت","سعيدة","سيدي احمد","سيدي بوبكر","سيدي عمر","عين الحجر","عين السخونة","عين السلطان","المعمورة","مولاي العربي","هونت","يوب"],"21":["أم الطوب","أولاد حبابة","أولاد عطية","بكوش لخضر","بن عزوز","بني بشير","بني زيد","بني ولبان","بوشطاطة","بين الويدان","تمالوس","جندل سعدي محمد","الحدائق","الحروش","حمادي كرومة","خناق مايو","رمضان جمال","زردازة","الزيتونة","السبت","سكيكدة","سيدي مزغيش","الشرايع","صالح بو الشعور","عزابة","عين بوزيان","عين زويت","عين شرشار","عين قشرة","الغدير","فلفلة","القل","قنواع","الكركرة","مجاز الدشيش","المرسى","وادي الزهور","الولجة بولبلوط"],"22":["بئر الحمام","بضرابين المقراني","بلعربي","بن باديس","بن عشيبة شلية","بوجبهة البرج","بوخنفيس","تاودموت","تسالة","تغاليمت","تفسور","تلاغ","تلموني","تنيرة","حاسي دحو","حاسي زهانة","الحصيبة","راس الماء","رجم دموش","زروالة","سفيزف","السهالة الثورة","سيدي ابراهيم","سيدي بلعباس","سيدي حمادوش","سيدي خالد","سيدي دحو الزاير","سيدي شعيب","سيدي علي بن يوب","سيدي علي بوسيدي","سيدي لحسن","سيدي يعقوب","شيطوان البلايلة","الضاية","طابية","العمارنة","عين أدن","عين البرد","عين الثريد","عين تندمين","عين قادة","لمطار","مرحوم","مرين","مزاورو","مسيد","مصطفى بن ابراهيم","مكدرة","مولاي سليسن","وادي السبع","وادي تاوريرة","وادي سفيون"],"23":["برحال","البوني","التريعات","الحجار","سرايدي","سيدي عمار","الشرفة","شطايبي","العلمة","عنابة","عين الباردة","واد العنب"],"24":["برج صباط","بلخير","بن جراح","بني مزلين","بوحشانة","بوحمدان","بوشقوف","بوعاتي محمود","بومهرة أحمد","تاملوكة","جبالة الخميسي","حمام النبايل","حمام دباغ","الدهوارة","رأس العقبة","الركنية","سلاوة عنونة","عين العربي","عين بن بيضاء","عين رقادة","عين صندل","عين مخلوف","الفجوج","قالمة","قلعة بوصبع","لخزارة","مجاز الصفاء","مجاز عمار","نشماية","هواري بومدين","هيليوبوليس","وادي الزناتي","وادي الشحم","وادي فراغة"],"25":["أبن باديس الهرية","ابن زياد","أولاد رحمون","بني حميدان","بوجريو مسعود","حامة بوزيان","الخروب","ديدوش مراد","زيغود يوسف","عين السمارة","عين عبيد","قسنطينة"],"26":["أم الجليل","أولاد إبراهيم","أولاد امعرف","أولاد بوعشرة","أولاد دايد","أولاد عنتر","أولاد هلال","بئر بن عابد","البرواقية","بعطة","بن شكاو","بني سليمان","بوسكن","بوشراحيل","بوعيش","بوعيشون","بوغار","بوغزول","تابلاط","تفراوت","تمسقيدة","تيزي مهدي","ثلاث دوائر","جواب","الحمدانية","حناشة","الحوضان","خمس جوامع","دراق","ذراع السمار","الربعية","الزبيرية","السانق","سدراية","سغوان","السواقي","سي المحجوب","سيدي الربيع","سيدي دامد","سيدي زهار","سيدي زيان","سيدي نعمان","شلالة العذاورة","شنيقل","الشهبونية","عزيز","العزيزية","العمارية","عوامري","العوينات","العيساوية","عين اقصير","عين بوسيف","قصر البخاري","القلب الكبير","الكاف الاخضر","مجبر","المدية","مزغنة","مغراوة","مفاتحة","ميهوب","وادي حربيل","وزرة"],"27":["أولاد بوغالم","أولاد مع الله","بن عبد المالك رمضان","بوقيراط","تزقايت","حاسي ماماش","حجاج","الحسيان (بني ياحي)","خضرة","خير الدين","ستيدية","السوافلية","سور","سيدي بلعطار","سيدي علي","سيدي لخضر","سيرات","صفصاف","صيادة","الطواهرية","عشعاشة","عين بودينار","عين تادلس","عين سيدي الشريف","عين نويسي","فرناقة","ماسرة","مزغران","مستغانم","منصورة","نكمارية","وادي الخير"],"28":["امجدل","أولاد دراج","أولاد سليمان","أولاد سيدي ابراهيم","أولاد عدي لقبالة","أولاد ماضي","أولاد منصور","بئر فضة","برهوم","بلعايبة","بن زوه","بن سرور","بني يلمان","بوسعادة","بوطي السايح","تارمونت","تامسة","جبل مساعد","حمام الضلعة","الحوامد","خبانة","خطوطي سد الجير","دهاهنة","زرزور","سليم","السوامع","سيدي امحمد","سيدي عامر","سيدي عيسى","سيدي هجرس","شلال","عين الحجل","عين الخضراء","عين الريش","عين الملح","عين فارس","محمد بوضياف","مسيف","المسيلة","المطارفة","معاريف","المعاضيد","مقرة","مناعة","الهامل","ولتام","ونوغة"],"29":["البرج","بنيان","بوحنيفية","بوهني","تيزي","تيغنيف","حسين","الحشم","خلوية","رأس عين عميروش","زلامطة","زهانة","سجرارة","السهايلية","سيدي بوسعيد","سيدي عبد الجبار","سيدي عبد المومن","سيدي قادة","سيق","الشرفاء","عقاز","العلايمية","عوف","عين أفرص","عين فارس","عين فراح","عين فكان","غروس","غريس","الغمري","فراقيق","فروحة","قرجوم","القرط","القطنة","القعدة","ماقضة","المأمونية","ماوسة","المحمدية","المطمور","معسكر","مقطع الدوز","المنور","نسمط","وادي الأبطال","وادي التاغية"],"30":["انقوسة","البرمة","حاسي بن عبد الله","حاسي مسعود","الرويسات","سيدي خويلد","عين البيضاء","ورقلة"],"31":["أرزيو","بئر الجير","البراية","بطيوة","بن فريحة","بوتليليس","بوسفر","بوفاتيس","حاسي بن عقبة","حاسي بونيف","حاسي مفسوخ","السانية","سيدي الشحمي","سيدي بن يبقى","طفراوي","العنصر","عين البية","عين الترك","عين الكرمة","قديل","الكرمة","مرسى الحجاج","المرسى الكبير","مسرغين","وادي تليلات","وهران"],"32":["الأبيض سيدي الشيخ","اربوات","بريزينة","البنود","بوسمغون","بوعلام","بوقطب","البيض","توسمولين","الخيثر","رقاصة","ستيتن","سيدي سليمان","سيدي طيفور","سيدي عامر","الشقيق","شلالة","عين العراك","الغاسول","الكاف الأحمر","كراكدة","المحرة"],"33":["إن أمناس","إيليزي","برج عمر إدريس","دبداب"],"34":["أولاد أبراهم","أولاد دحمان","أولاد سيدي ابراهيم","بئر قاصد علي","برج الغدير","برج بوعريرج","برج زمورة","بليمور","بن داود","تسامرت","تفرق","تقلعيت","تيكستار","ثنية النصر","جعافرة","حرازة","حسناوة","الحمادية","خليل","الرابطة","رأس الوادي","سيدي أمبارك","العش","العناصر","عين تاغروت","عين تسرة","غيلاسة","القصور","القلة","الماين","مجانة","المنصورة","المهير","الياشير"],"35":["الاربعطاش","أعفير","أولاد عيسى","أولاد موسى","أولاد هداج","برج منايل","بغلية","بن شود","بني عمران","بودواو","بودواو البحري","بوزقزة قدارة","بومرداس","تاورقة","تيجلابين","تيمزريت","الثنية","جنات","حمادي","الخروبة","خميس الخشنة","دلس","زموري","سوق الحد","سي مصطفى","سيدي داود","شعبة العامر","عمال","قورصو","لقاطة","الناصرية","يسر"],"36":["بحيرة الطيور","بريحان","البسباس","بن مهيدي","بوثلجة","بوحجار","بوقوس","حمام بني صالح","الذرعـان","رمل السوق","زريزر","الزيتونة","السوارخ","الشافية","شبيطة مختار","شحاني","الشط","الطارف","عصفور","عين العسل","عين الكرمة","العيون","القالة","وادي الزيتون"],"37":["أم العسل","تندوف"],"38":["الأربعاء","الأزهرية","أولاد بسام","برج الأمير عبد القادر","برج بونعامة","بني شعيب","بني لحسن","بوقائد","تملاحت","تيسمسيلت","ثنية الاحد","خميستي","سيدي العنتري","سيدي بوتوشنت","سيدي سليمان","سيدي عابد","عماري","العيون","لرجام","المعاصم","الملعب","اليوسفية"],"39":["أمية وانسة","بن قشة","البياضة","تغزوت","حاسي خليفة","حساني عبد الكريم","الحمراية","الدبيلة","دوار الماء","الرباح","الرقيبة","سيدي عون","الطالب العربي","الطريفاوي","العقلة","قمار","كوينين","المقرن","النخلة","الوادي","وادي العلندة","ورماس"],"40":["انسيغة","أولاد رشاش","بابار","بغاي","بوحمامة","تاوزيانت","جلال","الحامة","خنشلة","خيران","الرميلة","ششار","شلية","طامزة","عين الطويلة","قايس","متوسة","المحمل","مصارة","الولجة","يابوس"],"41":["أم العظايم","أولاد إدريس","أولاد مومن","بئر بوحوش","تاورة","ترقالت","تيفاش","الحدادة","الحنانشة","الخضارة","خميسة","الدريعة","الراقوبة","الزعرورية","الزوابي","سافل الويدان","سدراتة","سوق أهراس","سيدي فرج","عين الزانة","عين سلطان","مداوروش","المراهنة","المشروحة","وادي الكبريت","ويلان"],"42":["أحمر العين","الأرهاط","أغبال","بني ميلك","بواسماعيل","بورقيقة","بوهارون","تيبازة","حجرة النص","حجوط","الحطاطبة","خميستي","الداموس","دواودة","سيدي راشد","سيدي سميان","سيدي عامر","سيدي غيلاس","شرشال","الشعيبة","عين تاقورايت","فوكة","القليعة","قوراية","مراد","مسلمون","مناصر","الناظور"],"43":["أحمد راشدي","اعميرة اراس","أولاد اخلوف","بن يحي عبد الرحمن","بوحاتم","تاجنانت","ترعي باينان","تسالة لمطاعي","تسدان حدادة","التلاغمة","تيبرقنت","حمالة","دراحي بوصلاح","الرواشد","زغاية","سيدي خليفة","سيدي مروان","شلغوم العيد","الشيقارة","العياضي برباس","عين البيضاء أحريش","عين التين","عين الملوك","فرجيوة","القرارم قوقة","مشيرة","ميلة","مينار زارزة","وادي العثمانية","وادي النجاء","وادي سقان","يحي بني قشة"],"44":["بئر ولد خليفة","بربوش","برج الأمير خالد","بطحية","بلعاص","بن علال","بوراشد","بومدفع","تاشتة زقاغة","تبركانين","جليدة","جمعة أولاد الشيخ","جندل","الحسانية","الحسينية","حمام ريغة","خميس مليانة","الروينة","زدين","سيدي الأخضر","طارق بن زياد","العامرة","العبادية","عريب","العطاف","عين الاشياخ","عين البنيان","عين التركي","عين الدفلى","عين السلطان","عين بويحيى","الماين","المخاطرية","مليانة","واد الجمعة","وادي الشرفاء"],"45":["البيوض","تيوت","جنين بورزق","سفيسيفة","عسلة","عين الصفراء","عين بن خليل","القصدير","المشرية","مغرار","مكمن بن عمار","النعامة"],"46":["أغلال","الأمير عبد القادر","أولاد الكيحل","أولاد بوجمعة","بني صاف","بوزجار","تارقة","تامزورة","حاسي الغلة","الحساسنة","حمام بوحجر","سيدي بن عدة","سيدي بومدين","سيدي صافي","سيدي ورياش","شعبة اللحم","شنتوف","العامرية","عقب الليل","عين الأربعاء","عين الطلبة","عين الكيحل","عين تموشنت","المالح","المساعيد","وادي الصباح","وادي برقش","ولهاصة الغرابة"],"47":["بريان","بونورة","زلفانة","سبسب","ضاية بن ضحوة","العطف","غرداية","القرارة","متليلي","المنصورة"],"48":["أولاد سيدي الميهوب","أولاد يعيش","بلعسل بوزقزة","بن داود","بني درقن","بني زنطيس","جديوية","الحاسي","حد الشكالة","الحمادنة","حمري","دار بن عبد الله","الرمكة","زمورة","سوق الحد","سيدي أمحمد بن علي","سيدي امحمد بن عودة","سيدي خطاب","سيدي سعادة","سيدي لزرق","عمي موسى","عين الرحمة","عين طارق","غليزان","القطار","القلعة","لحلاف","مازونة","مديونة","مرجة سيدي عابد","المطمر","منداس","وادي الجمعة","وادي السلام","وادي رهيو","واريزان","الولجة","يلل"],"49":["أوقروت","أولاد السعيد","أولاد عيسى","تنركوك","تيميمون","دلدول","شروين","طالمين","قصر قدور","المطارفة"],"50":["برج باجي مختار","تيمياوين"],"51":["أولاد جلال","بسباس","الدوسن","رأس الميعاد","سيدي خالد","الشعيبة"],"52":["إقلي","أولاد خضير","بن يخلف","بني عباس","تامترت","تيمودي","القصابي","كرزاز","الواتة"],"53":["إينغر","عين صالح","فقارة الزوى"],"54":["تين زواتين","عين قزام"],"55":["بلدة اعمر","بن ناصر","تبسبست","تقرت","تماسين","الحجيرة","الزاوية العابدية","سيدي سليمان","الطيبات","العالية","المقارين","المنقر","النزلة"],"56":["برج الحواس","جانت"],"57":["أم الطيور","تندلة","جامعة","سطيل","سيدي خليل","سيدي عمران","المرارة","المغير"],"58":["حاسي الفحل","حاسي القارة","المنيعة"],"01":["أدرار","اقبلي","إن زغمير","أولاد أحمد تيمي","أولف","بودة","تامست","تامنطيط","تسابيت","تيت","تيمقتن","رقان","زاوية كنتة","سالي","السبع","فنوغيل"],"02":["أبو الحسن","الأبيض مجاجة","أم الدروع","أولاد بن عبد القادر","أولاد عباس","أولاد فارس","بريرة","بنايرية","بني بوعتاب","بني حواء","بني راشد","بوزغاية","بوقادير","تاجنة","تاوقريت","تلعصة","تنس","الحجاج","حرشون","الزبوجة","سنجاس","سيدي عبد الرحمن","سيدي عكاشة","الشطية","الشلف","الصبحة","الظهرة","عين مران","الكريمية","المرسى","مصدق","الهرانفة","وادي الفضة","وادي سلي","وادي قوسين"],"03":["الأغواط","أفلو","بريدة","بن ناصر بن شهرة","البيضاء","تاجرونة","تاجموت","تاويالة","الحاج مشري","حاسي الدلاعة","حاسي الرمل","الحويطة","الخنق","سبقاق","سيدي بوزيد","سيدي مخلوف","العسافية","عين سيدي علي","عين ماضي","الغيشة","قصر الحيران","قلتة سيدي سعد","وادي مرة","وادي مزي"],"04":["أم البواقي","أولاد حملة","أولاد زواي","أولاد قاسم","بئر الشهداء","بحير الشرقي","بريش","البلالة","الجازية","الحرملية","الرحية","الزرق","سوق نعمان","سيقوس","الضلعة","العامرية","عين البيضاء","عين الديس","عين الزيتون","عين ببوش","عين فكرون","عين كرشة","عين مليلة","الفجوج بوغرارة سعودي","فكيرينة","قصر الصباحي","مسكيانة","هنشير تومغني","وادي نيني"],"05":["أريس","إشمول","إمدوكل","أولاد سلام","أولاد سي سليمان","أولاد عمار","أولاد عوف","أولاد فاضل","إينوغيسن","باتنة","بريكة","بني فضالة الحقانية","بوزينة","بولهيلات","بومقر","بومية","بيطام","تازولت","تاكسلانت","تالخمت","تغرغار","تكوت","تيغانمين","تيلاطو","تيمقاد","ثنية العابد","جرمة","الجزار","الحاسي","حيدوسة","رأس العيون","الرحبات","زانة البيضاء","سريانة","سفيان","سقانة","الشمرة","شير","عزيل عبد القادر","عين التوتة","عين جاسر","عين ياقوت","عيون العصافير","غسيرة","فسديس","فم الطوب","القصبات","قصر بلزمة","القيقبة","كيمل","لارباع","لازرو","لمسان","مروانة","معافة","المعذر","منعة","نقاوس","وادي الشعبة","وادي الطاقة","وادي الماء"],"06":["أدكار","اغرم","إغيل علي","أقبو","أكفادو","أمالو","أميزور","أوزلاقن","أوقاس","أيت إسماعيل","أيت رزين","بجاية","برباشة","بني جليل","بني كسيلة","بني معوش","بني مليكش","بو جليل","بوحمزة","بوخليفة","تازمالت","تاسكريوت","تالة حمزة","تامريجت","تامقرة","تاوريرت إغيل","توجة","تيزي نبربر","تيشي","تيفرة","تيمزريت","تينبدار","خراطة","درقينة","ذراع القايد","سمعون","سوق اوفلا","سوق لإثنين","سيدي عياد","سيدي عيش","شلاطة","شميني","صدوق","طيبان","فرعون","الفلاي","فناية الماثن","القصر","كنديرة","مالبو","مسيسنة","وادي غير"],"07":["أورلال","أوماش","برانيس","برج بن عزوز","بسكرة","بوشقرون","جمورة","الحاجب","الحوش","خنقة سيدي ناجي","زريبة الوادي","سيدي عقبة","شتمة","طولقة","عين الناقة","عين زعطوط","الغروس","فوغالة","الفيض","القنطرة","ليشانة","ليوة","مخادمة","المزيرعة","مشونش","مليلي","الوطاية"],"08":["بشار","بني ونيف","بوكايس","تاغيت","تبلبالة","العبادلة","عرق فراج","القنادسة","لحمر","المريجة","مشرع هواري بومدين","موغل"],"09":["الأربعاء","اولاد سلامة","أولاد يعيش","البليدة","بن خليل","بني تامو","بني مراد","بوعرفة","بوعينان","بوفاريك","بوقرة","جبابرة","حمام ملوان","الشبلي","الشريعة","الشفة","صوحان","الصومعة","العفرون","عين الرمانة","قرواو","مفتاح","موزاية","وادي العلايق","وادي جر"]};;
 
-  const XW_STATUS = { new: "جديد", unconfirmed: "غير مؤكد", confirmed: "مؤكد", shipped: "قيد التوصيل", delivered: "مسلّم", cancelled: "ملغي" };
+  const XW_STATUS = { new: "جديد", unconfirmed: "غير مؤكد", noans: "لم يرد", deferred: "مؤجل", off: "هاتف مغلق", confirmed: "مؤكد", shipped: "قيد التوصيل", delivered: "مسلّم", cancelled: "ملغي" };
   /* حالة المتابعة: كم وصل صاحب المتجر للزبون — محور ثانٍ بعيد على حالة الطلب،
      نقر عليها ما يحوّلش الطلب من «الطلبات» إلى السجل وما يمسش المخزون.
      الافتراضي «جديد» لكل طلب ما عندوش الحقل بعد. */
@@ -3123,7 +3187,7 @@ window.REVIEWS = [
     if (!list.length) { box.hidden = true; box.innerHTML = ""; return; }
     box.innerHTML = '<div class="bn-view">' + list.map((b, i) => {
       const txt = b.badge || b.title || b.desc || b.price || b.btn;
-      return '<a class="bn-slide' + (i ? "" : " on") + '" href="' + esc(b.href || "#shop") + '">' +
+      return '<a class="bn-slide' + (i ? "" : " on") + '" href="' + esc(b.pid ? "#shop" : (b.href || "#shop")) + '"' + (b.pid ? ' data-bnp="' + esc(b.pid) + '"' : "") + '>' +
         '<img src="' + esc(cld(b.img, 1200, 560)) + '" alt="' + esc(b.title || "") + '"' + (i ? ' loading="lazy"' : ' fetchpriority="high"') + ' decoding="async">' +
         (txt ? '<div class="bn-ov">' + (b.badge ? '<span class="bn-badge">' + esc(b.badge) + "</span>" : "") +
           (b.title ? '<div class="bn-title">' + esc(b.title) + "</div>" : "") +
@@ -3132,6 +3196,14 @@ window.REVIEWS = [
           (b.btn ? '<span class="bn-btn">' + esc(b.btn) + "</span>" : "") + "</div>" : "") + "</a>";
     }).join("") + (list.length > 1 ? '<div class="bn-dots">' + list.map((_, i) => '<button type="button" aria-label="' + (i + 1) + '"' + (i ? "" : ' class="on"') + ' data-bi="' + i + '"></button>').join("") + "</div>" : "") + "</div>";
     box.hidden = false;
+    if (!box.dataset.bnBound) {
+      box.dataset.bnBound = "1";
+      box.addEventListener("click", (e) => {
+        const a = e.target.closest("[data-bnp]"); if (!a) return;
+        const pid = a.dataset.bnp;
+        if (window.PRODUCTS && findProduct(pid)) { e.preventDefault(); openProduct(pid, true); }
+      });
+    }
     if (list.length < 2) return;
     const slides = box.querySelectorAll(".bn-slide"), dots = box.querySelectorAll("[data-bi]"), view = box.querySelector(".bn-view");
     let cur = 0;
@@ -3479,6 +3551,21 @@ window.REVIEWS = [
     const next = xwLeadList().map((x) => {
       if (x.phone !== key) return x;
       const rec = Object.assign({}, x, { ok: !!ok, updatedAt: Date.now() });
+      touched.push(rec);
+      return rec;
+    });
+    if (!touched.length) return;
+    xwLeadPut(next.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)));
+    if (db) touched.forEach((x) => db.collection(XW_COL.leads).doc(x.id).set(clean(x), { merge: true }).catch(() => {}));
+  };
+  /* قرار المالك الصريح على الرقم المتروك: ok = مؤكد، open = غير مؤكد، cancelled = ملغى.
+     لا شيء يتحدد تلقائياً: الرقم الجديد يبقى «بلا تحديد» حتى تقرر أنت. */
+  const xwLeadSet = (phone, st) => {
+    const key = String(phone || "").replace(/\D/g, "");
+    const touched = [];
+    const next = xwLeadList().map((x) => {
+      if (x.phone !== key) return x;
+      const rec = Object.assign({}, x, { st: st, ok: st === "ok", updatedAt: Date.now() });
       touched.push(rec);
       return rec;
     });
@@ -4230,6 +4317,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   document.addEventListener("click", (e) => {
     const yt = e.target.closest("[data-yt]");
     if (yt) { e.preventDefault(); ytPlay(yt); return; }
+    const rv = e.target.closest("[data-revimg]");
+    if (rv) {
+      const old = document.getElementById("xwRevLb"); if (old) old.remove();
+      const lb = document.createElement("div"); lb.id = "xwRevLb";
+      const im = document.createElement("img"); im.src = rv.dataset.revimg; im.alt = "";
+      const x = document.createElement("span"); x.textContent = "\u00d7";
+      lb.appendChild(im); lb.appendChild(x); lb.addEventListener("click", () => lb.remove());
+      document.body.appendChild(lb); return;
+    }
     const o = e.target.closest("[data-open]");
     if (o && !e.target.closest("button")) { openProduct(o.dataset.open); return; }
     const b = e.target.closest("[data-buy]");
@@ -4447,7 +4543,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["banner", "🎞️ البانر"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["banner", "🎞️ البانر"], ["reviews", "⭐ الآراء"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "leads" && leadCount ? "<em>" + leadCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -4461,7 +4557,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, banner: tabBanner, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, banner: tabBanner, reviews: tabReviews, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -4478,6 +4574,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     }
     const lf = e.target.closest("[data-lf]");
     if (lf) { leadFilter = lf.dataset.lf; leadEdit = null; tabLeads(); return; }
+    const lst = e.target.closest("[data-lst]");
+    if (lst) {
+      xwLeadSet(lst.dataset.lp2, lst.dataset.lst);
+      toast({ ok: "تسجّل مؤكد", open: "تسجّل غير مؤكد", cancelled: "تسجّل ملغى" }[lst.dataset.lst] || "تم", true);
+      tabLeads();
+      return;
+    }
     const lok = e.target.closest("[data-lok]");
     if (lok) {
       xwLeadMark(lok.dataset.lok, lok.dataset.ok === "1");
@@ -4619,7 +4722,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       "<div><span>التوصيل</span><span>" + fmt(o.shipping || 0) + " دج</span></div>" +
       (o.discount > 0 ? "<div><span>خصم العرض</span><span>−" + fmt(o.discount) + " دج</span></div>" : "") +
       '<div style="font-weight:800;border-top:1px dashed var(--line-2);margin-top:4px;padding-top:6px"><span>المجموع</span><span style="color:#FF6B00">' + fmt(o.total) + " دج</span></div></div>" +
-      '<div class="xw-fo"><small>حالة المتابعة</small><span>' + Object.keys(XW_FOLLOW).map((k) => '<button type="button" class="xw-fb' + ((o.follow || "new") === k ? " on" : "") + '" data-fv="' + k + '">' + XW_FOLLOW[k] + "</button>").join("") + "</span></div>" +
       (logged ? zrShipBlock(o, o.status, "shop") : "") +
       '<div class="xw-oa"><select data-os="' + esc(o.id) + '">' + Object.keys(XW_STATUS).map((k) => '<option value="' + k + '"' + (o.status === k ? " selected" : "") + ">" + XW_STATUS[k] + "</option>").join("") + "</select>" +
       '<a class="xw-btn ghost sm" href="tel:' + esc(c.phone) + '">📞 اتصال</a>' +
@@ -4632,6 +4734,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   const loadOrders = async (body) => {
     try { ordersCache = await getOrders(); }
     catch (e) { body.innerHTML = '<div class="xw-empty">تعذّر تحميل الطلبات: ' + esc(e.code || e.message) + "</div>"; return false; }
+    /* دمج حالة المتابعة القديمة في الحالة الواحدة: لم يرد / مؤجل / هاتف مغلق صارت حالات بتبويباتها */
+    { const fmap = { noans: "noans", retry: "deferred", deferred: "deferred", off: "off" };
+      ordersCache.forEach((o) => {
+        const m2 = fmap[o.follow];
+        if (m2 && !o.binned && (!o.status || o.status === "new" || o.status === "unconfirmed")) {
+          o.status = m2; o.follow = "new";
+          try { updateOrder(o.id, { status: m2, follow: "new" }).catch(() => {}); } catch (e) {}
+        }
+      }); }
     const news = ordersCache.filter((o) => isNewOrder(o) && !o.binned).length;
     const handled = ordersCache.filter((o) => !isNewOrder(o) && !o.binned).length;
     const binned = ordersCache.filter((o) => o.binned).length;
@@ -4697,13 +4808,10 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<button type="button" class="xw-stat' + (statusFilter === "" ? "" : "") + '" data-sf=""><b>' + all.length + "</b>طلب في السجل</button>" +
       '<button type="button" class="xw-stat' + (statusFilter === "confirmed" ? " on" : "") + '" data-sf="confirmed"><b>' + cnt("confirmed") + "</b>مؤكد</button>" +
       '<button type="button" class="xw-stat' + (statusFilter === "unconfirmed" ? " on" : "") + '" data-sf="unconfirmed"><b>' + cnt("unconfirmed") + "</b>غير مؤكد</button>" +
+      ["noans", "deferred", "off"].map((k) => '<button type="button" class="xw-stat' + (statusFilter === k ? " on" : "") + '" data-sf="' + k + '"><b>' + cnt(k) + "</b>" + XW_STATUS[k] + "</button>").join("") +
       '<button type="button" class="xw-stat' + (statusFilter === "shipped" ? " on" : "") + '" data-sf="shipped"><b>' + cnt("shipped") + "</b>قيد التوصيل</button>" +
       '<button type="button" class="xw-stat' + (statusFilter === "delivered" ? " on" : "") + '" data-sf="delivered"><b>' + cnt("delivered") + "</b>مسلّم · " + fmt(rev) + " دج</button>" +
       '<button type="button" class="xw-stat' + (statusFilter === "cancelled" ? " on" : "") + '" data-sf="cancelled"><b>' + cnt("cancelled") + "</b>ملغي</button></div>" +
-      '<div class="xw-fo-bar" id="xwFoBar">' +
-      '<button type="button" class="xw-fb' + (logFilter === "all" ? " on" : "") + '" data-fl="all">الكل · ' + all.length + "</button>" +
-      Object.keys(XW_FOLLOW).map((k) => '<button type="button" class="xw-fb' + (logFilter === k ? " on" : "") + '" data-fl="' + k + '">' + XW_FOLLOW[k] + " · " + fcnt(k) + "</button>").join("") +
-      "</div>" +
       '<div class="xw-card">' + catFilterBar(all) + '<div class="xw-field"><input id="xwLogQ" placeholder="🔍 ابحث بالاسم أو الهاتف أو رقم الطلب..."></div><div id="zrShopBar" class="lp-bulk" hidden></div><div id="xwLogList"></div></div>';
     const list = $("#xwLogList");
     const draw = () => {
@@ -5010,7 +5118,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     try {
       const snap = await tmo(db.collection(XW_COL.reviews).get(), 9000);
       const list = (snap.docs || []).map((d) => Object.assign({ id: d.id }, d.data() || {}))
-        .filter((r) => Number(r.n) >= 1 && Number(r.n) <= 5 && !!r.p)
+        .filter((r) => Number(r.n) >= 1 && Number(r.n) <= 5 && !!r.p && !r.h)
         .sort((a, b) => (Number(b.at) || 0) - (Number(a.at) || 0));
       lsSet(XW_RATE_CACHE, { t: Date.now(), list: list });
       return list;
@@ -5290,37 +5398,15 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
   /* ----- الطلبات المتروكة: أرقام كتبت في الاستمارة وما أكّدتش ----- */
   let leadFilter = "all", leadEdit = null, leadsPulled = false;
   /* العدّاد على التبويب يتبع نفس تعريف «غير مؤكد» اللي في الفلتر */
-  const paintLeadBadge = () => {
-    const b = $('[data-at="leads"]', adminEl);
-    if (!b) return;
-    const n = xwLeadList().filter((l) => !l.converted && !l.ok).length;
-    b.innerHTML = "📞 طلبات متروكة" + (n ? "<em>" + n + "</em>" : "");
-  };
-  const xwAgo = (ms) => {
-    if (!ms) return "—";
-    const m = Math.round(Math.max(0, Date.now() - ms) / 60000);
-    if (m < 1) return "دروك";
-    if (m < 60) return "قبل " + m + " دقيقة";
-    const h = Math.round(m / 60);
-    if (h < 24) return "قبل " + h + " ساعة";
-    return "قبل " + Math.round(h / 24) + " يوم";
-  };
-  const tabLeads = () => {
-    const body = $("#xwBody");
-    /* رقم واحد = صف واحد: آخر محاولة، ومعاها عدد المرات */
-    const groups = new Map();
-    xwLeadList().forEach((l) => {
-      const g = groups.get(l.phone);
-      if (!g) groups.set(l.phone, Object.assign({ tries: 1 }, l));
-      else { g.tries++; if ((l.updatedAt || 0) > (g.updatedAt || 0)) { const n = g.tries; Object.assign(g, l); g.tries = n; } }
-    });
+  const xwLeadSt = (l) => l.st || (l.ok ? "ok" : "");
+  const xwLeadGroups = () => {
+    const all = xwLeadGroups();
+    /* معلومة فقط: هل أرسل هذا الرقم طلباً فعلاً — لا تغيّر تصنيفه */
     const handed = new Set(ordersCache.map((o) => String((o.customer || {}).phone || "").replace(/\D/g, "")).filter(Boolean));
-    const isSold = (l) => !!(l.converted || handed.has(l.phone));
-    const isOk = (l) => isSold(l) || !!l.ok;
-    const all = Array.from(groups.values()).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-    const open = all.filter((l) => !isOk(l));
-    const okd = all.filter(isOk);
-    const show = leadFilter === "open" ? open : leadFilter === "ok" ? okd : all;
+    const hasOrder = (l) => !!(l.converted || handed.has(l.phone));
+    const byLeadSt = (k) => all.filter((l) => (xwLeadSt(l) || "new") === k);
+    const fresh = byLeadSt("new"), open = byLeadSt("open"), okd = byLeadSt("ok"), cxl = byLeadSt("cancelled");
+    const show = leadFilter === "new" ? fresh : leadFilter === "open" ? open : leadFilter === "ok" ? okd : leadFilter === "cancelled" ? cxl : all;
     const chip = (id, label, n) => '<button class="xw-tab' + (leadFilter === id ? " on" : "") + '" data-lf="' + id + '">' + label + " (" + n + ")</button>";
     const editRow = (l) => {
       const opts = XW_WILAYAS.map((w) => '<option value="' + esc(w[1]) + '"' + (w[1] === l.wilaya ? " selected" : "") + ">" + esc(w[0] + " · " + w[1]) + "</option>").join("");
@@ -5341,13 +5427,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     };
     const row = (l) => {
       if (leadEdit === l.phone) return editRow(l);
-      const sold = isSold(l), fixed = isOk(l);
+      const stl = xwLeadSt(l), fixed = !!stl, sold = hasOrder(l);
       const nat = "213" + String(l.phone).replace(/^0/, "");
       const msg = "سلام" + (l.name ? " " + l.name : "") + "، معاك X Store 👋 شفتك كنت راك تكمل طلبك" +
         ((l.items || []).length ? " (" + l.items.map((i) => i.name).join(" + ") + ")" : "") + ". تحب نعاونك تكملو؟";
       return '<div class="xw-order' + (fixed ? " done" : " new") + '">' +
         '<div class="xw-oh"><b>' + esc(l.name || "بلا اسم") + "</b><span>" + esc(xwAgo(l.updatedAt)) + "</span>" +
-          '<span class="xwc">' + (sold ? '<i class="xws confirmed">✅ شرا</i>' : fixed ? '<i class="xws confirmed">✅ مؤكد</i>' : '<i class="xws new">غير مؤكد</i>') +
+          '<span class="xwc">' + (stl === "ok" ? '<i class="xws confirmed">✅ مؤكد</i>' : stl === "open" ? '<i class="xws noans">⏳ غير مؤكد</i>' : stl === "cancelled" ? '<i class="xws cancelled">❌ ملغى</i>' : '<i class="xws new">🆕 بلا تحديد</i>') +
+          (sold ? '<i class="xwx">🛒 أرسل طلباً</i>' : "") +
           (l.tries > 1 ? '<i class="xwx">' + l.tries + " محاولات</i>" : "") + "</span></div>" +
         '<div class="xw-og">' +
           '<div><small>الهاتف</small><span dir="ltr">' + esc(l.phone) + "</span></div>" +
@@ -5365,8 +5452,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         '<div class="xw-oa">' +
           '<a class="xw-btn sm" href="tel:+' + esc(nat) + '">📞 اتصال</a>' +
           '<a class="xw-btn ghost sm" target="_blank" rel="noopener" href="https://wa.me/' + esc(nat) + "?text=" + encodeURIComponent(msg) + '">💬 واتساب</a>' +
-          (sold ? "" : (l.ok ? '<button class="xw-btn ghost sm" data-lok="' + esc(l.phone) + '" data-ok="0">↩ إلغاء التأكيد</button>'
-                             : '<button class="xw-btn sm" data-lok="' + esc(l.phone) + '" data-ok="1">✅ تأكيد</button>')) +
+          [["ok", "✅ مؤكد"], ["open", "⏳ غير مؤكد"], ["cancelled", "❌ ملغى"]].map((x) => '<button class="xw-btn' + (stl === x[0] ? "" : " ghost") + ' sm" data-lst="' + x[0] + '" data-lp2="' + esc(l.phone) + '"' + (stl === x[0] ? " disabled" : "") + ">" + x[1] + "</button>").join("") +
           '<button class="xw-btn ghost sm" data-ledit="' + esc(l.phone) + '">✏️ تعديل</button>' +
           '<button class="xw-btn danger sm" data-ldel="' + esc(l.phone) + '">🗑 حذف</button></div></div>';
     };
@@ -5374,7 +5460,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<div class="xw-card"><h3>📞 طلبات متروكة</h3>' +
       '<p class="xw-note" style="margin:-6px 0 14px">هادو زبائن كتبو رقمهم في الاستمارة وخرجو بلا ما يأكدو الطلب. اتصل بيهم، عطيهم تخفيض ولا شجّعهم، ورجّعهم يكملو. <b>هاد اللائحة كتبان غير ليك</b> (قواعد قاعدة البيانات كتمنع أي زبون آخر يقراها)، وما كيوصل للزبون حتى إشعار ولا كتتسجّل حتى إشارة بيكسل.</p>' +
       '<div class="xw-tabs" style="position:static;margin:0 0 14px;padding:0">' +
-        chip("all", "الكل", all.length) + chip("open", "غير مؤكد", open.length) + chip("ok", "مؤكد", okd.length) +
+        chip("all", "الكل", all.length) + chip("new", "🆕 بلا تحديد", fresh.length) + chip("open", "غير مؤكد", open.length) + chip("ok", "مؤكد", okd.length) + chip("cancelled", "ملغى", cxl.length) +
         '<button class="xw-tab" id="leadPull" style="margin-inline-start:auto">↻ جيب من السحابة</button></div>' +
       (show.length ? show.map(row).join("") : '<div class="xw-empty">' + (all.length ? "ما كاينش في هاد الحالة." : "ما كاينش طلبات متروكة دروك.") + "</div>") +
       (!online ? '<div class="xw-note" style="margin-top:12px">⚠ ماشي متصل بقاعدة البيانات: هاد اللائحة غير اللي تسجّل على هاد الهاتف.</div>' : "") +
@@ -5543,6 +5629,16 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           id ? "✓ رابط صحيح" : (b.url ? '<span style="color:#ef4444">الرابط غير صالح — الصق رابط YouTube كامل</span>' : "")) +
         lpF("عنوان فوق الفيديو <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '">') + "</div>";
     }
+    if (b.type === "reviews") {
+      const urls = (b.items || []).filter(Boolean);
+      const igBad = urls.some((u) => /instagram\.com|cdninstagram|fbcdn/i.test(u));
+      return open + head("⭐", "آراء الزبائن (صور)") +
+        lpF("العنوان <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '" placeholder="آراء زبائننا">') +
+        '<div class="lp-rev-ed">' + urls.map((u) => '<img src="' + esc(u) + '" alt="" loading="lazy">').join("") + "</div>" +
+        '<div class="lp-imgf-b" style="margin-bottom:8px"><label class="xw-btn ghost sm" style="cursor:pointer">📷 رفع صور (يمكن اختيار عدة صور)<input type="file" accept="image/*" multiple data-lpmulti="' + i + '" hidden></label></div>' +
+        lpF("روابط الصور <small>(كل رابط في سطر)</small>", '<textarea data-bf="items" dir="ltr" style="min-height:110px;text-align:left" spellcheck="false" placeholder="https://...jpg">' + esc(urls.join("\n")) + "</textarea>",
+          igBad ? '<span style="color:#ef4444">روابط ستوري إنستغرام تنتهي صلاحيتها ولا تعمل مباشرة — احفظ الصورة (لقطة شاشة) وارفعها بزر «رفع صور».</span>' : "الأفضل رفع لقطات الشاشة مباشرة (إنستغرام/واتساب) بدل الروابط.") + "</div>";
+    }
     return open + head("✔️", "مميزات (نقاط)") +
       lpF("العنوان <small>(اختياري)</small>", '<input data-bf="title" value="' + esc(b.title || "") + '">') +
       lpF("النقاط", '<textarea data-bf="items" style="min-height:110px" placeholder="كل نقطة في سطر">' + esc((b.items || []).join("\n")) + "</textarea>") + "</div>";
@@ -5561,7 +5657,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       lpF("المنتج <i>*</i>", '<select id="lpProd"><option value="">— اختر المنتج —</option>' + prods + "</select>", "السعر والصور واللون والمخزون تُقرأ من المنتج مباشرة.") + "</div>" +
       '<div class="xw-row">' + lpF("حالة الصفحة", sel("lpPub", d.published !== false, "🟢 منشورة", "⚪ مسودة (مخفية)")) +
       lpF("القائمة العلوية للمتجر", sel("lpNav", !d.hideNav, "ظاهرة (يقدر الزبون يتصفح المتجر)", "مخفية (الزبون يركّز على الطلب فقط)")) + "</div>" +
-      '<div class="xw-row">' + lpF("زر «اطلب الآن» العائم", sel("lpFloat", d.floatBtn !== false, "ظاهر أثناء النزول", "مخفي")) +
+      '<div class="xw-row">' + lpF("زر «اطلب الآن» أعلى الصفحة (تحت السعر)", sel("lpHeroBtn", d.heroBtn !== false, "ظاهر", "مخفي")) + lpF("زر «اطلب الآن» العائم", sel("lpFloat", d.floatBtn !== false, "ظاهر أثناء النزول", "مخفي")) +
       lpF("نص الأزرار", '<input id="lpCta" value="' + esc(d.ctaText || "") + '" placeholder="اطلب الآن">', "يختفي الزر العائم تلقائياً عند الوصول للاستمارة.") + "</div>" +
       '<div class="lp-sect">أعلى الصفحة</div>' +
       '<div class="xw-row">' + lpF("شارة صغيرة <small>(اختياري)</small>", '<input id="lpBadge" value="' + esc(d.badge || "") + '" placeholder="🔥 عرض محدود">') +
@@ -5569,7 +5665,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       lpF("عنوان فرعي <small>(اختياري)</small>", '<input id="lpSub" value="' + esc(d.subhead || "") + '">') +
       lpF("الصورة الرئيسية <small>(فارغة = صورة المنتج)</small>", lpImgField(d.heroImg, 'id="lpHero"', "hero")) +
       '<div class="lp-sect">محتوى الصفحة</div><div id="lpBlocks">' + (d.blocks || []).map((b, i, a) => lpBlockEdit(b, i, a.length)).join("") + "</div>" +
-      '<div class="lp-add">' + [["text", "📝 نص"], ["image", "🖼️ صورة"], ["video", "🎬 فيديو YouTube"], ["features", "✔️ مميزات"]].map((t) => '<button type="button" class="xw-btn ghost sm" data-lp="badd" data-t="' + t[0] + '">➕ ' + t[1] + "</button>").join("") + "</div>" +
+      '<div class="lp-add">' + [["text", "📝 نص"], ["image", "🖼️ صورة"], ["video", "🎬 فيديو YouTube"], ["features", "✔️ مميزات"], ["reviews", "⭐ آراء الزبائن"]].map((t) => '<button type="button" class="xw-btn ghost sm" data-lp="badd" data-t="' + t[0] + '">➕ ' + t[1] + "</button>").join("") + "</div>" +
+      '<div class="lp-sect">عروض الاختيار (الباكات)</div>' +
+      '<p class="xw-note" style="margin:-4px 0 10px">اختياري: زيد باكات أو منتجات أخرى في نفس الصفحة، والزبون يختار واحد (مثل «اختر العرض») والسعر يتبدّل لحاله. المنتج الأساسي فوق يبقى أول خيار. الباكة تتصنع من تبويب «العروض المجمّعة».</p>' +
+      lpF("عنوان القسم", '<input id="lpOffTitle" value="' + esc(d.offersTitle || "") + '" placeholder="اختر العرض">') +
+      '<div class="lp-ofrow"><div class="xw-field"><label>المنتج الأساسي — اسم يبان <small>(اختياري)</small></label><input id="lpMainLabel" value="' + esc(d.mainLabel || "") + '" placeholder="فارغ = اسم المنتج"></div><div class="xw-field"><label>&nbsp;</label><input disabled value="(المنتج المختار فوق)"></div><label class="lp-ck"><input type="checkbox" id="lpMainBest"' + (d.mainBest ? " checked" : "") + '> ⭐ أفضل عرض</label><span></span></div>' +
+      '<div id="lpOffers">' + (d.offers || []).map((o, i) => '<div class="lp-ofrow" data-oi="' + i + '"><div class="xw-field"><label>عرض ' + (i + 1) + '</label><select data-of="pid"><option value="">— اختر منتج/باكة —</option>' + (window.PRODUCTS || []).map((q) => '<option value="' + esc(q.id) + '"' + (q.id === o.pid ? " selected" : "") + ">" + (q.bundle ? "📦 " : "") + esc(q.name) + " — " + fmt(sellPrice(q)) + " دج</option>").join("") + '</select></div><div class="xw-field"><label>اسم يبان <small>(اختياري)</small></label><input data-of="label" value="' + esc(o.label || "") + '" placeholder="فارغ = اسم المنتج"></div><label class="lp-ck"><input type="checkbox" data-of="best"' + (o.best ? " checked" : "") + '> ⭐ أفضل عرض</label><button type="button" class="xw-btn danger sm" data-lp="odel" data-i="' + i + '">✕</button></div>').join("") + "</div>" +
+      '<button type="button" class="xw-btn ghost sm" data-lp="oadd">➕ إضافة عرض</button>' +
       '<div class="lp-sect">الاستمارة</div>' + lpF("عنوان الاستمارة", '<input id="lpFormT" value="' + esc(d.formTitle || "") + '">') +
       '<div class="xw-err" id="lpErr"></div>' +
       '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px"><button class="xw-btn" data-lp="save">💾 حفظ</button><button class="xw-btn ghost" data-lp="cancel">إلغاء</button>' +
@@ -5580,13 +5682,19 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     const d = lpUI.draft; if (!d || !$("#lpTitle")) return;
     const g = (id) => { const el = document.getElementById(id); return el ? el.value : ""; };
     d.title = g("lpTitle").trim(); d.slug = lpSlugify(g("lpSlug")); d.productId = g("lpProd");
-    d.published = g("lpPub") !== "0"; d.hideNav = g("lpNav") === "0"; d.floatBtn = g("lpFloat") !== "0";
+    d.published = g("lpPub") !== "0"; d.hideNav = g("lpNav") === "0"; d.floatBtn = g("lpFloat") !== "0"; d.heroBtn = g("lpHeroBtn") !== "0";
     d.ctaText = g("lpCta").trim(); d.badge = g("lpBadge").trim(); d.headline = g("lpHead").trim(); d.subhead = g("lpSub").trim();
     d.heroImg = g("lpHero").trim(); d.formTitle = g("lpFormT").trim();
+    d.offersTitle = g("lpOffTitle").trim(); d.mainLabel = g("lpMainLabel").trim();
+    { const mb = document.getElementById("lpMainBest"); d.mainBest = !!(mb && mb.checked); }
+    d.offers = Array.from($$("#lpOffers [data-oi]")).map((row) => {
+      const f = (k) => row.querySelector('[data-of="' + k + '"]');
+      return { pid: f("pid").value, label: f("label").value.trim(), best: !!f("best").checked };
+    });
     d.blocks = Array.from($$("#lpBlocks .lp-bk")).map((el) => {
       const b = { id: el.dataset.bid || "b" + Math.random().toString(36).slice(2, 8), type: el.dataset.bt };
       Array.from($$("[data-bf]", el)).forEach((x) => { b[x.dataset.bf] = x.value; });
-      if (b.type === "features") b.items = String(b.items || "").split(/\n+/).map((s) => s.trim()).filter(Boolean);
+      if (b.type === "features" || b.type === "reviews") b.items = String(b.items || "").split(/\n+/).map((s) => s.trim()).filter(Boolean);
       else Object.keys(b).forEach((k) => { if (typeof b[k] === "string" && k !== "id" && k !== "type") b[k] = k === "body" ? b[k].replace(/\s+$/, "") : b[k].trim(); });
       return b;
     });
@@ -5903,6 +6011,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         const p = page(id); if (!p || !confirm("تحذف صفحة «" + (p.title || p.slug) + "» نهائياً؟\nطلباتها تبقى محفوظة.")) return;
         await deleteLanding(id); toast("تم الحذف", true); tabLanding(); return;
       }
+      if (act === "oadd") { lpCollect(); (lpUI.draft.offers || (lpUI.draft.offers = [])).push({ pid: "", label: "", best: false }); lpPaintEdit(); return; }
+      if (act === "odel") { lpCollect(); lpUI.draft.offers.splice(+t.dataset.i, 1); lpPaintEdit(); return; }
       if (act === "badd") {
         lpCollect(); const bl = lpUI.draft.blocks, nb = { id: "b" + Math.random().toString(36).slice(2, 8), type: t.dataset.t, items: [] };
         /* الاستمارة في آخر القائمة (الوضع الافتراضي) → البلوك الجديد يدخل قبلها؛ وإذا حرّكتها لمكان آخر يُضاف في النهاية */
@@ -5934,6 +6044,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         if (!d.slug) return bad("اكتب رابطاً صحيحاً (حروف وأرقام).", "lpSlug");
         if (XW_LANDING.some((x) => x.id !== d.id && String(x.slug).toLowerCase() === d.slug)) return bad("هذا الرابط مستعمل في صفحة أخرى.", "lpSlug");
         if (!d.productId || !findProduct(d.productId)) return bad("اختر المنتج الذي تُباع به هذه الصفحة.", "lpProd");
+        { const seen = new Set([d.productId]); d.offers = (d.offers || []).filter((o) => o.pid && findProduct(o.pid) && !seen.has(o.pid) && seen.add(o.pid)); }
         if (err) err.textContent = "";
         t.disabled = true;
         try { await saveLanding(d); toast("حُفظت صفحة الهبوط", true); lpUI.view = "list"; lpUI.draft = null; tabLanding(); }
@@ -5969,7 +6080,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       }
     } catch (x) { toast("تعذّر التنفيذ: " + (x.code || x.message)); }
   });
-  adminEl.addEventListener("change", (e) => {
+  adminEl.addEventListener("change", async (e) => {
     if (adminTab !== "landing") return;
     if (e.target.id === "lpSelAll") {
       lpFilterRows().filter(zrEligible).forEach((o) => { if (e.target.checked) lpUI.sel.add(o.id); else lpUI.sel.delete(o.id); });
@@ -5977,6 +6088,19 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     }
     const cb = e.target.closest("[data-lpsel]");
     if (cb) { if (cb.checked) lpUI.sel.add(cb.dataset.lpsel); else lpUI.sel.delete(cb.dataset.lpsel); lpDrawBulk(); return; }
+    const fm = e.target.closest("[data-lpmulti]");
+    if (fm) {
+      const files = Array.from(fm.files || []), bi = +fm.dataset.lpmulti; if (!files.length) return;
+      toast("جاري رفع " + files.length + " صورة...", true);
+      const got = [];
+      for (const fl of files) { let u = ""; try { u = await uploadImage(fl); } catch (er) {} if (u) got.push(u); }
+      lpCollect();
+      const blk = lpUI.draft && lpUI.draft.blocks[bi];
+      if (blk) blk.items = (blk.items || []).concat(got);
+      lpPaintEdit();
+      toast(got.length === files.length ? "تم رفع الصور" : "رُفعت " + got.length + " من " + files.length, got.length > 0);
+      return;
+    }
     const f = e.target.closest("[data-lpfile]");
     if (f) { const file = f.files && f.files[0]; if (file) lpUploadTo(file, f.dataset.lpfile); return; }
     if (e.target.id === "lpPageF") { lpUI.pageId = e.target.value; lpPaintOrders(); }
@@ -6042,22 +6166,27 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     return list;
   };
   /* ----- العروض المجمّعة: كل باقة منتج حقيقي (bundle:true) فتمرّ في السلة والدفع كأي منتج ----- */
+  let bundleEditId = null;
   const tabBundles = () => {
     const prods = window.PRODUCTS.filter((p) => !isBundle(p));
     const bundles = window.PRODUCTS.filter(isBundle);
+    const eb = bundleEditId ? bundles.find((x) => x.id === bundleEditId) || null : null;
+    if (!eb) bundleEditId = null;
+    const ebIt = (id) => (eb && Array.isArray(eb.items) ? eb.items.find((x) => String(x.id) === String(id)) : null) || null;
     $("#xwBody").innerHTML =
-      '<div class="xw-card" style="max-width:840px"><h3>🎁 إنشاء باقة</h3>' +
+      '<div class="xw-card" style="max-width:840px"><h3>🎁 ' + (eb ? "تعديل باقة: " + esc(eb.name) : "إنشاء باقة") + '</h3>' +
       '<p class="xw-note" style="margin:-6px 0 14px">اختر المنتجات اللي تدخل في الباقة (اثنين أو أكثر) واكتب سعرها الموحّد. تظهر في قسم «العروض المجمّعة» والزبون يشتريها بضغطة وحدة.</p>' +
       '<div class="xw-err" id="bErr"></div>' +
-      '<div class="xw-field"><label>اسم الباقة</label><input id="bName" placeholder="مثال: باقة اللاعب"></div>' +
-      (prods.length ? prods.map((p) => '<div class="xw-prow"><label style="display:flex;gap:8px;align-items:center;flex:1"><input type="checkbox" class="bChk" data-id="' + esc(p.id) + '"> ' + esc(p.name) + ' <span style="font-size:12px;color:var(--faint)">' + fmt(sellPrice(p)) + ' دج</span></label>' +
-        '<input type="number" class="bQty" data-id="' + esc(p.id) + '" value="1" min="1" style="width:64px"></div>').join("") : '<div class="xw-empty">أضف منتجات أولاً.</div>') +
-      '<div class="xw-field" style="margin-top:14px"><label>سعر الباقة (دج)</label><input id="bPrice" type="number" min="1"></div>' +
-      '<div class="xw-field"><label>رابط صورة الباقة (اختياري — بدونه تؤخذ صورة أول منتج)</label><input id="bImg" placeholder="https://..."></div>' +
-      '<button class="xw-btn" id="bSave" type="button">حفظ الباقة</button></div>' +
+      '<div class="xw-field"><label>اسم الباقة</label><input id="bName" placeholder="مثال: باقة اللاعب" value="' + esc(eb ? eb.name : "") + '"></div>' +
+      (prods.length ? prods.map((p) => '<div class="xw-prow"><label style="display:flex;gap:8px;align-items:center;flex:1"><input type="checkbox" class="bChk" data-id="' + esc(p.id) + '"' + (ebIt(p.id) ? " checked" : "") + '> ' + esc(p.name) + ' <span style="font-size:12px;color:var(--faint)">' + fmt(sellPrice(p)) + ' دج</span></label>' +
+        '<input type="number" class="bQty" data-id="' + esc(p.id) + '" value="' + (ebIt(p.id) ? Number(ebIt(p.id).qty) || 1 : 1) + '" min="1" style="width:64px"></div>').join("") : '<div class="xw-empty">أضف منتجات أولاً.</div>') +
+      '<div class="xw-field" style="margin-top:14px"><label>سعر الباقة (دج)</label><input id="bPrice" type="number" min="1" value="' + (eb ? Number(eb.price) || "" : "") + '"></div>' +
+      '<div class="xw-field"><label>رابط صورة الباقة (اختياري — بدونه تؤخذ صورة أول منتج)</label><input id="bImg" placeholder="https://..." value="' + esc(eb ? eb.img || "" : "") + '"></div>' +
+      '<label class="xw-btn ghost sm" style="cursor:pointer;margin-bottom:12px">📷 رفع صورة من الجهاز<input type="file" accept="image/*" id="bFile" hidden></label> ' +
+      '<button class="xw-btn" id="bSave" type="button">' + (eb ? "حفظ التعديلات" : "حفظ الباقة") + "</button>" + (eb ? ' <button class="xw-btn ghost" id="bCancel" type="button">إلغاء التعديل</button>' : "") + "</div>" +
       '<div class="xw-card" style="max-width:840px;margin-top:16px"><h3>الباقات الحالية (' + bundles.length + ')</h3>' +
       (bundles.length ? bundles.map((b) => '<div class="xw-prow"><div class="i" style="flex:1"><b>' + esc(b.name) + '</b> <span style="font-size:12px;color:var(--faint)">' + fmt(sellPrice(b)) + ' دج</span></div>' +
-        '<button type="button" class="xw-btn danger sm" data-bdel="' + esc(b.id) + '">حذف</button></div>').join("") : '<div class="xw-empty">لا توجد باقات بعد.</div>') + "</div>";
+        '<button type="button" class="xw-btn ghost sm" data-bedit="' + esc(b.id) + '">✏️ تعديل</button> <button type="button" class="xw-btn danger sm" data-bdel="' + esc(b.id) + '">حذف</button></div>').join("") : '<div class="xw-empty">لا توجد باقات بعد.</div>') + "</div>";
     const err = (m) => { $("#bErr").textContent = m; };
     $("#bSave").addEventListener("click", async () => {
       const name = $("#bName").value.trim(), price = Math.round(Number($("#bPrice").value));
@@ -6081,9 +6210,28 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       };
       if (stocks.length) np.stock = Math.min.apply(null, stocks);
       try {
+        if (eb) {
+          const upd = Object.assign({}, eb, np, { id: eb.id, order: eb.order });
+          await commitProducts(window.PRODUCTS.map((x) => (x.id === eb.id ? upd : x)), upd, null);
+          bundleEditId = null;
+          toast("تم حفظ تعديلات الباقة", true); renderStore(); tabBundles();
+          return;
+        }
         await commitProducts([np].concat(window.PRODUCTS), np, null);
         toast("تمت إضافة الباقة", true); renderStore(); tabBundles();
       } catch (ex) { err("تعذّر الحفظ: " + (ex.code || ex.message)); }
+    });
+    document.querySelectorAll("[data-bedit]").forEach((btn) => btn.addEventListener("click", () => {
+      bundleEditId = btn.dataset.bedit; tabBundles();
+      try { $("#xwBody").scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
+    }));
+    const bCancel = $("#bCancel"); if (bCancel) bCancel.addEventListener("click", () => { bundleEditId = null; tabBundles(); });
+    const bFile = $("#bFile");
+    if (bFile) bFile.addEventListener("change", async () => {
+      const f = bFile.files && bFile.files[0]; if (!f) return;
+      err("⏳ جاري رفع الصورة…");
+      try { $("#bImg").value = await uploadImage(f); err(""); } catch (ex) { err("تعذّر الرفع: " + (ex.message || "خطأ")); }
+      bFile.value = "";
     });
     document.querySelectorAll("[data-bdel]").forEach((btn) => btn.addEventListener("click", async () => {
       if (!confirm("حذف هذه الباقة؟")) return;
@@ -6562,7 +6710,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
           '<div class="he-fields"><div style="display:flex;justify-content:space-between;align-items:center"><b>شريحة ' + (i + 1) + '</b><button type="button" class="xw-btn danger sm" data-bdel="' + i + '">حذف</button></div>' +
           '<div class="xw-field"><label>رابط الصورة</label><input data-bs="' + i + '" data-bk="img" value="' + esc(b.img || "") + '" placeholder="https://… أو ارفعها من تحت" spellcheck="false"></div>' +
           '<label class="xw-btn ghost sm he-up" style="cursor:pointer">📷 ارفع صورة<input type="file" accept="image/*" data-bs="' + i + '" data-bk="file" hidden></label>' +
-          '<div class="xw-row">' + FIELDS.map((f) => '<div class="xw-field"><label>' + f[1] + '</label><input data-bs="' + i + '" data-bk="' + f[0] + '" value="' + esc(b[f[0]] || "") + '" placeholder="' + f[2] + '"></div>').join("") + "</div></div></div>").join("")
+          '<div class="xw-row">' + FIELDS.map((f) => '<div class="xw-field"><label>' + f[1] + '</label><input data-bs="' + i + '" data-bk="' + f[0] + '" value="' + esc(b[f[0]] || "") + '" placeholder="' + f[2] + '"></div>').join("") + "</div>" +
+          '<div class="xw-field"><label>المنتج الذي يفتحه الزر <small>(اختياري — يُفضَّل على الرابط)</small></label><select data-bs="' + i + '" data-bk="pid"><option value="">— بدون (يستعمل الرابط) —</option>' + (window.PRODUCTS || []).map((q) => '<option value="' + esc(q.id) + '"' + (q.id === b.pid ? " selected" : "") + ">" + esc(q.name) + "</option>").join("") + "</select></div></div></div>").join("")
           : '<div class="xw-empty">ما كاين حتى شريحة. زيد وحدة.</div>') +
         '<div class="xw-err" id="bnErr"></div><div style="display:flex;gap:10px;flex-wrap:wrap">' +
         '<button type="button" class="xw-btn ghost" id="bnAdd"' + (draft.length >= 8 ? " disabled" : "") + '>+ إضافة شريحة</button>' +
@@ -6595,6 +6744,70 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       });
     };
     draw();
+  };
+
+  /* ----- الآراء: المالك يرى كل التقييمات، يعدّل النص، يخفي/يُظهر، يحذف، ويضيف رأياً يدوياً ----- */
+  const tabReviews = async () => {
+    const body = $("#xwBody");
+    body.innerHTML = '<div class="xw-empty">جاري تحميل الآراء...</div>';
+    let list = [], failed = !db;
+    if (db) {
+      try {
+        const snap = await tmo(db.collection(XW_COL.reviews).get(), 9000);
+        list = (snap.docs || []).map((d) => Object.assign({ id: d.id }, d.data() || {})).filter((r) => r && r.p)
+          .sort((a, b) => (Number(b.at) || 0) - (Number(a.at) || 0));
+      } catch (e) { failed = true; }
+    }
+    if (adminTab !== "reviews") return;
+    const shown = list.filter((r) => !r.h), st = rvStats(shown);
+    const starsOf = (n) => "★".repeat(Math.max(0, Math.min(5, Number(n) || 0))) + "☆".repeat(5 - Math.max(0, Math.min(5, Number(n) || 0)));
+    const row = (r) => '<div class="xw-prow" data-rid="' + esc(r.id) + '" style="align-items:flex-start;gap:12px;flex-wrap:wrap;opacity:' + (r.h ? ".6" : "1") + '">' +
+      '<div class="i" style="flex:1;min-width:240px"><b style="color:#E9A93A">' + starsOf(r.n) + "</b> <span>" + esc(rvProd(r.p) || r.p) + "</span> " +
+      '<span style="font-size:12px;color:var(--faint)">' + (r.at ? new Date(Number(r.at)).toLocaleDateString("fr-DZ") : "") + (r.h ? " · 🙈 مخفي عن الزبائن" : "") + "</span>" +
+      '<textarea data-rt rows="2" maxlength="400" style="width:100%;margin-top:8px">' + esc(r.t || "") + "</textarea></div>" +
+      '<div class="lp-acts"><button type="button" class="xw-btn sm" data-rv="save">💾 حفظ النص</button>' +
+      '<button type="button" class="xw-btn ghost sm" data-rv="hide">' + (r.h ? "👁 إظهار" : "🙈 إخفاء") + "</button>" +
+      '<button type="button" class="xw-btn danger sm" data-rv="del">حذف</button></div></div>';
+    body.innerHTML = '<div id="rvAdmin"><div class="xw-card" style="max-width:860px"><h3>⭐ آراء الزبائن</h3>' +
+      '<p class="xw-note" style="margin:-6px 0 14px">' + (failed ? "⚠ تعذّر تحميل الآراء من السحابة. " : "") + "المعروض للزبائن: <b>" + st.n + "</b> رأي · المتوسط <b>" + (st.n ? rvOne(st.avg) : "—") + "</b> من 5. «إخفاء» يخفي الرأي من الموقع دون حذفه، و«حذف» نهائي.</p>" +
+      '<div class="lp-sect">➕ إضافة رأي يدوياً</div><div class="xw-row">' +
+      '<div class="xw-field"><label>المنتج</label><select id="rvNewP"><option value="">— اختر المنتج —</option>' + (window.PRODUCTS || []).map((q) => '<option value="' + esc(q.id) + '">' + esc(q.name) + "</option>").join("") + "</select></div>" +
+      '<div class="xw-field"><label>النجوم</label><select id="rvNewN">' + [5, 4, 3, 2, 1].map((n) => '<option value="' + n + '">' + starsOf(n) + "</option>").join("") + "</select></div></div>" +
+      '<div class="xw-field"><label>نص الرأي</label><textarea id="rvNewT" rows="2" maxlength="400" placeholder="مثال: وصلتني الطلبية في يومين والجودة ممتازة"></textarea></div>' +
+      '<div class="xw-err" id="rvErr"></div><button type="button" class="xw-btn" data-rv="add">إضافة الرأي</button>' +
+      '<div class="lp-sect" style="margin-top:18px">كل الآراء (' + list.length + ")</div>" +
+      (list.length ? list.map(row).join("") : '<div class="xw-empty">ما كاين حتى رأي بعد.</div>') + "</div></div>";
+    const root = $("#rvAdmin");
+    const drop = () => { lsSet(XW_RATE_CACHE, { t: 0, list: [] }); };
+    root.addEventListener("click", async (e) => {
+      const b = e.target.closest("[data-rv]"); if (!b || b.disabled) return;
+      const act = b.dataset.rv, rowEl = b.closest("[data-rid]"), id = rowEl ? rowEl.dataset.rid : "";
+      const say = (m) => { const x = $("#rvErr"); if (x) x.textContent = m; toast(m); };
+      b.disabled = true;
+      try {
+        const col = db.collection(XW_COL.reviews);
+        if (act === "add") {
+          const pid = $("#rvNewP").value, n = Number($("#rvNewN").value), txt = $("#rvNewT").value.trim();
+          if (!pid) { say("اختر المنتج."); b.disabled = false; return; }
+          if (!txt) { say("اكتب نص الرأي."); b.disabled = false; return; }
+          const key = Date.now().toString(16).padStart(20, "0").slice(-20) + "_" + String(pid).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 19);
+          await tmo(col.doc(key).set({ n: n, p: String(pid).slice(0, 40), t: txt.slice(0, 400), at: Date.now() }), 9000);
+          toast("تمت إضافة الرأي", true);
+        } else if (act === "save") {
+          await tmo(col.doc(id).update({ t: rowEl.querySelector("[data-rt]").value.trim().slice(0, 400) }), 9000);
+          toast("تم حفظ النص", true);
+        } else if (act === "hide") {
+          const cur = list.find((x) => x.id === id);
+          await tmo(col.doc(id).update({ h: cur && cur.h ? firebase.firestore.FieldValue.delete() : true }), 9000);
+          toast(cur && cur.h ? "الرأي ظاهر الآن" : "الرأي مخفي عن الزبائن", true);
+        } else if (act === "del") {
+          if (!confirm("تحذف هذا الرأي نهائياً؟")) { b.disabled = false; return; }
+          await tmo(col.doc(id).delete(), 9000);
+          toast("تم الحذف", true);
+        }
+        drop(); tabReviews();
+      } catch (ex) { b.disabled = false; say("تعذّر التنفيذ: " + (ex.code || ex.message) + (/permission/i.test(String(ex.code || ex.message)) ? " — حدّث ملف firestore.rules ثم انشره." : "")); }
+    });
   };
 
   /* ----- Store info ----- */
@@ -7219,9 +7432,14 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       const items = (b.items || []).filter(Boolean); if (!items.length) return "";
       return '<section class="lp-sec">' + (b.title ? "<h2>" + esc(b.title) + "</h2>" : "") + '<ul class="lp-feat">' + items.map((x) => "<li>" + esc(x) + "</li>").join("") + "</ul></section>";
     }
+    if (b.type === "reviews") {
+      const imgs = (b.items || []).filter((u) => /^https?:\/\//i.test(u)); if (!imgs.length) return "";
+      return '<section class="lp-sec lp-rev"><h2>' + esc(b.title || "آراء زبائننا") + '</h2><div class="lp-rev-badge">✅ ' + imgs.length + ' آراء حقيقية من زبائننا</div>' +
+        '<div class="lp-rev-grid">' + imgs.map((u) => '<button type="button" data-revimg="' + esc(cld(u, 1200)) + '" aria-label="تكبير الصورة"><img src="' + esc(cld(u, 500)) + '" alt="رأي زبون" loading="lazy" decoding="async"></button>').join("") + "</div></section>";
+    }
     return "";
   };
-  const lpSig = (lp, p) => [lp.updatedAt || 0, p.price, p.old, p.stock, JSON.stringify(p.colors || "")].join("|");
+  const lpSig = (lp, p) => [lp.updatedAt || 0, p.price, p.old, p.stock, JSON.stringify(p.colors || ""), (lp.offers || []).map((o) => { const q = findProduct(o.pid); return q ? q.id + ":" + q.price + ":" + q.stock : ""; }).join(",")].join("|");
 
   const lpRender = (lp, p) => {
     lpTouched = false;
@@ -7237,15 +7455,28 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     }
     const cta = lp.ctaText || "اطلب الآن";
     const hero = lp.heroImg || (p.images && p.images[0]) || p.img || "";
-    const sp = sellPrice(p), old = listPrice(p), inS = inStock(p);
-    const cols = pColors(p);
-    const items = [{ id: p.id, qty: 1 }];
+    /* عروض الاختيار: المنتج الأساسي أولاً ثم الباكات الإضافية؛ يختار الزبون واحداً فيتبدّل السعر والاستمارة */
+    const offs = (lp.offers || []).map((o) => ({ o, q: findProduct(o.pid) })).filter((x) => x.q && x.q.id !== p.id);
+    const opts = offs.length ? [{ q: p, label: lp.mainLabel, best: !!lp.mainBest }].concat(offs.map((x) => ({ q: x.q, label: x.o.label, best: !!x.o.best }))) : [];
+    let cur = p;
+    if (opts.length && !inStock(p)) { const f0 = opts.find((x) => inStock(x.q)); if (f0) cur = f0.q; }
+    const sp = sellPrice(cur), old = listPrice(cur), inS = inStock(cur);
+    const cols = pColors(cur);
+    const items = [{ id: cur.id, qty: 1 }];
     if (cols.length === 1 && Number(cols[0].stock) > 0) items[0].color = cols[0].name;
-    const chips = cols.length > 1
+    const chipsOf = (pr) => { const cols = pColors(pr); return cols.length > 1
       ? '<div class="lp-colors" id="lpColors"><b>اختر اللون <i>*</i></b><div>' + cols.map((c) => '<button type="button" class="lp-col" data-lp-col="' + esc(c.name) + '"' + (Number(c.stock) > 0 ? "" : " disabled") + ">" + esc(c.name) + (Number(c.stock) > 0 ? "" : " (نفذ)") + "</button>").join("") + "</div></div>"
-      : "";
+      : ""; };
+    const offersHTML = opts.length ? '<div class="lp-offers" id="lpOffers"><b>' + esc(lp.offersTitle || "اختر العرض") + "</b>" + opts.map((x) => {
+      const im = (x.q.images && x.q.images[0]) || x.q.img || "", ok = inStock(x.q), ol = listPrice(x.q);
+      return '<button type="button" class="lp-of' + (x.q.id === cur.id ? " on" : "") + '" data-lp-of="' + esc(x.q.id) + '"' + (ok ? "" : " disabled") + ">" +
+        (x.best ? '<span class="lp-of-best">⭐ أفضل عرض</span>' : "") +
+        (im ? '<img src="' + esc(cld(im, 120)) + '" alt="" loading="lazy" decoding="async">' : "") +
+        '<span class="lp-of-n">' + esc(x.label || x.q.name) + (ok ? "" : " (نفذ)") + "</span>" +
+        '<span class="lp-of-p"><b>' + fmt(sellPrice(x.q)) + " دج</b>" + (ol ? "<s>" + fmt(ol) + " دج</s>" : "") + "</span></button>";
+    }).join("") + "</div>" : "";
     const formHTML = '<section class="lp-formwrap" id="lpFormWrap"><h2>' + esc(lp.formTitle || "اطلب الآن") + "</h2>" +
-      (inS ? chips + '<div class="lp-chk" id="lpCheckoutBox"></div>' : '<div class="lp-out">نفذ المخزون حالياً — تواصل معنا عبر واتساب.</div>') + "</section>";
+      (inS ? offersHTML + '<div id="lpColorsBox">' + chipsOf(cur) + '</div><div class="lp-chk" id="lpCheckoutBox"></div>' : '<div class="lp-out">نفذ المخزون حالياً — تواصل معنا عبر واتساب.</div>') + "</section>";
     let formUsed = false;
     const bodyHTML = (lp.blocks || []).map((b) => {
       if (b.type === "form") { if (formUsed) return ""; formUsed = true; return formHTML; }
@@ -7255,8 +7486,8 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       '<header class="lp-hero">' + (lp.badge ? '<span class="lp-badge">' + esc(lp.badge) + "</span>" : "") +
       "<h1>" + esc(lp.headline || lp.title) + "</h1>" + (lp.subhead ? '<p class="lp-sub">' + esc(lp.subhead) + "</p>" : "") +
       (hero ? '<div class="lp-heroimg"><img src="' + esc(cld(hero, 960)) + '" alt="' + esc(p.name) + '" decoding="async" fetchpriority="high"></div>' : "") +
-      '<div class="lp-price"><b>' + fmt(sp) + ' دج</b>' + (old ? "<s>" + fmt(old) + " دج</s>" : "") + "</div>" +
-      (inS ? '<button type="button" class="lp-cta" data-lp-go>' + esc(cta) + "</button>" : '<div class="lp-out">نفذ المخزون حالياً</div>') + "</header>" +
+      '<div class="lp-price" id="lpPriceBox"><b>' + fmt(sp) + ' دج</b>' + (old ? "<s>" + fmt(old) + " دج</s>" : "") + "</div>" +
+      (inS ? (lp.heroBtn === false ? "" : '<button type="button" class="lp-cta" data-lp-go>' + esc(cta) + "</button>") : '<div class="lp-out">نفذ المخزون حالياً</div>') + "</header>" +
       bodyHTML +
       '<footer class="lp-foot"><span class="brand">X<b> STORE</b></span> · الدفع عند الاستلام · <button type="button" class="lp-trk-link" data-track>📦 تتبّع طلبك</button>' + (lp.hideNav ? "" : ' · <a href="/#shop">تصفح المتجر</a>') + "</footer></div>" +
       (inS && lp.floatBtn !== false ? '<div class="lp-float" id="lpFloat"><button type="button" data-lp-go>' + esc(cta) + "</button></div>" : "");
@@ -7268,6 +7499,18 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       cbox.addEventListener("input", () => { lpTouched = true; }, true);
       cbox.addEventListener("focusin", () => xwTrack("InitiateCheckout", { ids: [p.id], value: sp }), { once: true });
       box.onclick = (e) => {
+        const of = e.target.closest("[data-lp-of]");
+        if (of && !of.disabled) {
+          const q = findProduct(of.dataset.lpOf); if (!q) return;
+          cur = q; items[0] = { id: q.id, qty: 1 };
+          const cs = pColors(q); if (cs.length === 1 && Number(cs[0].stock) > 0) items[0].color = cs[0].name;
+          Array.from($$(".lp-of", box)).forEach((x) => x.classList.toggle("on", x === of));
+          const cb = $("#lpColorsBox", box); if (cb) cb.innerHTML = chipsOf(q);
+          const pb = $("#lpPriceBox", box), o2 = listPrice(q); if (pb) pb.innerHTML = "<b>" + fmt(sellPrice(q)) + " دج</b>" + (o2 ? "<s>" + fmt(o2) + " دج</s>" : "");
+          if (api && api.refresh) api.refresh();
+          xwTrack("InitiateCheckout", { ids: [q.id], value: sellPrice(q) });
+          return;
+        }
         const c = e.target.closest("[data-lp-col]");
         if (c && !c.disabled) {
           items[0].color = c.dataset.lpCol;
