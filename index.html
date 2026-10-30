@@ -1918,6 +1918,17 @@ html[data-theme="dark"] .xws.off { color: #D4D4D8; border-color: rgba(212, 212, 
   .shop-tabs { gap: 8px; justify-content: stretch; margin-bottom: 28px; }
   .shop-tabs .tab { flex: 1 1 auto; text-align: center; padding: 10px 14px; font-size: 13px; white-space: nowrap; }
 }
+
+/* ===== p65 - آراء الزبائن بصور: لقطات متراصّة مثل القصص + رابط إنستغرام ===== */
+.reviews[hidden] { display: none; }
+.rs-wrap { max-width: 1100px; margin: 0 auto; }
+.rs-badge { display: inline-block; background: rgba(34, 197, 94, .14); color: #16a34a; border: 1px solid rgba(34, 197, 94, .4); font-weight: 800; font-size: 13px; padding: 5px 14px; border-radius: 999px; }
+.rs-grid { columns: 2; column-gap: 3px; background: #fff; border: 3px solid #fff; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+.rs-grid button { display: block; width: 100%; padding: 0; margin: 0 0 3px; border: 0; background: #000; break-inside: avoid; cursor: zoom-in; }
+.rs-grid img { width: 100%; height: auto; display: block; }
+@media (min-width: 700px) { .rs-grid { columns: 3; } }
+.rs-more { text-align: center; margin-top: 18px; }
+.rs-ig { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 14px; color: #fff; font-weight: 800; background: linear-gradient(45deg, #F58529, #DD2A7B 55%, #8134AF); box-shadow: 0 12px 28px -12px rgba(221, 42, 123, .6); }
 </style>
 
   <!-- the card Google shows when someone shares a link to the shop -->
@@ -2195,15 +2206,12 @@ html[data-theme="dark"] .xws.off { color: #D4D4D8; border-color: rgba(212, 212, 
     </section>
 
     <!-- Reviews -->
-    <section id="reviews" class="section reviews">
+    <section id="reviews" class="section reviews" hidden>
       <div class="section-head">
         <h2 data-i18n="whatGamersSay">آراء الزبائن</h2>
-        <p class="faint" id="revStat">⭐ متجر بتقييم 5 نجوم</p>
+        <p class="faint" id="rsBadge"></p>
       </div>
-      <div class="rev-grid" id="revGrid"></div>
-      <div class="review-cta">
-        <a href="#rate" class="btn btn-primary">أضف تقييمك بعد الشراء</a>
-      </div>
+      <div class="rs-wrap" id="rsBox"></div>
     </section>
 
     <!-- p54 - أضف تقييمك بعد الشراء (مع عدد التقييمات): آخر قسم في الصفحة، وفوقه آراء الزبائن -->
@@ -2916,6 +2924,7 @@ window.REVIEWS = [
     /* the owner's own pictures for the top of the page; null = the three that shipped */
     hero: null,
     banners: null,
+    revShots: null,
     /* p52 - the four policies, writable from the admin room. Empty means "the text
        that shipped in this page", so a policy can never vanish by accident. */
     polShipping: "", polReturns: "", polTerms: "", polPrivacy: "",
@@ -3233,9 +3242,27 @@ window.REVIEWS = [
     run();
   };
 
+  /* ---------- آراء الزبائن بصور: لقطات شاشة متراصّة + زر إنستغرام (من الإدارة › 📸 صور الآراء) ---------- */
+  const paintRevShots = () => {
+    const sec = document.getElementById("reviews"); if (!sec) return;
+    const rs = INFO.revShots || {};
+    const items = (Array.isArray(rs.items) ? rs.items : []).filter((u) => /^https?:\/\//i.test(String(u))).slice(0, 40);
+    const ig = /^https?:\/\//i.test(String(rs.ig || "")) ? String(rs.ig) : "";
+    const show = !!(items.length || ig);
+    sec.hidden = !show;
+    document.querySelectorAll('a[href="#reviews"]').forEach((a) => { const li = a.closest("li") || a; li.hidden = !show; });
+    if (!show) return;
+    const h = sec.querySelector("h2"), badge = document.getElementById("rsBadge"), box = document.getElementById("rsBox");
+    if (h && rs.title) { h.removeAttribute("data-i18n"); h.textContent = rs.title; }
+    if (badge) badge.innerHTML = items.length ? '<span class="rs-badge">✅ ' + items.length + " آراء حقيقية من زبائننا</span>" : "";
+    if (box) box.innerHTML = (items.length ? '<div class="rs-grid">' + items.map((u) => '<button type="button" data-revimg="' + esc(cld(u, 1200)) + '" aria-label="تكبير الصورة"><img src="' + esc(cld(u, 600)) + '" alt="رأي زبون" loading="lazy" decoding="async"></button>').join("") + "</div>" : "") +
+      (ig ? '<div class="rs-more"><a class="rs-ig" href="' + esc(ig) + '" target="_blank" rel="noopener noreferrer">📸 شاهد المزيد من آراء الزبائن على إنستغرام</a></div>' : "");
+  };
+
   const applyInfo = () => {
     paintHero();
     paintBanners();
+    paintRevShots();
     $$(".nav-word, .pre-word").forEach((el) => { el.innerHTML = "X<b> STORE</b>"; });
     renderSocials();
     $$('a[href^="https://wa.me/"]:not(.fs-wa)').forEach((a) => { a.href = "https://wa.me/" + waNumber(); });
@@ -4560,7 +4587,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         "صلّحها قبل ما تثق في علامة الحفظ." +
         "</div>" : "") +
 '<div class="xw-tabs">' +
-      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["banner", "🎞️ البانر"], ["reviews", "⭐ الآراء"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
+      [["orders", "📦 الطلبات"], ["log", "🗂️ سجل الطلبات"], ["customers", "👥 الزبائن"], ["leads", "📞 طلبات متروكة"], ["landing", "🛬 صفحات الهبوط"], ["bin", "🗑️ سلة المهملات"], ["block", "🚫 الحظر"], ["products", "🛍️ المنتجات"], ["form", editing ? "✏️ تعديل منتج" : "➕ إضافة منتج"], ["bundles", "🎁 إنشاء باقة"], ["cats", "🏷️ الفئات"], ["hero", "🖼️ صور الواجهة"], ["banner", "🎞️ البانر"], ["reviews", "⭐ الآراء"], ["revshots", "📸 صور الآراء"], ["info", "🏪 معلومات المتجر"], ["track", "📈 التتبع"], ["seo", "🔎 الظهور في جوجل"], ["pass", "🔐 كلمة السر"]]
         .map((t) => '<button class="xw-tab' + (adminTab === t[0] ? " on" : "") + '" data-at="' + t[0] + '">' + t[1] + (t[0] === "orders" && newCount ? "<em>" + newCount + "</em>" : "") + (t[0] === "leads" && leadCount ? "<em>" + leadCount + "</em>" : "") + (t[0] === "bin" && binCount ? '<em class="grey">' + binCount + "</em>" : "") + "</button>").join("") +
       '</div></div><div class="xw-body" id="xwBody"></div>';
     const conn = $("#xwConn");
@@ -4574,7 +4601,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
         : "⚠ النسخة غير مؤكدة — تتحدّث كل ساعة";
       cx.title = CACHE_STATE.note || "";
     }
-    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, banner: tabBanner, reviews: tabReviews, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
+    (({ orders: tabOrders, log: tabLog, customers: tabCustomers, leads: tabLeads, landing: tabLanding, bin: tabBin, block: tabBlock, products: tabProducts, form: tabForm, cats: tabCategories, bundles: tabBundles, hero: tabHero, banner: tabBanner, reviews: tabReviews, revshots: tabRevShots, info: tabInfo, track: tabTrack, seo: tabSeo, pass: tabPass })[adminTab] || tabOrders)();
   };
   adminEl.addEventListener("click", async (e) => {
     const at = e.target.closest("[data-at]");
@@ -6786,6 +6813,61 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
     draw();
   };
 
+  /* ----- 📸 صور الآراء: لقطات شاشة (رفع عدة صور أو روابط) + رابط إنستغرام، تظهر في الرئيسية مكان آراء الزبائن ----- */
+  const tabRevShots = () => {
+    const rs = INFO.revShots || {};
+    const draft = { title: rs.title || "", ig: rs.ig || "", items: (Array.isArray(rs.items) ? rs.items : []).slice(0, 40) };
+    const isBad = (u) => /instagram\.com|cdninstagram|fbcdn/i.test(u);
+    const draw = (msg) => {
+      $("#xwBody").innerHTML = '<div id="rsAdmin"><div class="xw-card" style="max-width:860px"><h3>📸 صور الآراء (لقطات شاشة)</h3>' +
+        '<p class="xw-note" style="margin:-6px 0 14px">تظهر في الصفحة الرئيسية مكان قسم «آراء الزبائن»: لقطات متراصّة مثل القصص (عمودان على الهاتف و3 على الحاسوب)، والضغط على صورة يكبّرها. ارفع لقطات شاشة محادثات الزبائن. إذا ما فيه لا صور ولا رابط، القسم يختفي.</p>' +
+        '<div class="xw-field"><label>العنوان <small>(اختياري)</small></label><input id="rsTitle" value="' + esc(draft.title) + '" placeholder="آراء زبائننا"></div>' +
+        '<div class="xw-field"><label>رابط إنستغرام <small>(اختياري — يظهر كزر تحت الصور)</small></label><input id="rsIg" value="' + esc(draft.ig) + '" placeholder="https://www.instagram.com/حسابك" dir="ltr" spellcheck="false"></div>' +
+        '<div class="lp-sect">الصور (' + draft.items.length + "/40)</div>" +
+        '<label class="xw-btn ghost sm" style="cursor:pointer">📷 رفع صور (تقدر تختار عدة صور)<input type="file" accept="image/*" multiple id="rsFiles" hidden></label>' +
+        '<div class="xw-field" style="margin-top:12px"><label>أو الصق روابط صور (كل رابط في سطر)</label><textarea id="rsUrls" rows="3" dir="ltr" placeholder="https://…" spellcheck="false"></textarea></div>' +
+        '<button type="button" class="xw-btn ghost sm" id="rsAddUrls">➕ إضافة الروابط</button>' +
+        (draft.items.some(isBad) ? '<div class="xw-err" style="display:block;margin-top:10px">⚠ روابط ستوري إنستغرام (instagram / cdninstagram / fbcdn) تنتهي صلاحيتها ولا تعمل مباشرة. الأفضل ترفع لقطة شاشة للرأي.</div>' : "") +
+        '<div style="display:flex;flex-wrap:wrap;gap:8px;margin:14px 0">' + (draft.items.length ? draft.items.map((u, i) =>
+          '<div style="position:relative;width:88px;height:88px;border-radius:10px;overflow:hidden;border:1px solid var(--line)"><img src="' + esc(cld(u, 200)) + '" alt="" style="width:100%;height:100%;object-fit:cover">' +
+          '<button type="button" class="xw-btn danger sm" data-rsdel="' + i + '" style="position:absolute;top:3px;inset-inline-end:3px;padding:0 7px;min-height:0">✕</button></div>').join("") : '<div class="xw-empty">ما كاين حتى صورة بعد.</div>') + "</div>" +
+        '<div class="xw-err" id="rsErr">' + esc(msg || "") + '</div><button type="button" class="xw-btn" id="rsSave">حفظ</button></div></div>';
+      const root = $("#rsAdmin"), say = (m) => { const e = $("#rsErr"); if (e) e.textContent = m || ""; };
+      const sync = () => { draft.title = ($("#rsTitle").value || "").trim(); draft.ig = ($("#rsIg").value || "").trim(); };
+      root.addEventListener("click", async (e) => {
+        const del = e.target.closest("[data-rsdel]");
+        if (del) { sync(); draft.items.splice(+del.dataset.rsdel, 1); draw(); return; }
+        if (e.target.closest("#rsAddUrls")) {
+          sync();
+          const urls = String($("#rsUrls").value || "").split(/\s+/).map((u) => u.trim()).filter((u) => /^https?:\/\//i.test(u));
+          urls.forEach((u) => { if (draft.items.length < 40 && draft.items.indexOf(u) < 0) draft.items.push(u); });
+          draw(urls.length ? "" : "ما لقيت حتى رابط صالح (لازم يبدأ بـ https://)");
+          return;
+        }
+        if (e.target.closest("#rsSave")) {
+          sync();
+          if (draft.ig && !/^https?:\/\//i.test(draft.ig)) { say("رابط إنستغرام لازم يبدأ بـ https://"); return; }
+          try {
+            await saveInfo(Object.assign({}, INFO, { revShots: (draft.items.length || draft.ig || draft.title) ? { title: draft.title, ig: draft.ig, items: draft.items.slice(0, 40) } : null }));
+            say(""); toast("تم حفظ صور الآراء", true);
+          } catch (ex) { say("تعذّر الحفظ: " + (ex.code || ex.message)); }
+        }
+      });
+      root.addEventListener("change", async (e) => {
+        const f = e.target.closest("#rsFiles"); if (!f) return;
+        const files = Array.from(f.files || []).slice(0, Math.max(0, 40 - draft.items.length)); if (!files.length) return;
+        sync();
+        let fail = 0;
+        for (let k = 0; k < files.length; k++) {
+          say("⏳ جاري رفع الصورة " + (k + 1) + " من " + files.length + "…");
+          try { draft.items.push(await uploadImage(files[k])); } catch (ex) { fail++; }
+        }
+        draw(fail ? "تعذّر رفع " + fail + " صورة." : "");
+      });
+    };
+    draw();
+  };
+
   /* ----- الآراء: المالك يرى كل التقييمات، يعدّل النص، يخفي/يُظهر، يحذف، ويضيف رأياً يدوياً ----- */
   const tabReviews = async () => {
     const body = $("#xwBody");
@@ -6986,6 +7068,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#xwL
       /* saving the shop info must leave the top-of-page pictures alone */
       next.hero = Array.isArray(INFO.hero) ? INFO.hero : null;
       next.banners = Array.isArray(INFO.banners) ? INFO.banners : null;
+      next.revShots = INFO.revShots || null;
       /* the SEO tab owns the domain */
       next.site = INFO.site || XW_INFO_DEFAULTS.site;
       Object.keys(XW_INFO_DEFAULTS).forEach((k) => { if (!next[k] && XW_SOCIAL_OPTIONAL.indexOf(k) < 0) next[k] = XW_INFO_DEFAULTS[k]; });
