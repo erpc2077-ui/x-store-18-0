@@ -1,5 +1,11 @@
 /api/cloudinary-sign  /.netlify/functions/cloudinary-sign  200
 /api/zr  /.netlify/functions/zr  200
+/source.html  /404.html  404!
+/build.js  /404.html  404!
+/package.json  /404.html  404!
+/package-lock.json  /404.html  404!
+/netlify.toml  /404.html  404!
+/netlify/*  /404.html  404!
 /firebase.json  /404.html  404!
 /_headers  /404.html  404!
 /_redirects  /404.html  404!
